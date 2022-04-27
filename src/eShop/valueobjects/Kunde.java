@@ -4,7 +4,7 @@ package eShop.valueobjects;
 /**
  * Klasse zur Repräsentation einzelner Kunden.
  *
- * @author seliger test
+ * @author seliger
  * @author nguyen
  * @author heuschmann
  */
