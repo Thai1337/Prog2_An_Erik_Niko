@@ -5,7 +5,7 @@ package eShop.valueobjects;
  * Klasse zur Repräsentation einzelner Kunden.
  *
  * @author seliger
- * @author nguyen
+ * @author nguyen test
  * @author heuschmann
  */
 public class Kunde extends Nutzer {
