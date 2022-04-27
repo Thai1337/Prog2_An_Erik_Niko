@@ -6,7 +6,7 @@ package eShop.valueobjects;
  *
  * @author seliger test
  * @author nguyen
- * @author heuschmann test
+ * @author heuschmann
  */
 public class Kunde extends Nutzer {
     private String addresse;
