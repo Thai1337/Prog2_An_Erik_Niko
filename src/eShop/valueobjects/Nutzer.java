@@ -5,7 +5,7 @@ package eShop.valueobjects;
  * Abstrakte Klasse welche als Vorlage für Kunde und Mitarbeiter dient.
  * Gibt Methodenköpfe vor für Getter und Setter.
  *
- * @author seliger
+ * @author seliger ass
  * @author nguyen
  * @author heuschmann
  * @version 1
