@@ -10,19 +10,44 @@ package eShop.valueobjects;
  * @author heuschmann
  * @version 1
  */
-public abstract class Nutzer {
+public abstract class Nutzer { //abstrakt damit kein Objekt der Klasse Nutzer erstellt werden kann, man aber trotzdem die Implementierung in dieser Klasse durchführen kann
     protected String name;
     protected int nummer;
+    protected String passwort;
 
+    /**
+     * Abstrakte vorgab einer
+     * Standard-Methode von Object überschrieben.
+     * Methode wird immer automatisch aufgerufen, wenn ein Nutzer-Objekt als String
+     * benutzt wird (z.B. in println(Nutzer);)
+     */
+    public abstract String toString();
 
     // Methoden zum Setzen und Lesen der Nutzer-Eigenschaften,
 
-    public abstract String getName();
+    public String getPasswort() {
+        return passwort;
+    }
 
-    public abstract void setName(String name);
+    public void setPasswort(String passwort) {
+        this.passwort = passwort;
+    }
 
-    public abstract int getNummer();
+    public String getName() {
+        return this.name;
+    }
 
-    public abstract void setNummer(int nummer);
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getNummer() {
+        return nummer;
+    }
+
+    public void setNummer(int nummer) {
+        this.nummer = nummer;
+    }
+
 
 }
