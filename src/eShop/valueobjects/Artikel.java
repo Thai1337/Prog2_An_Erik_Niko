@@ -1,10 +1,20 @@
 package eShop.valueobjects;
 
+
+/**
+ * Klasse zur Repräsentation einzelner Artikel.
+ *
+ * @author seliger
+ * @author nguyen
+ * @author heuschmann
+ */
 public class Artikel {
 
     private int nummer;
     private String bezeichnung;
     private int bestand;
+
+    // Methoden zum Setzen und Lesen der Artikel-Eigenschaften,
 
     public int getNummer() {
         return nummer;

@@ -19,8 +19,8 @@ public class Kunde extends Nutzer {
 
     /**
      * Standard-Methode von Object überschrieben.
-     * Methode wird immer automatisch aufgerufen, wenn ein Buch-Objekt als String
-     * benutzt wird (z.B. in println(buch);)
+     * Methode wird immer automatisch aufgerufen, wenn ein Kunde-Objekt als String
+     * benutzt wird (z.B. in println(kunde);)
      */
     public String toString() {
         return "Kunde{" +
@@ -30,7 +30,7 @@ public class Kunde extends Nutzer {
                 '}';
     }
 
-    // Methoden zum Setzen und Lesen der Kunden-Eigenschaften,
+    // Ergänzende-Methoden zum Setzen und Lesen der Kunden-Eigenschaften,
 
     public String getAddresse() {
         return addresse;
@@ -38,22 +38,6 @@ public class Kunde extends Nutzer {
 
     public void setAddresse(String addresse) {
         this.addresse = addresse;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNummer() {
-        return nummer;
-    }
-
-    public void setNummer(int nummer) {
-        this.nummer = nummer;
     }
 
 }

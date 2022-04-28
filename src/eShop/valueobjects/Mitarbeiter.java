@@ -1,27 +1,25 @@
 package eShop.valueobjects;
 
+/**
+ * Klasse zur Repräsentation einzelner Mitarbeiter.
+ *
+ * @author seliger
+ * @author nguyen
+ * @author heuschmann
+ */
 public class Mitarbeiter extends Nutzer{
+
+    public String toString() {
+        return "Mitarbeiter{" +
+                "name='" + name + '\'' +
+                ", nummer=" + nummer +
+                '}';
+    }
 
     public Mitarbeiter(String name, int nummer) {
         this.name = name;
         this.nummer = nummer;
     }
 
-    // Methoden zum Setzen und Lesen der Mitarbeiter-Eigenschaften,
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNummer() {
-        return nummer;
-    }
-
-    public void setNummer(int nummer) {
-        this.nummer = nummer;
-    }
 }
