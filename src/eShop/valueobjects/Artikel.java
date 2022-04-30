@@ -14,6 +14,20 @@ public class Artikel {
     private String bezeichnung;
     private int bestand;
 
+    public Artikel(int nummer, String bezeichnung, int bestand){
+        this.nummer = nummer;
+        this.bezeichnung = bezeichnung;
+        this.bestand = bestand;
+    }
+
+
+    public String toString() {
+        return "Artikel{" +
+                "nummer=" + nummer +
+                ", bezeichnung='" + bezeichnung + '\'' +
+                ", bestand=" + bestand +
+                '}';
+    }
     // Methoden zum Setzen und Lesen der Artikel-Eigenschaften,
 
     public int getNummer() {

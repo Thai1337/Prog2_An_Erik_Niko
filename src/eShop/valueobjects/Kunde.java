@@ -11,10 +11,11 @@ package eShop.valueobjects;
 public class Kunde extends Nutzer {
     private String addresse;
 
-    public Kunde(String name, int nummer, String addresse) {
+    public Kunde(String name, int nummer, String addresse, String passwort) {
         this.name = name;
         this.nummer = nummer;
         this.addresse = addresse;
+        this.passwort = passwort;
     }
 
     /**
