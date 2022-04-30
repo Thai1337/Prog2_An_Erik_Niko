@@ -19,7 +19,13 @@ public class Artikel {
         this.bezeichnung = bezeichnung;
         this.bestand = bestand;
     }
-
+    /**
+     * Standard-Methode von Object überschrieben.
+     * Methode wird immer automatisch aufgerufen, wenn ein Artikel-Objekt als String
+     * benutzt wird (z.B. in println(artikel);)
+     *
+     * @see java.lang.Object#toString()
+     */
 
     public String toString() {
         return "Artikel{" +

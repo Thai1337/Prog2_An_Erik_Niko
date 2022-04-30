@@ -1,9 +1,6 @@
 package eShop.ui.cui;
 
 import eShop.domain.Eshop;
-import eShop.valueobjects.Artikel;
-import eShop.valueobjects.Kunde;
-import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,7 +25,10 @@ public class EshopClientCUI {
 
         in = new BufferedReader(new InputStreamReader(System.in));
     }
-
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zur Ausgabe des Menüs.
+     */
     private void gibMenueAus() {
 
         System.out.println("\nBefehle:R = Registrieren");
@@ -36,10 +36,22 @@ public class EshopClientCUI {
         System.out.println("Befehle:B = Artikel Ausgeben");
         System.out.println("Befehle:q = Programm Beenden");
     }
+
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zum Einlesen von Benutzereingaben.
+     */
     public String einlesen() throws IOException {
         //einlesen der Nutzereingaben
         return in.readLine();
     }
+    /**
+     * Methode zur Ausführung der Hauptschleife:
+     * - Menü ausgeben
+     * - Eingabe des Benutzers einlesen
+     * - Eingabe verarbeiten und Ergebnis ausgeben
+     * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
+     */
     public void run(){
         String input = "";
         do{
@@ -54,7 +66,12 @@ public class EshopClientCUI {
 
         }while(!input.equals("q"));
     }
-    public void verarbeiteEingabe(String line) {
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zur Verarbeitung von Eingaben
+     * und Ausgabe von Ergebnissen.
+     */
+    private void verarbeiteEingabe(String line) {
         String nummer;
         Vector liste;
 
@@ -71,26 +88,27 @@ public class EshopClientCUI {
 
     }
 
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zum Ausgeben des Artikel Vektors.
+     *
+     */
     private void gibArtikellisteAus(Vector liste) {
         if (liste.isEmpty()) {
             System.out.println("Liste ist leer.");
         } else {
             // Durchlaufen des Vectors mittels for each-Schleife
             // (alternativ: Iterator)
-            for (Object Artikel: liste) {
-                System.out.println(Artikel);
+            for (Object artikel: liste) {
+                System.out.println(artikel);
             }
         }
     }
 
-
+    /**
+     * Die main-Methode...
+     */
     public static void main(String[] args) {
-
-        /*EshopClientCUI shop = new EshopClientCUI();
-        shop.gibMenueAus();
-        shop.einlesen();*/
-
-        Artikel A1 = new Artikel(1,"Holz",100);
 
         EshopClientCUI cui;
         try {
