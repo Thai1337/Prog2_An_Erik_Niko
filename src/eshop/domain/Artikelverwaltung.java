@@ -1,12 +1,11 @@
-package eShop.domain;
+package eshop.domain;
 
-import eShop.domain.exceptions.ArtikelExistiertBereitsException;
-import eShop.domain.exceptions.ArtikelbestandUnterNullException;
-import eShop.valueobjects.Artikel;
+import eshop.domain.exceptions.ArtikelExistiertBereitsException;
+import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.valueobjects.Artikel;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Klasse zur Verwaltung der Artikel.
@@ -16,7 +15,7 @@ import java.util.Vector;
  * @author heuschmann
  */
 public class Artikelverwaltung {
-    private Vector artikelBestand = new Vector();
+    private ArrayList artikelBestand = new ArrayList();
 
     /**
      * Konstruktor welcher Artikel erstellt und dem Vektor des Bestandes hinzufügt
@@ -44,9 +43,45 @@ public class Artikelverwaltung {
      *
      * @return Liste aller Artikel im Artikelbestand (Kopie)
      */
-    public Vector getArtikelBestand() {
-        return new Vector(artikelBestand);
+    public ArrayList getArtikelBestand() {
+        return new ArrayList(artikelBestand);
     }
+
+    /**
+     * Methode, die eine KOPIE des Artikelbestands zurückgibt.
+     * Die Methode besitz eine andere Signatur,
+     * als die Normale getArtikelBestand mit einem Parameter um die Art der Sortierung zu ermitteln.
+     * (Eine Kopie ist eine gute Idee, wenn ich dem Empfänger
+     * der Daten nicht ermöglichen möchte, die Original-Daten
+     * zu manipulieren.)
+     *
+     * @param sortierung index welcher den Typ der Sortierung ermittelt
+     * @return Liste aller Artikel im Artikelbestand sortiert oder nicht als (Kopie)
+     */
+    public ArrayList getArtikelBestand(int sortierung) {
+        ArrayList sortierteListe;
+
+        switch (sortierung) {
+            case 1:
+                sortierteListe = (ArrayList) artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
+                break;
+            case 2:
+                sortierteListe = (ArrayList) artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer)).collect(Collectors.toList());
+                break;
+            case 3:
+                sortierteListe = (ArrayList) artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER).reversed()).collect(Collectors.toList());
+                break;
+            case 4:
+                sortierteListe = (ArrayList) artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer).reversed()).collect(Collectors.toList());
+                break;
+            default:
+                sortierteListe = artikelBestand;
+                break;
+        }
+        return new ArrayList(sortierteListe);
+    }
+
+
 
     /**
      * Methode, die ein Artikel an das Ende des artikelBestandes einfügt.
@@ -59,7 +94,7 @@ public class Artikelverwaltung {
             throw new ArtikelExistiertBereitsException(einArtikel, " - in 'einfuegen()'");
         }
 
-        // das übernimmt der Vector:
+        // das übernimmt der ArrayList:
         artikelBestand.add(einArtikel);
 
     }
@@ -71,7 +106,7 @@ public class Artikelverwaltung {
      * @throws ArtikelbestandUnterNullException wenn der eingegebene Artikelbestand unter 0 ist
      */
     public void aendereArtikelbestand(Artikel einArtikel) throws ArtikelbestandUnterNullException {
-        // das übernimmt der Vector:
+        // das übernimmt der ArrayList:
         if (einArtikel.getBestand() < 0) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
 
@@ -96,7 +131,7 @@ public class Artikelverwaltung {
      * @param einArtikel der löschende Artikel
      */
     public void loeschen(Artikel einArtikel) {
-        // das übernimmt der Vector:
+        // das übernimmt der ArrayList:
         artikelBestand.remove(einArtikel);
     }
 
@@ -107,10 +142,10 @@ public class Artikelverwaltung {
      * @param bezeichung Bezeichnung des gesuchten Artikels
      * @return Liste der Artikel mit gesuchter Bezeichnung (evtl. leer)
      */
-    public Vector sucheArtikel(String bezeichung) {
-        Vector ergebnis = new Vector();
+    public ArrayList sucheArtikel(String bezeichung) {
+        ArrayList ergebnis = new ArrayList();
 
-        // Durchlaufen des Vectors mittels Iterator
+        // Durchlaufen des ArrayLists mittels Iterator
         // (alternativ: for each-Schleife)
         Iterator it = artikelBestand.iterator();
         while (it.hasNext()) {

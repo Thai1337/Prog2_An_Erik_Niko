@@ -1,13 +1,13 @@
-package eShop.ui.cui;
+package eshop.ui.cui;
 
-import eShop.domain.Eshop;
-import eShop.domain.exceptions.ArtikelExistiertBereitsException;
-import eShop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.Eshop;
+import eshop.domain.exceptions.ArtikelExistiertBereitsException;
+import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Klasse für sehr einfache Benutzungsschnittstelle für den
@@ -82,13 +82,29 @@ public class EshopClientCUI {
     private void verarbeiteEingabe(String line) throws IOException, ArtikelbestandUnterNullException {
         String nummer, bezeichnung, bestand;
         int nr, bst;
-        Vector liste;
+        ArrayList liste;
+
 
         switch (line) {
             case "B":
                 System.out.println("");
-                liste = shop.gibAlleArtikel();
-                gibArtikellisteAus(liste);
+                System.out.println("Option (0): Unsortiert");
+                System.out.println("Option (1): Absteigend nach Bezeichnung");
+                System.out.println("Option (2): Absteigend nach Nummer");
+                System.out.println("Option (3): Aufsteigend nach Bezeichnung");
+                System.out.println("Option (4): Aufsteigend nach Nummer\n");
+                System.out.print("Listen Sortierung: > ");
+
+                try{
+                    nummer = einlesen();
+                    nr = Integer.parseInt(nummer);
+                    System.out.println("");
+                    liste = shop.gibAlleArtikel(nr);
+                    gibArtikellisteAus(liste);
+                }catch (NumberFormatException e){
+                    System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
+                    //e.printStackTrace();
+                }
 
                 break;
             case "C":
@@ -108,29 +124,44 @@ public class EshopClientCUI {
                 } catch (ArtikelExistiertBereitsException e) {
                     // Hier Fehlerbehandlung...
                     System.out.println("Fehler beim Einfügen");
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
+                break;
             case "D":
-                System.out.println("");
-                System.out.print("Artikelnummer > ");
-                nummer = einlesen();
-                nr = Integer.parseInt(nummer);
-                System.out.print("Artikelbezeichnung  > ");
-                bezeichnung = einlesen();
-                System.out.print("Artikelbestand aender zu > ");
-                bestand = einlesen();
-                bst = Integer.parseInt(bestand);
-                shop.aendereArtikelbestand(bezeichnung, nr, bst);
+                try {
+                    System.out.println("");
+                    System.out.print("Artikelnummer > ");
+                    nummer = einlesen();
+                    nr = Integer.parseInt(nummer);
+                    System.out.print("Artikelbezeichnung  > ");
+                    bezeichnung = einlesen();
+                    System.out.print("Artikelbestand aender zu > ");
+                    bestand = einlesen();
+                    bst = Integer.parseInt(bestand);
+
+                    shop.aendereArtikelbestand(bezeichnung, nr, bst);
+                }catch (IOException | NumberFormatException e){
+                    System.out.println("Fehler bei der Eingabe");
+                    //e.printStackTrace();
+                }
+
                 break;
             case "E":
-                System.out.println("");
-                System.out.print("Artikelnummer > ");
-                nummer = einlesen();
-                nr = Integer.parseInt(nummer);
-                System.out.print("Artikelbezeichnung  > ");
-                bezeichnung = einlesen();
+                try {
+                    System.out.println("");
+                    System.out.print("Artikelnummer > ");
+                    nummer = einlesen();
+                    nr = Integer.parseInt(nummer);
+                    System.out.print("Artikelbezeichnung  > ");
+                    bezeichnung = einlesen();
 
-                shop.loescheArtikel(bezeichnung, nr);
+
+                    shop.loescheArtikel(bezeichnung, nr);
+                }catch (IOException | NumberFormatException e){
+                    System.out.println("Fehler bei der Eingabe");
+                    //e.printStackTrace();
+                }
+
                 break;
             case "F":
                 System.out.print("Artikelbezeichnung  > ");
@@ -151,11 +182,11 @@ public class EshopClientCUI {
      * Interne (private) Methode zum Ausgeben des Artikel Vektors.
      *
      */
-    private void gibArtikellisteAus(Vector liste) {
+    private void gibArtikellisteAus(ArrayList liste) {
         if (liste.isEmpty()) {
             System.out.println("Liste ist leer.");
         } else {
-            // Durchlaufen des Vectors mittels for each-Schleife
+            // Durchlaufen des ArrayLists mittels for each-Schleife
             // (alternativ: Iterator)
             for (Object artikel: liste) {
                 System.out.println(artikel);

@@ -1,10 +1,10 @@
-package eShop.domain;
+package eshop.domain;
 
-import eShop.domain.exceptions.ArtikelExistiertBereitsException;
-import eShop.domain.exceptions.ArtikelbestandUnterNullException;
-import eShop.valueobjects.Artikel;
+import eshop.domain.exceptions.ArtikelExistiertBereitsException;
+import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.valueobjects.Artikel;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Klasse zur Verwaltung eines E-Shops.
@@ -27,14 +27,24 @@ public class Eshop {
     }
 
     /**
-     * Methode welche einen Vektor aller Artikel im Bestand des E-Shops der Artikelverwlatung erhält und zurückgibt
+     * Methode welche eine Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt
      *
      * @return Vektor aller Artikel
      */
-  public Vector gibAlleArtikel(){
+  public ArrayList gibAlleArtikel(){
       // einfach delegieren an meineBuecher
       return artikelVW.getArtikelBestand();
   }
+
+    /**
+     * Methode welche eine sortierte Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt
+     * @param sortierung index welcher den Typ der Sortierung ermittelt
+     * @return Vektor aller Artikel
+     */
+    public ArrayList gibAlleArtikel(int sortierung){
+        // einfach delegieren an meineBuecher
+        return artikelVW.getArtikelBestand(sortierung);
+    }
 
     /**
      * Methode zum Einfügen eines neuen Artikels in den Bestand.
@@ -81,7 +91,7 @@ public class Eshop {
      * @param bezeichnung Bezeichnung des gesuchten Artikels
      * @return Liste der gefundenen Artikel (evtl. leer)
      */
-    public Vector sucheNachbezeichnung(String bezeichnung) {
+    public ArrayList sucheNachbezeichnung(String bezeichnung) {
         // einfach delegieren an meineBuecher
         return artikelVW.sucheArtikel(bezeichnung);
     }

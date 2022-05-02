@@ -1,4 +1,4 @@
-package eShop.domain;
+package eshop.domain;
 
 public class WarenkorbVerwaltung {
 }

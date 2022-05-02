@@ -1,6 +1,6 @@
-package eShop.domain.exceptions;
+package eshop.domain.exceptions;
 
-import eShop.valueobjects.Artikel;
+import eshop.valueobjects.Artikel;
 
 public class ArtikelExistiertBereitsException extends Exception {
     private Artikel artikel;
