@@ -35,8 +35,17 @@ public class Eshop {
       return artikelVW.getArtikelBestand();
   }
 
-    public Artikel fuegeArtikelEin(int nr, String titel, int nummer) throws ArtikelExistiertBereitsException {
-        Artikel a = new Artikel(nr, titel, nummer);
+    /**
+     * Methode zum Einfügen eines neuen Artikels in den Bestand.
+     * Wenn der Artikel bereits im Bestand ist, wird der Bestand nicht geändert.
+     * @param nr Titel des Buchs
+     * @param bezeichnung Titel des Buchs
+     * @param bestand Nummer des Buchs
+     * @returns Artikel-Objekt, das im Erfolgsfall eingefügt wurde
+     * @throws ArtikelExistiertBereitsException wenn das Buch bereits existiert
+     */
+    public Artikel fuegeArtikelEin(int nr, String bezeichnung, int bestand) throws ArtikelExistiertBereitsException {
+        Artikel a = new Artikel(nr, bezeichnung, bestand);
         artikelVW.einfuegen(a);
         return a;
     }

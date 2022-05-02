@@ -39,6 +39,12 @@ public class Artikelverwaltung {
 
     }
 
+    /**
+     * Methode, die ein Artikel an das Ende des artikelBestandes einfügt.
+     *
+     * @param einArtikel der einzufügende Artikel
+     * @throws ArtikelExistiertBereitsException wenn ein Artikel bereits existiert
+     */
     public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException {
         if (artikelBestand.contains(einArtikel)) {
             throw new ArtikelExistiertBereitsException(einArtikel, " - in 'einfuegen()'");

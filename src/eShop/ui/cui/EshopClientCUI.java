@@ -38,6 +38,7 @@ public class EshopClientCUI {
         System.out.println("Befehle:B = Artikel Ausgeben");
         System.out.println("Befehle:C = Artikel Einfügen");
         System.out.println("Befehle:q = Programm Beenden");
+        System.out.println("Befehle:R = Artikel Entfernen");
     }
 
     /* (non-Javadoc)
@@ -104,7 +105,12 @@ public class EshopClientCUI {
                     System.out.println("Fehler beim Einfügen");
                     e.printStackTrace();
                 }
-
+            case "R":
+                
+                System.out.println("");
+                System.out.print("Artikelnummer > ");
+                nummer = einlesen();
+                nr = Integer.parseInt(nummer);
                 break;
         }
 
