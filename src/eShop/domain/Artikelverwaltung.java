@@ -3,6 +3,7 @@ package eShop.domain;
 import eShop.domain.exceptions.ArtikelExistiertBereitsException;
 import eShop.valueobjects.Artikel;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -52,7 +53,17 @@ public class Artikelverwaltung {
 
         // das übernimmt der Vector:
         artikelBestand.add(einArtikel);
-    }
 
+    }
+    public void aendereArtikelbestand(Artikel einArtikel) {
+        // das übernimmt der Vector:
+        Iterator it =artikelBestand.iterator();
+        while (it.hasNext()){
+            Artikel artikel =(Artikel) it.next();
+            if (artikel.getBezeichnung().equals(einArtikel.getBezeichnung())){
+                artikel.setBestand(einArtikel.getBestand());
+            }
+        }
+    }
 }
 

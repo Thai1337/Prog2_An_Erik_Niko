@@ -37,8 +37,8 @@ public class EshopClientCUI {
         System.out.println("Befehle:A = Anmelden");
         System.out.println("Befehle:B = Artikel Ausgeben");
         System.out.println("Befehle:C = Artikel Einfügen");
+        System.out.println("Befehle:R = Artikelbestand aendere Bestand");
         System.out.println("Befehle:q = Programm Beenden");
-        System.out.println("Befehle:R = Artikel Entfernen");
     }
 
     /* (non-Javadoc)
@@ -105,12 +105,17 @@ public class EshopClientCUI {
                     System.out.println("Fehler beim Einfügen");
                     e.printStackTrace();
                 }
-            case "R":
-                
+            case "D":
                 System.out.println("");
                 System.out.print("Artikelnummer > ");
                 nummer = einlesen();
                 nr = Integer.parseInt(nummer);
+                System.out.print("Artikelbezeichnung  > ");
+                bezeichnung = einlesen();
+                System.out.print("Artikelbestand aender zu > ");
+                bestand = einlesen();
+                bst = Integer.parseInt(bestand);
+                shop.aendereArtikelbestand(bezeichnung, nr, bst);
                 break;
         }
 

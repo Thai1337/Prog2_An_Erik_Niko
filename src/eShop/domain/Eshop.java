@@ -49,5 +49,8 @@ public class Eshop {
         artikelVW.einfuegen(a);
         return a;
     }
-
+    public void aendereArtikelbestand(String bezeichnung, int nr, int bestand) {
+        Artikel a = new Artikel(nr, bezeichnung, bestand);
+        artikelVW.aendereArtikelbestand(a);
+    }
 }
