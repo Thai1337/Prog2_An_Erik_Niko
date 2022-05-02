@@ -9,6 +9,11 @@ package eShop.valueobjects;
  */
 public class Mitarbeiter extends Nutzer{
 
+    /**
+     * Standard-Methode von Object überschrieben.
+     * Methode wird immer automatisch aufgerufen, wenn ein Kunde-Objekt als String
+     * benutzt wird (z.B. in println(kunde);)
+     */
     public String toString() {
         return "Mitarbeiter{" +
                 "name='" + name + '\'' +
