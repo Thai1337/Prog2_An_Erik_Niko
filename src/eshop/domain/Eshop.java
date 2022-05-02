@@ -29,7 +29,7 @@ public class Eshop {
     /**
      * Methode welche eine Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt
      *
-     * @return Vektor aller Artikel
+     * @return ArrayList aller Artikel
      */
   public ArrayList gibAlleArtikel(){
       // einfach delegieren an meineBuecher
@@ -39,7 +39,7 @@ public class Eshop {
     /**
      * Methode welche eine sortierte Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt
      * @param sortierung index welcher den Typ der Sortierung ermittelt
-     * @return Vektor aller Artikel
+     * @return ArrayList aller Artikel
      */
     public ArrayList gibAlleArtikel(int sortierung){
         // einfach delegieren an meineBuecher

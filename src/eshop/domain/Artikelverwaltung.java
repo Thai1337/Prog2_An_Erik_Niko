@@ -18,7 +18,7 @@ public class Artikelverwaltung {
     private ArrayList artikelBestand = new ArrayList();
 
     /**
-     * Konstruktor welcher Artikel erstellt und dem Vektor des Bestandes hinzufügt
+     * Konstruktor welcher Artikel erstellt und der ArrayList des Bestandes hinzufügt
      */
     public Artikelverwaltung() {
         Artikel a1 = new Artikel(10, "Holz", 100);

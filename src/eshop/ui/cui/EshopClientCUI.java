@@ -179,7 +179,7 @@ public class EshopClientCUI {
 
     /* (non-Javadoc)
      *
-     * Interne (private) Methode zum Ausgeben des Artikel Vektors.
+     * Interne (private) Methode zum Ausgeben der Artikel ArrayList.
      *
      */
     private void gibArtikellisteAus(ArrayList liste) {
