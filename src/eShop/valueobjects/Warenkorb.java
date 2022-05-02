@@ -15,8 +15,8 @@ public class Warenkorb {
     }
     /**
      * Standard-Methode von Object überschrieben.
-     * Methode wird immer automatisch aufgerufen, wenn ein Artikel-Objekt als String
-     * benutzt wird (z.B. in println(artikel);)
+     * Methode wird immer automatisch aufgerufen, wenn ein Warenkorb-Objekt als String
+     * benutzt wird (z.B. in println(warenkorb);)
      *
      * @see java.lang.Object#toString()
      */

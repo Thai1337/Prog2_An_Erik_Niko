@@ -11,8 +11,8 @@ public class Mitarbeiter extends Nutzer{
 
     /**
      * Standard-Methode von Object überschrieben.
-     * Methode wird immer automatisch aufgerufen, wenn ein Kunde-Objekt als String
-     * benutzt wird (z.B. in println(kunde);)
+     * Methode wird immer automatisch aufgerufen, wenn ein Mitarbeiter-Objekt als String
+     * benutzt wird (z.B. in println(Mitarbeiter);)
      */
     public String toString() {
         return "Mitarbeiter{" +
