@@ -61,4 +61,16 @@ public class Eshop {
         artikelVW.aendereArtikelbestand(a);
 
     }
+
+    /**
+     * Methode zum Löschen eines Artikels aus dem Bestand.
+     * Es wird nur das erste Vorkommen des Artikels gelöscht.
+     *
+     * @param bezeichner Bezeichnung des Artikels
+     * @param nummer Nummer des Artikels
+     */
+    public void loescheArtikel(String bezeichner, int nummer) {
+        Artikel a = new Artikel(nummer, bezeichner, 0);
+        artikelVW.loeschen(a);
+    }
 }

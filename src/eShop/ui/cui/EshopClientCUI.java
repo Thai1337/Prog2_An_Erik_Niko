@@ -39,6 +39,7 @@ public class EshopClientCUI {
         System.out.println("Befehle:B = Artikel Ausgeben");
         System.out.println("Befehle:C = Artikel Einfügen");
         System.out.println("Befehle:D = Artikelbestand aendere Bestand");
+        System.out.println("Befehle:E = Artikel Loeschen");
         System.out.println("Befehle:q = Programm Beenden");
     }
 
@@ -118,6 +119,17 @@ public class EshopClientCUI {
                 bst = Integer.parseInt(bestand);
                 shop.aendereArtikelbestand(bezeichnung, nr, bst);
                 break;
+            case "E":
+                System.out.println("");
+                System.out.print("Artikelnummer > ");
+                nummer = einlesen();
+                nr = Integer.parseInt(nummer);
+                System.out.print("Artikelbezeichnung  > ");
+                bezeichnung = einlesen();
+
+                shop.loescheArtikel(bezeichnung, nr);
+                break;
+
         }
 
 

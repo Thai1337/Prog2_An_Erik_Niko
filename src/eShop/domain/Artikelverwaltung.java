@@ -20,7 +20,7 @@ public class Artikelverwaltung {
     /**
      * Konstruktor welcher Artikel erstellt und dem Vektor des Bestandes hinzufügt
      */
-    public Artikelverwaltung(){
+    public Artikelverwaltung() {
         Artikel a1 = new Artikel(10, "Holz", 100);
         Artikel a2 = new Artikel(1, "Metall", 50);
         artikelBestand.add(a1);
@@ -28,6 +28,7 @@ public class Artikelverwaltung {
 
 
     }
+
     /**
      * Methode, die eine KOPIE des Artikelbestands zurückgibt.
      * (Eine Kopie ist eine gute Idee, wenn ich dem Empfänger
@@ -56,6 +57,7 @@ public class Artikelverwaltung {
         artikelBestand.add(einArtikel);
 
     }
+
     /**
      * Methode, die ein Artikel an das Ende des artikelBestandes einfügt.
      *
@@ -64,23 +66,32 @@ public class Artikelverwaltung {
      */
     public void aendereArtikelbestand(Artikel einArtikel) throws ArtikelbestandUnterNullException {
         // das übernimmt der Vector:
-        if(einArtikel.getBestand() < 0){
+        if (einArtikel.getBestand() < 0) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
 
         }/*else if(einArtikel.getBestand == 0 && ){
 
         }
         */
-        Iterator it =artikelBestand.iterator();
-        while (it.hasNext()){
-            Artikel artikel =(Artikel) it.next();
-            if (artikel.getBezeichnung().equals(einArtikel.getBezeichnung())){
+        Iterator it = artikelBestand.iterator();
+        while (it.hasNext()) {
+            Artikel artikel = (Artikel) it.next();
+            if (artikel.getBezeichnung().equals(einArtikel.getBezeichnung())) {
 
                 artikel.setBestand(einArtikel.getBestand());
 
                 //TODO löschen methode ausführen wenn bestand 0 ist mit Abfrage und AMIGO entfernen
             }
         }
+    }
+    /**
+     * Methode zum Löschen eines Artikels aus dem Bestand.
+     *
+     * @param einArtikel der löschende Artikel
+     */
+    public void loeschen(Artikel einArtikel) {
+        // das übernimmt der Vector:
+        artikelBestand.remove(einArtikel);
     }
 }
 
