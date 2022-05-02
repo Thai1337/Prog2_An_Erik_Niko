@@ -73,4 +73,16 @@ public class Eshop {
         Artikel a = new Artikel(nummer, bezeichner, 0);
         artikelVW.loeschen(a);
     }
+
+    /**
+     * Methode zum Suchen von Artikeln anhand der Bezeichnung. Es wird eine Liste von Artikeln
+     * zurückgegeben, die alle Artikel mit exakt übereinstimmender Bezeichnung enthält.
+     *
+     * @param bezeichnung Bezeichnung des gesuchten Artikels
+     * @return Liste der gefundenen Artikel (evtl. leer)
+     */
+    public Vector sucheNachbezeichnung(String bezeichnung) {
+        // einfach delegieren an meineBuecher
+        return artikelVW.sucheArtikel(bezeichnung);
+    }
 }

@@ -4,6 +4,7 @@ import eShop.domain.exceptions.ArtikelExistiertBereitsException;
 import eShop.domain.exceptions.ArtikelbestandUnterNullException;
 import eShop.valueobjects.Artikel;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -23,8 +24,14 @@ public class Artikelverwaltung {
     public Artikelverwaltung() {
         Artikel a1 = new Artikel(10, "Holz", 100);
         Artikel a2 = new Artikel(1, "Metall", 50);
+        Artikel a3 = new Artikel(11, "Benis", 50);
+        Artikel a4 = new Artikel(12, "COCK", 50);
+        Artikel a5 = new Artikel(13, "Anus", 50);
         artikelBestand.add(a1);
         artikelBestand.add(a2);
+        artikelBestand.add(a3);
+        artikelBestand.add(a4);
+        artikelBestand.add(a5);
 
 
     }
@@ -39,7 +46,6 @@ public class Artikelverwaltung {
      */
     public Vector getArtikelBestand() {
         return new Vector(artikelBestand);
-
     }
 
     /**
@@ -92,6 +98,29 @@ public class Artikelverwaltung {
     public void loeschen(Artikel einArtikel) {
         // das übernimmt der Vector:
         artikelBestand.remove(einArtikel);
+    }
+
+    /**
+     * Methode, die anhand einer Bezeichnung nach Artikeln sucht. Es wird eine Liste von Artikeln
+     * zurückgegeben, die alle Artikel mit exakt übereinstimmender Bezeichnung enthält.
+     *
+     * @param bezeichung Bezeichnung des gesuchten Artikels
+     * @return Liste der Artikel mit gesuchter Bezeichnung (evtl. leer)
+     */
+    public Vector sucheArtikel(String bezeichung) {
+        Vector ergebnis = new Vector();
+
+        // Durchlaufen des Vectors mittels Iterator
+        // (alternativ: for each-Schleife)
+        Iterator it = artikelBestand.iterator();
+        while (it.hasNext()) {
+            Artikel artikel = (Artikel) it.next();
+            if (artikel.getBezeichnung().equals(bezeichung)) {
+                ergebnis.add(artikel);
+            }
+        }
+
+        return ergebnis;
     }
 }
 

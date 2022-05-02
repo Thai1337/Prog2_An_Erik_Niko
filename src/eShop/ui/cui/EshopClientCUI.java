@@ -38,9 +38,11 @@ public class EshopClientCUI {
         System.out.println("Befehle:A = Anmelden");
         System.out.println("Befehle:B = Artikel Ausgeben");
         System.out.println("Befehle:C = Artikel Einfügen");
-        System.out.println("Befehle:D = Artikelbestand aendere Bestand");
+        System.out.println("Befehle:D = Artikel aendere Bestand");
         System.out.println("Befehle:E = Artikel Loeschen");
+        System.out.println("Befehle:F = Artikel suchen");
         System.out.println("Befehle:q = Programm Beenden");
+
     }
 
     /* (non-Javadoc)
@@ -87,6 +89,7 @@ public class EshopClientCUI {
                 System.out.println("");
                 liste = shop.gibAlleArtikel();
                 gibArtikellisteAus(liste);
+
                 break;
             case "C":
                 System.out.println("");
@@ -128,6 +131,13 @@ public class EshopClientCUI {
                 bezeichnung = einlesen();
 
                 shop.loescheArtikel(bezeichnung, nr);
+                break;
+            case "F":
+                System.out.print("Artikelbezeichnung  > ");
+                bezeichnung = einlesen();
+
+                liste = shop.sucheNachbezeichnung(bezeichnung);
+                gibArtikellisteAus(liste);
                 break;
 
         }
