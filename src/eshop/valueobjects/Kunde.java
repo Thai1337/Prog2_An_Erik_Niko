@@ -1,4 +1,4 @@
-package eShop.valueobjects;
+package eshop.valueobjects;
 
 
 /**

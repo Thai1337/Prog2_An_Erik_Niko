@@ -1,4 +1,4 @@
-package eShop.valueobjects;
+package eshop.valueobjects;
 
 
 /**
@@ -59,5 +59,21 @@ public class Artikel {
     public void setBestand(int bestand) {
         this.bestand = bestand;
     }
+
+    /**
+     * Standard-Methode von Object überschrieben.
+     * Methode dient Vergleich von zwei Artikel-Objekten anhand ihrer Werte,
+     * d.h. Bezeichnung und Nummer.
+     *
+     * @see java.lang.Object#toString()
+     */
+    public boolean equals(Object andererArtikel) {
+        if (andererArtikel instanceof Artikel)
+            return ((this.nummer == ((Artikel) andererArtikel).nummer)
+                    && (this.bezeichnung.equals(((Artikel) andererArtikel).bezeichnung)));
+        else
+            return false;
+    }
+
 
 }
