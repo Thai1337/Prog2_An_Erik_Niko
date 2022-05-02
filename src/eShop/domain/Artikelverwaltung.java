@@ -1,5 +1,6 @@
 package eShop.domain;
 
+import eShop.domain.exceptions.ArtikelExistiertBereitsException;
 import eShop.valueobjects.Artikel;
 
 import java.util.Vector;
@@ -12,7 +13,7 @@ import java.util.Vector;
  * @author heuschmann
  */
 public class Artikelverwaltung {
-    private Vector ArtikelBestand = new Vector();
+    private Vector artikelBestand = new Vector();
 
     /**
      * Konstruktor welcher Artikel erstellt und dem Vektor des Bestandes hinzufügt
@@ -20,8 +21,8 @@ public class Artikelverwaltung {
     public Artikelverwaltung(){
         Artikel a1 = new Artikel(10, "Holz", 100);
         Artikel a2 = new Artikel(1, "Metall", 50);
-        ArtikelBestand.add(a1);
-        ArtikelBestand.add(a2);
+        artikelBestand.add(a1);
+        artikelBestand.add(a2);
 
 
     }
@@ -34,8 +35,17 @@ public class Artikelverwaltung {
      * @return Liste aller Artikel im Artikelbestand (Kopie)
      */
     public Vector getArtikelBestand() {
-        return new Vector(ArtikelBestand);
+        return new Vector(artikelBestand);
 
+    }
+
+    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException {
+        if (artikelBestand.contains(einArtikel)) {
+            throw new ArtikelExistiertBereitsException(einArtikel, " - in 'einfuegen()'");
+        }
+
+        // das übernimmt der Vector:
+        artikelBestand.add(einArtikel);
     }
 
 }

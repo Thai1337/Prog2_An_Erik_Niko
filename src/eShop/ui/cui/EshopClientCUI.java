@@ -1,6 +1,8 @@
 package eShop.ui.cui;
 
 import eShop.domain.Eshop;
+import eShop.domain.exceptions.ArtikelExistiertBereitsException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,6 +36,7 @@ public class EshopClientCUI {
         System.out.println("\nBefehle:R = Registrieren");
         System.out.println("Befehle:A = Anmelden");
         System.out.println("Befehle:B = Artikel Ausgeben");
+        System.out.println("Befehle:C = Artikel Einfügen");
         System.out.println("Befehle:q = Programm Beenden");
     }
 
@@ -71,16 +74,37 @@ public class EshopClientCUI {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteEingabe(String line) {
-        String nummer;
+    private void verarbeiteEingabe(String line) throws IOException {
+        String nummer, bezeichnung, bestand;
+        int nr, bst;
         Vector liste;
 
-        int nr;
         switch (line) {
             case "B":
                 System.out.println("");
                 liste = shop.gibAlleArtikel();
                 gibArtikellisteAus(liste);
+                break;
+            case "C":
+                System.out.println("");
+                System.out.print("Artikelnummer > ");
+                nummer = einlesen();
+                nr = Integer.parseInt(nummer);
+                System.out.print("Artikelbezeichnung  > ");
+                bezeichnung = einlesen();
+                System.out.print("Artikelbestand  > ");
+                bestand = einlesen();
+                bst = Integer.parseInt(bestand);
+
+                try {
+                    shop.fuegeArtikelEin(nr, bezeichnung, bst);
+                    System.out.println("Einfügen ok");
+                } catch (ArtikelExistiertBereitsException e) {
+                    // Hier Fehlerbehandlung...
+                    System.out.println("Fehler beim Einfügen");
+                    e.printStackTrace();
+                }
+
                 break;
         }
 

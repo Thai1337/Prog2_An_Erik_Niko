@@ -1,5 +1,8 @@
 package eShop.domain;
 
+import eShop.domain.exceptions.ArtikelExistiertBereitsException;
+import eShop.valueobjects.Artikel;
+
 import java.util.Vector;
 
 /**
@@ -31,4 +34,11 @@ public class Eshop {
       // einfach delegieren an meineBuecher
       return artikelVW.getArtikelBestand();
   }
+
+    public Artikel fuegeArtikelEin(int nr, String titel, int nummer) throws ArtikelExistiertBereitsException {
+        Artikel a = new Artikel(nr, titel, nummer);
+        artikelVW.einfuegen(a);
+        return a;
+    }
+
 }
