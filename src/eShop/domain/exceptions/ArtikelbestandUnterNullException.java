@@ -2,12 +2,13 @@ package eShop.domain.exceptions;
 
 import eShop.valueobjects.Artikel;
 
-public class ArtikelExistiertBereitsException extends Exception {
+public class ArtikelbestandUnterNullException extends Exception{
+
     private Artikel artikel;
 
-    public ArtikelExistiertBereitsException(Artikel artikel, String zusatzMsg) {
+    public ArtikelbestandUnterNullException(Artikel artikel, String zusatzMsg) {
         super("Artikel mit der Bezeichnung " + artikel.getBezeichnung() + " und Nummer " + artikel.getNummer()
-                + " existiert bereits" + zusatzMsg);
+                + " darf nicht unter 0 Fallen" + zusatzMsg);
         this.artikel = artikel;
     }
 

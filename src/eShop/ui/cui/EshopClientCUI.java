@@ -2,6 +2,7 @@ package eShop.ui.cui;
 
 import eShop.domain.Eshop;
 import eShop.domain.exceptions.ArtikelExistiertBereitsException;
+import eShop.domain.exceptions.ArtikelbestandUnterNullException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class EshopClientCUI {
         System.out.println("Befehle:A = Anmelden");
         System.out.println("Befehle:B = Artikel Ausgeben");
         System.out.println("Befehle:C = Artikel Einfügen");
-        System.out.println("Befehle:R = Artikelbestand aendere Bestand");
+        System.out.println("Befehle:D = Artikelbestand aendere Bestand");
         System.out.println("Befehle:q = Programm Beenden");
     }
 
@@ -63,7 +64,7 @@ public class EshopClientCUI {
             try{
                 input = einlesen();
                 verarbeiteEingabe(input);
-            }catch (IOException e){
+            }catch (IOException | ArtikelbestandUnterNullException e){
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
@@ -75,7 +76,7 @@ public class EshopClientCUI {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteEingabe(String line) throws IOException {
+    private void verarbeiteEingabe(String line) throws IOException, ArtikelbestandUnterNullException {
         String nummer, bezeichnung, bestand;
         int nr, bst;
         Vector liste;

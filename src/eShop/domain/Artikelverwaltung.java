@@ -1,6 +1,7 @@
 package eShop.domain;
 
 import eShop.domain.exceptions.ArtikelExistiertBereitsException;
+import eShop.domain.exceptions.ArtikelbestandUnterNullException;
 import eShop.valueobjects.Artikel;
 
 import java.util.Iterator;
@@ -55,13 +56,29 @@ public class Artikelverwaltung {
         artikelBestand.add(einArtikel);
 
     }
-    public void aendereArtikelbestand(Artikel einArtikel) {
+    /**
+     * Methode, die ein Artikel an das Ende des artikelBestandes einfügt.
+     *
+     * @param einArtikel der einzufügende Artikel
+     * @throws ArtikelbestandUnterNullException wenn der eingegebene Artikelbestand unter 0 ist
+     */
+    public void aendereArtikelbestand(Artikel einArtikel) throws ArtikelbestandUnterNullException {
         // das übernimmt der Vector:
+        if(einArtikel.getBestand() < 0){
+            throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
+
+        }/*else if(einArtikel.getBestand == 0 && ){
+
+        }
+        */
         Iterator it =artikelBestand.iterator();
         while (it.hasNext()){
             Artikel artikel =(Artikel) it.next();
             if (artikel.getBezeichnung().equals(einArtikel.getBezeichnung())){
+
                 artikel.setBestand(einArtikel.getBestand());
+
+                //TODO löschen methode ausführen wenn bestand 0 ist mit Abfrage und AMIGO entfernen
             }
         }
     }
