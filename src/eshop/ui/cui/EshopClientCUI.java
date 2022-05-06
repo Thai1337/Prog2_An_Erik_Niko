@@ -7,7 +7,8 @@ import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.Vector;
+import java.util.List;
 
 /**
  * Klasse für sehr einfache Benutzungsschnittstelle für den
@@ -28,6 +29,7 @@ public class EshopClientCUI {
 
         in = new BufferedReader(new InputStreamReader(System.in));
     }
+
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Ausgabe des Menüs.
@@ -82,17 +84,17 @@ public class EshopClientCUI {
     private void verarbeiteEingabe(String line) throws IOException, ArtikelbestandUnterNullException {
         String nummer, bezeichnung, bestand;
         int nr, bst;
-        ArrayList liste;
+        List liste;
 
 
         switch (line) {
             case "B":
                 System.out.println("");
-                System.out.println("Option (0): Unsortiert");
-                System.out.println("Option (1): Absteigend nach Bezeichnung");
-                System.out.println("Option (2): Absteigend nach Nummer");
-                System.out.println("Option (3): Aufsteigend nach Bezeichnung");
-                System.out.println("Option (4): Aufsteigend nach Nummer\n");
+                System.out.println("(0): Unsortiert");
+                System.out.println("(1): Absteigend nach Bezeichnung");
+                System.out.println("(2): Absteigend nach Nummer");
+                System.out.println("(3): Aufsteigend nach Bezeichnung");
+                System.out.println("(4): Aufsteigend nach Nummer\n");
                 System.out.print("Listen Sortierung: > ");
 
                 try{
@@ -179,14 +181,14 @@ public class EshopClientCUI {
 
     /* (non-Javadoc)
      *
-     * Interne (private) Methode zum Ausgeben der Artikel ArrayList.
+     * Interne (private) Methode zum Ausgeben der Artikel Vector.
      *
      */
-    private void gibArtikellisteAus(ArrayList liste) {
+    private void gibArtikellisteAus(List liste) {
         if (liste.isEmpty()) {
             System.out.println("Liste ist leer.");
         } else {
-            // Durchlaufen des ArrayLists mittels for each-Schleife
+            // Durchlaufen des Vectors mittels for each-Schleife
             // (alternativ: Iterator)
             for (Object artikel: liste) {
                 System.out.println(artikel);
