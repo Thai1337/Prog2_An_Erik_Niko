@@ -7,7 +7,6 @@ import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Vector;
 import java.util.List;
 
 /**
@@ -21,6 +20,7 @@ import java.util.List;
 public class EshopClientCUI {
 
     private Eshop shop;
+
     private BufferedReader in;
 
     public EshopClientCUI() {
@@ -36,8 +36,6 @@ public class EshopClientCUI {
      */
     private void gibMenueAus() {
 
-        System.out.println("\nBefehle:R = Registrieren");
-        System.out.println("Befehle:A = Anmelden");
         System.out.println("Befehle:B = Artikel Ausgeben");
         System.out.println("Befehle:C = Artikel Einfügen");
         System.out.println("Befehle:D = Artikel aendere Bestand");
@@ -47,10 +45,7 @@ public class EshopClientCUI {
 
     }
 
-    /* (non-Javadoc)
-     *
-     * Interne (private) Methode zum Einlesen von Benutzereingaben.
-     */
+
     public String einlesen() throws IOException {
         //einlesen der Nutzereingaben
         return in.readLine();
@@ -181,7 +176,7 @@ public class EshopClientCUI {
 
     /* (non-Javadoc)
      *
-     * Interne (private) Methode zum Ausgeben der Artikel Vector.
+     * Interne (private) Methode zum Ausgeben der Artikel Liste.
      *
      */
     private void gibArtikellisteAus(List liste) {
@@ -201,10 +196,10 @@ public class EshopClientCUI {
      */
     public static void main(String[] args) {
 
-        EshopClientCUI cui;
+        LoginMenue loginMenue;
         try {
-            cui = new EshopClientCUI();
-            cui.run();
+            loginMenue = new LoginMenue();
+            loginMenue.run();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

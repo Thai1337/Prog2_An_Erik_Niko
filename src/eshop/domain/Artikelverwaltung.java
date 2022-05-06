@@ -24,8 +24,8 @@ public class Artikelverwaltung {
         Artikel a1 = new Artikel(10, "Holz", 100);
         Artikel a2 = new Artikel(1, "Metall", 50);
         Artikel a3 = new Artikel(11, "Ball", 50);
-        Artikel a4 = new Artikel(12, "Calender", 50);
-        Artikel a5 = new Artikel(13, "AAAAA", 50);
+        Artikel a4 = new Artikel(12, "Cola", 50);
+        Artikel a5 = new Artikel(13, "Ananas", 50);
         artikelBestand.add(a1);
         artikelBestand.add(a2);
         artikelBestand.add(a3);
