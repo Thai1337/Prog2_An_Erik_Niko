@@ -4,7 +4,8 @@ import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.valueobjects.Artikel;
 
-import java.util.ArrayList;
+import java.util.Vector;
+import java.util.List;
 
 /**
  * Klasse zur Verwaltung eines E-Shops.
@@ -29,9 +30,9 @@ public class Eshop {
     /**
      * Methode welche eine Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt
      *
-     * @return ArrayList aller Artikel
+     * @return Vector aller Artikel
      */
-  public ArrayList gibAlleArtikel(){
+  public List<Artikel> gibAlleArtikel(){
       // einfach delegieren an meineBuecher
       return artikelVW.getArtikelBestand();
   }
@@ -39,9 +40,9 @@ public class Eshop {
     /**
      * Methode welche eine sortierte Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt
      * @param sortierung index welcher den Typ der Sortierung ermittelt
-     * @return ArrayList aller Artikel
+     * @return Vector aller Artikel
      */
-    public ArrayList gibAlleArtikel(int sortierung){
+    public List<Artikel> gibAlleArtikel(int sortierung){
         // einfach delegieren an meineBuecher
         return artikelVW.getArtikelBestand(sortierung);
     }
@@ -91,7 +92,7 @@ public class Eshop {
      * @param bezeichnung Bezeichnung des gesuchten Artikels
      * @return Liste der gefundenen Artikel (evtl. leer)
      */
-    public ArrayList sucheNachbezeichnung(String bezeichnung) {
+    public List<Artikel> sucheNachbezeichnung(String bezeichnung) {
         // einfach delegieren an meineBuecher
         return artikelVW.sucheArtikel(bezeichnung);
     }

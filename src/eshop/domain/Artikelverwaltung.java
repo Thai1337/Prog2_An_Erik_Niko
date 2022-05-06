@@ -15,17 +15,17 @@ import java.util.stream.Collectors;
  * @author heuschmann
  */
 public class Artikelverwaltung {
-    private ArrayList artikelBestand = new ArrayList();
+    private List<Artikel> artikelBestand = new Vector();
 
     /**
-     * Konstruktor welcher Artikel erstellt und der ArrayList des Bestandes hinzufügt
+     * Konstruktor welcher Artikel erstellt und der Vector des Bestandes hinzufügt
      */
     public Artikelverwaltung() {
         Artikel a1 = new Artikel(10, "Holz", 100);
         Artikel a2 = new Artikel(1, "Metall", 50);
-        Artikel a3 = new Artikel(11, "Benis", 50);
-        Artikel a4 = new Artikel(12, "COCK", 50);
-        Artikel a5 = new Artikel(13, "Anus", 50);
+        Artikel a3 = new Artikel(11, "Ball", 50);
+        Artikel a4 = new Artikel(12, "Calender", 50);
+        Artikel a5 = new Artikel(13, "AAAAA", 50);
         artikelBestand.add(a1);
         artikelBestand.add(a2);
         artikelBestand.add(a3);
@@ -43,8 +43,8 @@ public class Artikelverwaltung {
      *
      * @return Liste aller Artikel im Artikelbestand (Kopie)
      */
-    public ArrayList getArtikelBestand() {
-        return new ArrayList(artikelBestand);
+    public List<Artikel> getArtikelBestand() {
+        return new Vector(artikelBestand);
     }
 
     /**
@@ -58,27 +58,27 @@ public class Artikelverwaltung {
      * @param sortierung index welcher den Typ der Sortierung ermittelt
      * @return Liste aller Artikel im Artikelbestand sortiert oder nicht als (Kopie)
      */
-    public ArrayList getArtikelBestand(int sortierung) {
-        ArrayList sortierteListe;
+    public List<Artikel> getArtikelBestand(int sortierung) {
+        List<Artikel> sortierteListe;
 
         switch (sortierung) {
             case 1:
-                sortierteListe = (ArrayList) artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
+                sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
                 break;
             case 2:
-                sortierteListe = (ArrayList) artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer)).collect(Collectors.toList());
+                sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer)).collect(Collectors.toList());
                 break;
             case 3:
-                sortierteListe = (ArrayList) artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER).reversed()).collect(Collectors.toList());
+                sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER).reversed()).collect(Collectors.toList());
                 break;
             case 4:
-                sortierteListe = (ArrayList) artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer).reversed()).collect(Collectors.toList());
+                sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer).reversed()).collect(Collectors.toList());
                 break;
             default:
                 sortierteListe = artikelBestand;
                 break;
         }
-        return new ArrayList(sortierteListe);
+        return new Vector<>(sortierteListe);
     }
 
 
@@ -94,7 +94,7 @@ public class Artikelverwaltung {
             throw new ArtikelExistiertBereitsException(einArtikel, " - in 'einfuegen()'");
         }
 
-        // das übernimmt der ArrayList:
+        // das übernimmt der Vector:
         artikelBestand.add(einArtikel);
 
     }
@@ -106,7 +106,7 @@ public class Artikelverwaltung {
      * @throws ArtikelbestandUnterNullException wenn der eingegebene Artikelbestand unter 0 ist
      */
     public void aendereArtikelbestand(Artikel einArtikel) throws ArtikelbestandUnterNullException {
-        // das übernimmt der ArrayList:
+        // das übernimmt der Vector:
         if (einArtikel.getBestand() < 0) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
 
@@ -114,6 +114,7 @@ public class Artikelverwaltung {
 
         }
         */
+        /*
         Iterator it = artikelBestand.iterator();
         while (it.hasNext()) {
             Artikel artikel = (Artikel) it.next();
@@ -123,7 +124,14 @@ public class Artikelverwaltung {
 
                 //TODO löschen methode ausführen wenn bestand 0 ist mit Abfrage und AMIGO entfernen
             }
+        }*/
+
+        for (Artikel artikel : artikelBestand) {
+            if (artikel.getBezeichnung().equals(einArtikel.getBezeichnung())) {
+                artikel.setBestand(einArtikel.getBestand());
+            }
         }
+        
     }
     /**
      * Methode zum Löschen eines Artikels aus dem Bestand.
@@ -131,7 +139,7 @@ public class Artikelverwaltung {
      * @param einArtikel der löschende Artikel
      */
     public void loeschen(Artikel einArtikel) {
-        // das übernimmt der ArrayList:
+        // das übernimmt der Vector:
         artikelBestand.remove(einArtikel);
     }
 
@@ -142,14 +150,21 @@ public class Artikelverwaltung {
      * @param bezeichung Bezeichnung des gesuchten Artikels
      * @return Liste der Artikel mit gesuchter Bezeichnung (evtl. leer)
      */
-    public ArrayList sucheArtikel(String bezeichung) {
-        ArrayList ergebnis = new ArrayList();
+    public List<Artikel> sucheArtikel(String bezeichung) {
+        List<Artikel> ergebnis = new Vector();
 
-        // Durchlaufen des ArrayLists mittels Iterator
-        // (alternativ: for each-Schleife)
+        // Durchlaufen des Vectors mittels Iterator/for-each Schleife
+        /*
         Iterator it = artikelBestand.iterator();
         while (it.hasNext()) {
             Artikel artikel = (Artikel) it.next();
+            if (artikel.getBezeichnung().equals(bezeichung)) {
+                ergebnis.add(artikel);
+            }
+        }
+        */
+        // TODO Iterator rauswerfen wenn Projekt fertig danke
+        for (Artikel artikel: artikelBestand) {
             if (artikel.getBezeichnung().equals(bezeichung)) {
                 ergebnis.add(artikel);
             }
