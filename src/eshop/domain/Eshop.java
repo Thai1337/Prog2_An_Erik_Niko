@@ -3,8 +3,9 @@ package eshop.domain;
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.valueobjects.Artikel;
+import eshop.valueobjects.Mitarbeiter;
 
-import java.util.Vector;
+import java.util.Random;
 import java.util.List;
 
 /**
@@ -19,12 +20,14 @@ import java.util.List;
 public class Eshop {
 
     private Artikelverwaltung artikelVW;
+    private Mitarbeiterverwaltung mitarbeiterVW;
     /**
      * Konstruktor, der eine Artikelverwaltung erstellt
      * (Initialisierung des E-Shops).
      */
     public Eshop() {
         artikelVW = new Artikelverwaltung();
+        mitarbeiterVW = new Mitarbeiterverwaltung();
     }
 
     /**
@@ -93,7 +96,32 @@ public class Eshop {
      * @return Liste der gefundenen Artikel (evtl. leer)
      */
     public List<Artikel> sucheNachbezeichnung(String bezeichnung) {
-        // einfach delegieren an meineBuecher
+        // Methode zum suchen von Buechern nach der Bezeichnung
         return artikelVW.sucheArtikel(bezeichnung);
+    }
+
+    /**
+     * Methode zum Suchen von Artikeln anhand der Bezeichnung. Es wird eine Liste von Artikeln
+     * zurückgegeben, die alle Artikel mit exakt übereinstimmender Bezeichnung enthält.
+     *
+     * @param name Name des Mitarbeiters, welcher eingestellt werden soll
+     * @param passwort Passwort des Mitarbeiters, welcher eingestellt werden soll
+     * @return Gibt die Mitarbeiternummer des neuen Mitarbeiters zurück
+     */
+    public int erstelleMitarbeiter(String name, String passwort) {
+        Mitarbeiter m = new Mitarbeiter(name ,passwort);
+        return mitarbeiterVW.erstelleMitarbeiter(m);
+    }
+
+    /**
+     * Methode zum Anmelden von Mitarbeitern anhand ihrer Mitarbeiternummer und ihrem Passworts.
+     * Es wird ein Boolischenwert (true) zurückgegeben, wenn die Eingaben im System exakt übereinstimmenden.
+     *
+     * @param nummer Nummer der im System gesuchten Mitarbeiternummer
+     * @param passwort Passwort des im Systems gesuchten Mitarbeiter
+     * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
+     */
+    public boolean mitarbeiterAnmelden(int nummer, String passwort) {
+        return mitarbeiterVW.mitarbeiterAnmelden(nummer, passwort);
     }
 }
