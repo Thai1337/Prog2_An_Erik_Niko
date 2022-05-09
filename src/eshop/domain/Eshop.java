@@ -56,7 +56,7 @@ public class Eshop {
      * @param nr Nummer des Artikels
      * @param bezeichnung Bezeichnung des Artikels
      * @param bestand Bestand des Artikels
-     * @returns Artikel-Objekt, das im Erfolgsfall eingefügt wurde
+     * @return Artikel-Objekt, das im Erfolgsfall eingefügt wurde
      * @throws ArtikelExistiertBereitsException wenn der Artikel bereits existiert
      */
     public Artikel fuegeArtikelEin(int nr, String bezeichnung, int bestand) throws ArtikelExistiertBereitsException {
