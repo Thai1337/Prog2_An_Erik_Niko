@@ -121,8 +121,6 @@ public class Artikelverwaltung {
             if (artikel.getBezeichnung().equals(einArtikel.getBezeichnung())) {
 
                 artikel.setBestand(einArtikel.getBestand());
-
-                //TODO löschen methode ausführen wenn bestand 0 ist mit Abfrage und AMIGO entfernen
             }
         }*/
 

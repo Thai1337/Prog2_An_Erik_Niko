@@ -15,21 +15,22 @@ public class MitarbeiterMenue {
 
     private EA eingabeAusgabe;
     private Eshop shop;
-    public MitarbeiterMenue(){
+    public MitarbeiterMenue(Eshop shop){
         eingabeAusgabe = new EA();
-        shop = new Eshop();
+        this.shop = shop;
     }
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Ausgabe des Mitarbeiter-Menüs.
      */
     private void gibMitarbeiterMenueAus() {
-        System.out.println("\n(a) = Artikel ausgeben");
-        System.out.println("(b) = Artikel suchen");
-        System.out.println("(c) = Artikel einfügen");
-        System.out.println("(d) = Artikelbestand aendern");
-        System.out.println("(e) = Artikel loeschen");
-        System.out.println("(q) = Ausloggen");
+        System.out.println("\n(1) = Artikel ausgeben");
+        System.out.println("(2) = Artikel suchen");
+        System.out.println("(3) = Artikel einfuegen");
+        System.out.println("(4) = Artikelbestand aendern");
+        System.out.println("(5) = Artikel loeschen");
+        System.out.println("(6) = Mitarbeiter hinzufügen");
+        System.out.println("(0) = Ausloggen");
         System.out.print("Eingabe --> ");
     }
     /**
@@ -40,114 +41,123 @@ public class MitarbeiterMenue {
      * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
      */
     public void run(){
-        String input = "";
+        int input = -1;
         do{
             gibMitarbeiterMenueAus();
             try{
-                input = eingabeAusgabe.einlesen();
+                input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
             }catch (IOException | ArtikelbestandUnterNullException e){
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-        }while(!input.equals("q"));
+        }while(input != (0));
     }
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteMitarbeiterEingabe(String line) throws IOException, ArtikelbestandUnterNullException {
-        String nummer, bezeichnung, bestand;
+    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException {
+        String nummer, bezeichnung, bestand, name, passwort;
         int nr, bst;
         List liste;
-
+        //TODO eigenes Menü für Artikel erstellen
+        //TODO Passwort ändern
+        //TODO Mitarbeiter daten einsehen
+        //TODO Mitarbeiter verwalten Kunden
         switch (line) {
-            case "a":
+            case 1:
                 System.out.println("");
                 System.out.println("Mitarbeiter Menue");
                 System.out.println("(0): Unsortiert");
-                System.out.println("(1): Absteigend nach Bezeichnung");
-                System.out.println("(2): Absteigend nach Nummer");
-                System.out.println("(3): Aufsteigend nach Bezeichnung");
-                System.out.println("(4): Aufsteigend nach Nummer\n");
+                System.out.println("(1): Aufsteigend nach Bezeichnung");
+                System.out.println("(2): Aufsteigend nach Nummer");
+                System.out.println("(3): Absteigend nach Bezeichnung");
+                System.out.println("(4): Absteigend nach Nummer\n");
                 System.out.print("Listen Sortierung --> ");
 
-                try{
-                    nummer = eingabeAusgabe.einlesen();
-                    nr = Integer.parseInt(nummer);
-                    System.out.println("");
-                    liste = shop.gibAlleArtikel(nr);
-                    eingabeAusgabe.gibListeAus(liste);
-                }catch (NumberFormatException e){
-                    System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
-                    //e.printStackTrace();
-                }
+
+                nr = eingabeAusgabe.einlesenInteger();
+                //nr = Integer.parseInt(nummer);
+                System.out.println("");
+                liste = shop.gibAlleArtikel(nr);
+                eingabeAusgabe.gibListeAus(liste);
+
+                System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
+                //e.printStackTrace();
+
 
 
                 break;
-            case "b":
+            case 2:
                 System.out.print("Artikelbezeichnung  --> ");
-                bezeichnung = eingabeAusgabe.einlesen();
+                bezeichnung = eingabeAusgabe.einlesenString();
 
                 liste = shop.sucheNachbezeichnung(bezeichnung);
                 eingabeAusgabe.gibListeAus(liste);
                 break;
-            case "c":
+            case 3:
                 System.out.println("");
                 System.out.print("Artikelnummer --> ");
-                nummer = eingabeAusgabe.einlesen();
+                nummer = eingabeAusgabe.einlesenString();
                 nr = Integer.parseInt(nummer);
                 System.out.print("Artikelbezeichnung  --> ");
-                bezeichnung = eingabeAusgabe.einlesen();
+                bezeichnung = eingabeAusgabe.einlesenString();
                 System.out.print("Artikelbestand  --> ");
-                bestand = eingabeAusgabe.einlesen();
+                bestand = eingabeAusgabe.einlesenString();
                 bst = Integer.parseInt(bestand);
 
                 try {
                     shop.fuegeArtikelEin(nr, bezeichnung, bst);
-                    System.out.println("Einfügen ok");
+                    System.out.println("Einfuegen ok");
                 } catch (ArtikelExistiertBereitsException e) {
                     // Hier Fehlerbehandlung...
-                    System.out.println("Fehler beim Einfügen");
+                    System.out.println("Fehler beim Einfuegen");
                     //e.printStackTrace();
                 }
                 break;
-            case"d":
-                try {
-                    System.out.println("");
-                    System.out.print("Artikelnummer --> ");
-                    nummer = eingabeAusgabe.einlesen();
-                    nr = Integer.parseInt(nummer);
-                    System.out.print("Artikelbezeichnung  --> ");
-                    bezeichnung = eingabeAusgabe.einlesen();
-                    System.out.print("Artikelbestand aender zu --> ");
-                    bestand = eingabeAusgabe.einlesen();
-                    bst = Integer.parseInt(bestand);
+            case 4:
 
+                System.out.println("");
+                System.out.print("Artikelnummer --> ");
+                //nummer = eingabeAusgabe.einlesenString();
+                nr = eingabeAusgabe.einlesenInteger();
+                System.out.print("Artikelbezeichnung  --> ");
+                bezeichnung = eingabeAusgabe.einlesenString();
+                System.out.print("Artikelbestand aendern zu --> ");
+                bestand = eingabeAusgabe.einlesenString();
+                bst = Integer.parseInt(bestand);
+
+                try {
                     shop.aendereArtikelbestand(bezeichnung, nr, bst);
-                }catch (IOException | NumberFormatException e){
-                    System.out.println("Fehler bei der Eingabe");
-                    //e.printStackTrace();
-                }
-                break;
-            case"e":
-                try {
-                    System.out.println("");
-                    System.out.print("Artikelnummer --> ");
-                    nummer = eingabeAusgabe.einlesen();
-                    nr = Integer.parseInt(nummer);
-                    System.out.print("Artikelbezeichnung  --> ");
-                    bezeichnung = eingabeAusgabe.einlesen();
-
-                    shop.loescheArtikel(bezeichnung, nr);
-                }catch (IOException | NumberFormatException e){
-                    System.out.println("Fehler bei der Eingabe");
-                    //e.printStackTrace();
+                }catch (ArtikelbestandUnterNullException e){
+                    System.out.println("Artikelbestand darf nicht unter 0 fallen!");
                 }
 
+
                 break;
+            case 5:
+
+                System.out.println("");
+                System.out.print("Artikelnummer --> ");
+                nr = eingabeAusgabe.einlesenInteger();
+                System.out.print("Artikelbezeichnung  --> ");
+                bezeichnung = eingabeAusgabe.einlesenString();
+
+                shop.loescheArtikel(bezeichnung, nr);
+
+
+                break;
+            case 6:
+                //TODO Password kann geändert werden, da es zuerst von einem anderen Mitarbeiter definiert wird
+                System.out.print("\nGeben sie den Namen des Mitarbeiters ein --> ");
+                name = eingabeAusgabe.einlesenString();
+                System.out.print("Geben sie das temporaere Passwort des Mitarbeiters an --> ");
+                passwort = eingabeAusgabe.einlesenString();
+
+                System.out.print("\nDie Mitarbeiternummer von ihrem erstellten Mitarbeiter lautet --> " + shop.erstelleMitarbeiter(name, passwort) + "\n");
         }
     }
 }

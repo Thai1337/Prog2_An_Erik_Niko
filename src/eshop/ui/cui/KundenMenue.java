@@ -14,23 +14,22 @@ public class KundenMenue {
 
     private EA eingabeAusgabe;
     private Eshop shop;
-    public KundenMenue(){
+    public KundenMenue(Eshop shop){
         eingabeAusgabe = new EA();
 
-        shop = new Eshop();
-
+        this.shop = shop;
     }
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Ausgabe des Kunden-Menüs.
      */
     public void gibKundenMenueAus() {
-        System.out.println("\n(a) = Artikel ausgeben");
-        System.out.println("(b) = Artikel suchen");
-        System.out.println("(c) = Warenkorb ausgeben");
-        System.out.println("(d) = Artikel zum Warenkorb hinzufügen");
-        System.out.println("(e) = Artikel aus dem Warenkorb entfernen");
-        System.out.println("(q) = Ausloggen");
+        System.out.println("\n(1) = Artikel ausgeben");
+        System.out.println("(2) = Artikel suchen");
+        System.out.println("(3) = Warenkorb ausgeben");
+        System.out.println("(4) = Artikel zum Warenkorb hinzufuegen");
+        System.out.println("(5) = Artikel aus dem Warenkorb entfernen");
+        System.out.println("(0) = Ausloggen");
         System.out.print("Eingabe --> ");
     }
     /**
@@ -41,65 +40,67 @@ public class KundenMenue {
      * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
      */
     public void run(){
-        String input = "";
+        int input = -1;
         do{
             gibKundenMenueAus();
             try{
-                input = eingabeAusgabe.einlesen();
+                input = eingabeAusgabe.einlesenInteger();
                 verarbeiteKundenEingabe(input);
             }catch (IOException | ArtikelbestandUnterNullException e){
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-        }while(!input.equals("q"));
+        }while(input != 0);
     }
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteKundenEingabe(String line) throws IOException, ArtikelbestandUnterNullException {
+    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException {
         String nummer, bezeichnung, bestand;
         int nr, bst;
         List liste;
-
+        //TODO eigenes Menü für Artikel erstellen
+        //TODO Passwort ändern
+        //TODO Kunden daten einsehen
         switch (line) {
-            case "a":
+            case 1:
                 System.out.println("");
                 System.out.println("Kunden Menue");
                 System.out.println("(0): Unsortiert");
-                System.out.println("(1): Absteigend nach Bezeichnung");
-                System.out.println("(2): Absteigend nach Nummer");
-                System.out.println("(3): Aufsteigend nach Bezeichnung");
-                System.out.println("(4): Aufsteigend nach Nummer\n");
+                System.out.println("(1): Aufsteigend nach Bezeichnung");
+                System.out.println("(2): Aufsteigend nach Nummer");
+                System.out.println("(3): Absteigend nach Bezeichnung");
+                System.out.println("(4): Absteigend nach Nummer\n");
                 System.out.print("Listen Sortierung --> ");
 
-                try{
-                    nummer = eingabeAusgabe.einlesen();
-                    nr = Integer.parseInt(nummer);
-                    System.out.println("");
-                    liste = shop.gibAlleArtikel(nr);
-                    eingabeAusgabe.gibListeAus(liste);
-                }catch (NumberFormatException e){
-                    System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
-                    //e.printStackTrace();
-                }
+
+                nr = eingabeAusgabe.einlesenInteger();
+                //nr = Integer.parseInt(nummer);
+                System.out.println("");
+                liste = shop.gibAlleArtikel(nr);
+                eingabeAusgabe.gibListeAus(liste);
+
+                //System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
+                //e.printStackTrace();
+
                 break;
-            case "b":
+            case 2:
                 System.out.print("Artikelbezeichnung  --> ");
-                bezeichnung = eingabeAusgabe.einlesen();
+                bezeichnung = eingabeAusgabe.einlesenString();
 
                 liste = shop.sucheNachbezeichnung(bezeichnung);
                 eingabeAusgabe.gibListeAus(liste);
                 break;
-            case "c":
+            case 3:
 
                 break;
-            case"d":
+            case 4:
 
                 break;
-            case"e":
+            case 5:
 
                 break;
         }

@@ -16,9 +16,38 @@ public class EA {
      *
      * Interne (private) Methode zum Einlesen von Benutzereingaben.
      */
-    public String einlesen() throws IOException {
+    private String einlesen() throws IOException {
         //einlesen der Nutzereingaben
         return in.readLine();
+    }
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zum Einlesen von Benutzereingaben des Type String.
+     */
+    public String einlesenString(){
+        String eingabe;
+        try {
+            eingabe = einlesen();
+            return eingabe;
+        }catch (Exception e) {
+            System.out.println("Fehler bei der Eingabe");
+            return "";
+        }
+    }
+
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zum Einlesen von Benutzereingaben des Type Int.
+     */
+    public int einlesenInteger(){
+        String eingabe;
+        try {
+            eingabe = einlesen();
+            return Integer.parseInt(eingabe);
+        }catch (Exception e) {
+            System.out.println("Fehler bei der Eingabe");
+            return -1;
+        }
     }
     /* (non-Javadoc)
      *

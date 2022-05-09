@@ -7,7 +7,11 @@ package eshop.valueobjects;
  * @author nguyen
  * @author heuschmann
  */
+//TODO Wenn Persistenz dann Mitarbeiternummer generierung ändern
+    //TODO Mitarbeiternummern sind scuffed af
 public class Mitarbeiter extends Nutzer{
+   //Counter der Mitarbeiternummern generiert
+    private static int counter;
 
     public String toString() {
         return "Mitarbeiter{" +
@@ -16,9 +20,10 @@ public class Mitarbeiter extends Nutzer{
                 '}';
     }
 
-    public Mitarbeiter(String name, int nummer) {
+    public Mitarbeiter(String name, String passwort) {
         this.name = name;
-        this.nummer = nummer;
+        this.nummer = counter++;
+        this.passwort = passwort;
     }
 
 

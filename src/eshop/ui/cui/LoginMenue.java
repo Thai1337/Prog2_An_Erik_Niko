@@ -1,90 +1,87 @@
 package eshop.ui.cui;
 
+import eshop.domain.Eshop;
+
 import java.io.IOException;
 
 public class LoginMenue {
     private KundenMenue kundenMenue;
     private MitarbeiterMenue mitarbeiterMenue;
+
+    private Eshop shop;
     private EA eingabeAusgabe;
     public LoginMenue(){
-        kundenMenue = new KundenMenue();
-        mitarbeiterMenue = new MitarbeiterMenue();
+        shop = new Eshop();
+        kundenMenue = new KundenMenue(shop);
+        mitarbeiterMenue = new MitarbeiterMenue(shop);
         eingabeAusgabe = new EA();
+
     }
 
 
 
     public void gibLoginMenueAus() {
         System.out.println("\nWillkommen in unserem eShop!");
-        System.out.println("(a) = Kundenanmeldung");
-        System.out.println("(b) = Mitarbeiteranmeldung");
-        System.out.println("(c) = Registrieren");
-        System.out.println("(q) = Programm beenden\n");
+        System.out.println("(1) = Kundenanmeldung");
+        System.out.println("(2) = Mitarbeiteranmeldung");
+        System.out.println("(3) = Registrieren");
+        System.out.println("(0) = Programm beenden\n");
         System.out.print("Eingabe --> ");
     }
     public void run(){
-        String input = "";
+        int input = -1;
         do{
             gibLoginMenueAus();
             try{
-                input = eingabeAusgabe.einlesen();
+                input = eingabeAusgabe.einlesenInteger();
                 verarbeiteLoginEingabe(input);
             }catch (IOException e){
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-        }while(!input.equals("q"));
+        }while(input != 0);
     }
 
 
 
-    public void verarbeiteLoginEingabe(String line) throws IOException {
+    public void verarbeiteLoginEingabe(int line) throws IOException {
             int nutzernummer;
             String name, adresse, passwort;
 
             switch(line){
-                case"a":
-                    try{
+                case 1:
                     //Kunden Login
                     System.out.print("Geben Sie Ihre Kundennummer ein --> ");
-                    nutzernummer = Integer.parseInt(eingabeAusgabe.einlesen());
+                    nutzernummer = Integer.parseInt(eingabeAusgabe.einlesenString());
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
-                    passwort = eingabeAusgabe.einlesen();
+                    passwort = eingabeAusgabe.einlesenString();
 
                     kundenMenue.run();
-
-                    }catch (IOException | NumberFormatException e){ // TODO später in der EA Klasse abfangen
-                        System.out.println("Fehler bei der Eingabe");
-                    }
                     break;
-                case"b":
-                    try {
+                case 2:
+                    //Mitarbeiter Login
+                    System.out.print("Geben Sie Ihre Mitarbeiternummer ein --> ");
+                    nutzernummer = Integer.parseInt(eingabeAusgabe.einlesenString());
+                    System.out.print("Geben Sie Ihr Passwort ein --> ");
+                    passwort = eingabeAusgabe.einlesenString();
 
-                        //Mitarbeiter Login
-                        System.out.print("Geben Sie Ihre Mitarbeiternummer ein --> ");
-                        nutzernummer = Integer.parseInt(eingabeAusgabe.einlesen());
-                        System.out.print("Geben Sie Ihr Passwort ein --> ");
-                        passwort = eingabeAusgabe.einlesen();
-
+                    if(shop.mitarbeiterAnmelden(nutzernummer, passwort)){
                         mitarbeiterMenue.run();
-                    }catch (IOException | NumberFormatException e){ // TODO später in der EA Klasse abfangen
-                        System.out.println("Fehler bei der Eingabe");
+                    }else{
+                        System.out.println("Ungueltige Eingabe!");
                     }
+
                     break;
-                case"c":
-                    try{
+                case 3:
                         //Registrierung (nur für Kunden)
                         System.out.println("Registrieren");
                         System.out.println("Geben Sie Ihren Namen ein");
-                        name = eingabeAusgabe.einlesen();
+                        name = eingabeAusgabe.einlesenString();
                         System.out.println("Geben Sie Ihre Adresse ein");
-                        adresse = eingabeAusgabe.einlesen();
+                        adresse = eingabeAusgabe.einlesenString();
                         System.out.println("Geben Sie Ihr Passwort ein");
-                        passwort = eingabeAusgabe.einlesen();
-                    }catch (IOException | NumberFormatException e){ // TODO später in der EA Klasse abfangen
-                        System.out.println("Fehler bei der Eingabe");
-                    }
+                        passwort = eingabeAusgabe.einlesenString();
                     break;
                 default:
                     break;
