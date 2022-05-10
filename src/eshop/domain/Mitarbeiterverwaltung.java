@@ -12,6 +12,7 @@ public class Mitarbeiterverwaltung {
      * Konstruktor welcher Mitarbeiter erstellt und der Vector der mitarbeiterListe hinzufügt
      */
     public Mitarbeiterverwaltung(){
+        // TODO wenn persistenz da löschen
         Mitarbeiter m1 = new Mitarbeiter("Niko", "passwortN");
         Mitarbeiter m2 = new Mitarbeiter("An", "passwortA");
         Mitarbeiter m3 = new Mitarbeiter("Erik", "passwortE");
