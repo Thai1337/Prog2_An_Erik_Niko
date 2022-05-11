@@ -2,6 +2,7 @@ package eshop.ui.cui;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.valueobjects.Warenkorb;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,6 +42,7 @@ public class KundenMenue {
      */
     public void run(){
         int input = -1;
+
         do{
             gibKundenMenueAus();
             try{

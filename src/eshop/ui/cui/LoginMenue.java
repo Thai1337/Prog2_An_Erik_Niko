@@ -1,6 +1,7 @@
 package eshop.ui.cui;
 
 import eshop.domain.Eshop;
+import eshop.valueobjects.Warenkorb;
 
 import java.io.IOException;
 
@@ -58,6 +59,7 @@ public class LoginMenue {
                     passwort = eingabeAusgabe.einlesenString();
 
                     if(shop.kundenAnmelden(nutzernummer, passwort)){
+                        Warenkorb w = new Warenkorb(nutzernummer);
                         kundenMenue.run();
                     }else{
                         System.out.println("Ungueltige Eingabe!");
