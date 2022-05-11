@@ -124,4 +124,13 @@ public class Eshop {
     public boolean mitarbeiterAnmelden(int nummer, String passwort) {
         return mitarbeiterVW.mitarbeiterAnmelden(nummer, passwort);
     }
-}
+    /**
+     * Methode zum Anmelden von Mitarbeitern anhand ihrer Mitarbeiternummer und ihrem Passworts.
+     * Es wird ein Boolischenwert (true) zurückgegeben, wenn die Eingaben im System exakt übereinstimmenden.
+     *
+     * @param nummer Nummer der im System gesuchten Mitarbeiternummer
+     * @param passwort Passwort des im Systems gesuchten Mitarbeiter
+     * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
+     */
+    public boolean kundenAnmelden(int nummer, String passwort) {
+        return kundenVW.kundenAnmelden(nummer, passwort);
