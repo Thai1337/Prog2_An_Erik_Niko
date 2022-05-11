@@ -11,9 +11,11 @@ package eshop.valueobjects;
  * @version 1
  */
 public abstract class Nutzer { //abstrakt damit kein Objekt der Klasse Nutzer erstellt werden kann, man aber trotzdem die Implementierung in dieser Klasse durchführen kann
+    // TODO Nutzer einen abstract counter geben
     protected String name;
     protected int nummer;
     protected String passwort;
+    protected static int counter;  
 
     /**
      * Abstrakte vorgab einer

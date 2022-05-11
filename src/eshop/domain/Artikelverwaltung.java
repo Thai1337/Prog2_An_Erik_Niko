@@ -26,12 +26,13 @@ public class Artikelverwaltung {
         Artikel a3 = new Artikel(11, "Ball", 50);
         Artikel a4 = new Artikel(12, "Cola", 50);
         Artikel a5 = new Artikel(13, "Ananas", 50);
+        Artikel a6 = new Artikel(666, "Buch", 1);
         artikelBestand.add(a1);
         artikelBestand.add(a2);
         artikelBestand.add(a3);
         artikelBestand.add(a4);
         artikelBestand.add(a5);
-
+        artikelBestand.add(a6);
 
     }
 
@@ -75,10 +76,10 @@ public class Artikelverwaltung {
                 sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer).reversed()).collect(Collectors.toList());
                 break;
             default:
-                sortierteListe = artikelBestand;
+                sortierteListe = new Vector<Artikel>(artikelBestand);
                 break;
         }
-        return new Vector<>(sortierteListe);
+        return sortierteListe;
     }
 
 

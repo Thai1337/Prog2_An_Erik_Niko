@@ -29,7 +29,7 @@ public class MitarbeiterMenue {
         System.out.println("(3) = Artikel einfuegen");
         System.out.println("(4) = Artikelbestand aendern");
         System.out.println("(5) = Artikel loeschen");
-        System.out.println("(6) = Mitarbeiter hinzufügen");
+        System.out.println("(6) = Mitarbeiter hinzufuegen");
         System.out.println("(0) = Ausloggen");
         System.out.print("Eingabe --> ");
     }

@@ -57,7 +57,11 @@ public class LoginMenue {
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
                     passwort = eingabeAusgabe.einlesenString();
 
-                    kundenMenue.run();
+                    if(shop.kundenAnmelden(nutzernummer, passwort)){
+                        kundenMenue.run();
+                    }else{
+                        System.out.println("Ungueltige Eingabe!");
+                    }
                     break;
                 case 2:
                     //Mitarbeiter Login
@@ -76,14 +80,15 @@ public class LoginMenue {
                 case 3:
                         //Registrierung (nur für Kunden)
                         System.out.println("Registrieren");
-                        System.out.println("Geben Sie Ihren Namen ein");
+                        System.out.print("Geben Sie Ihren Namen ein -->");
                         name = eingabeAusgabe.einlesenString();
-                        System.out.println("Geben Sie Ihre Adresse ein");
+                        System.out.print("Geben Sie Ihre Adresse ein -->");
                         adresse = eingabeAusgabe.einlesenString();
-                        System.out.println("Geben Sie Ihr Passwort ein");
+                        System.out.print("Geben Sie Ihr Passwort ein -->");
                         passwort = eingabeAusgabe.einlesenString();
-                    break;
-                default:
+
+                        System.out.print("\nIhre Kundennummer fuer die Anmeldung lautet --> " + shop.registriereKunden(name, adresse, passwort) + "\n");
+
                     break;
             }
 

@@ -11,7 +11,7 @@ package eshop.valueobjects;
     //TODO Mitarbeiternummern sind scuffed af
 public class Mitarbeiter extends Nutzer{
    //Counter der Mitarbeiternummern generiert
-    private static int counter;
+    //private static int counter;
 
     public String toString() {
         return "Mitarbeiter{" +
@@ -23,6 +23,12 @@ public class Mitarbeiter extends Nutzer{
     public Mitarbeiter(String name, String passwort) {
         this.name = name;
         this.nummer = counter++;
+        this.passwort = passwort;
+    }
+
+    public Mitarbeiter(String name, int nummer, String passwort) {
+        this.name = name;
+        this.nummer = nummer;
         this.passwort = passwort;
     }
 
