@@ -3,14 +3,14 @@ package eshop.domain;
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.valueobjects.Artikel;
+import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
 
-import java.util.Random;
 import java.util.List;
 
 /**
  * Klasse zur Verwaltung eines E-Shops.
- * Bietet Methoden zum Zurückgeben aller Artikel im Bestand,
+ * Bietet Methoden zum Zurückgeben aller Artikel im Bestand.
  *
  * @author seliger
  * @author nguyen
@@ -21,17 +21,19 @@ public class Eshop {
 
     private Artikelverwaltung artikelVW;
     private Mitarbeiterverwaltung mitarbeiterVW;
+    private Kundenverwaltung kundenVW;
     /**
-     * Konstruktor, der eine Artikelverwaltung erstellt
+     * Konstruktor, der eine Artikelverwaltung, eine Mitarbeiterverwaltung und eine Kundenverwaltung erstellt.
      * (Initialisierung des E-Shops).
      */
     public Eshop() {
         artikelVW = new Artikelverwaltung();
         mitarbeiterVW = new Mitarbeiterverwaltung();
+        kundenVW = new Kundenverwaltung();
     }
 
     /**
-     * Methode welche eine Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt
+     * Methode, welche eine Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt.
      *
      * @return Vector aller Artikel
      */
@@ -41,7 +43,7 @@ public class Eshop {
   }
 
     /**
-     * Methode welche eine sortierte Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt
+     * Methode, welche eine sortierte Liste aller Artikel im Bestand des E-Shops der Artikelverwaltung erhält und zurückgibt.
      * @param sortierung index welcher den Typ der Sortierung ermittelt
      * @return Vector aller Artikel
      */
@@ -65,7 +67,7 @@ public class Eshop {
         return a;
     }
     /**
-     * Methode zum aendern des Artikelbestandes.
+     * Methode zum ändern des Artikelbestandes.
      * @param nr Nummer des Artikels
      * @param bezeichnung Bezeichnung des Artikels
      * @param bestand Bestand des Artikels
@@ -101,8 +103,8 @@ public class Eshop {
     }
 
     /**
-     * Methode zum Suchen von Artikeln anhand der Bezeichnung. Es wird eine Liste von Artikeln
-     * zurückgegeben, die alle Artikel mit exakt übereinstimmender Bezeichnung enthält.
+     * Methode zum Erstellen eines Mitarbeiters anhand eines Namens und Passworts. Es wird ein neuer Mitarbeiter mit der
+     * Mitarbeiternummer zurückgegeben.
      *
      * @param name Name des Mitarbeiters, welcher eingestellt werden soll
      * @param passwort Passwort des Mitarbeiters, welcher eingestellt werden soll
@@ -114,7 +116,7 @@ public class Eshop {
     }
 
     /**
-     * Methode zum Anmelden von Mitarbeitern anhand ihrer Mitarbeiternummer und ihrem Passworts.
+     * Methode zum Anmelden von Mitarbeitern anhand ihrer Mitarbeiternummer und ihres Passworts.
      * Es wird ein Boolischenwert (true) zurückgegeben, wenn die Eingaben im System exakt übereinstimmenden.
      *
      * @param nummer Nummer der im System gesuchten Mitarbeiternummer
@@ -125,12 +127,27 @@ public class Eshop {
         return mitarbeiterVW.mitarbeiterAnmelden(nummer, passwort);
     }
     /**
-     * Methode zum Anmelden von Mitarbeitern anhand ihrer Mitarbeiternummer und ihrem Passworts.
-     * Es wird ein Boolischenwert (true) zurückgegeben, wenn die Eingaben im System exakt übereinstimmenden.
+     * Methode zum Anmelden von Kunden anhand ihrer Kundennummer und des Passworts.
+     * Es wird ein Boolischenwert (true) zurückgegeben, wenn die Eingaben im System exakt übereinstimmen.
      *
-     * @param nummer Nummer der im System gesuchten Mitarbeiternummer
-     * @param passwort Passwort des im Systems gesuchten Mitarbeiter
-     * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
+     * @param nummer Nummer der im System gesuchten Kundennummer
+     * @param passwort Passwort des im Systems gesuchten Kunden
+     * @return Ein Boolischenwert, welcher True ist, wenn der Kunden im System ist oder False, wenn dieser nicht im System ist
      */
     public boolean kundenAnmelden(int nummer, String passwort) {
-        return kundenVW.kundenAnmelden(nummer, passwort);
+        return kundenVW.kundeAnmelden(nummer, passwort);
+    }
+    /**
+     * Methode zum Registrieren von Kunden anhand eines Namens, Passworts und einer Adresse. Es wird ein neuer Kunde mit der
+     * Kundennummer zurückgegeben.
+     *
+     * @param name Name des Kunden, welcher Regestriert werden soll
+     * @param passwort Passwort gewählt des Kunden
+     * @param adresse
+     * @return Gibt die Kundennummer des neuen Kunden zurück
+     */
+    public int registriereKunden(String name, String passwort, String adresse){
+        Kunde k = new Kunde(name, passwort, adresse);
+        return kundenVW.erstelleKunde(k);
+    }
+}

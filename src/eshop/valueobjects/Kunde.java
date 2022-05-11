@@ -1,6 +1,5 @@
 package eshop.valueobjects;
 
-
 /**
  * Klasse zur Repräsentation einzelner Kunden.
  *
@@ -9,12 +8,19 @@ package eshop.valueobjects;
  * @author heuschmann
  */
 public class Kunde extends Nutzer {
-    private String addresse;
+    private String adresse;
+    // TODO Adresse aufteilen z.B. Klasse adresse
+    public Kunde(String name, String adresse, String passwort) {
+        this.name = name;
+        this.nummer = counter++;
+        this.adresse = adresse;
+        this.passwort = passwort;
+    }
 
-    public Kunde(String name, int nummer, String addresse, String passwort) {
+    public Kunde(String name, int nummer,String adresse, String passwort) {
         this.name = name;
         this.nummer = nummer;
-        this.addresse = addresse;
+        this.adresse = adresse;
         this.passwort = passwort;
     }
 
@@ -25,7 +31,7 @@ public class Kunde extends Nutzer {
      */
     public String toString() {
         return "Kunde{" +
-                "addresse='" + addresse + '\'' +
+                "adresse='" + adresse + '\'' +
                 ", name='" + name + '\'' +
                 ", nummer=" + nummer +
                 '}';
@@ -33,12 +39,12 @@ public class Kunde extends Nutzer {
 
     // Ergänzende-Methoden zum Setzen und Lesen der Kunden-Eigenschaften,
 
-    public String getAddresse() {
-        return addresse;
+    public String getAdresse() {
+        return adresse;
     }
 
-    public void setAddresse(String addresse) {
-        this.addresse = addresse;
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
 
 }

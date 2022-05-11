@@ -26,5 +26,11 @@ public class Mitarbeiter extends Nutzer{
         this.passwort = passwort;
     }
 
+    public Mitarbeiter(String name, int nummer, String passwort) {
+        this.name = name;
+        this.nummer = nummer;
+        this.passwort = passwort;
+    }
+
 
 }
