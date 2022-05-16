@@ -2,6 +2,8 @@ package eshop.ui.cui;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.valueobjects.Kunde;
+import eshop.valueobjects.Mitarbeiter;
 import eshop.valueobjects.Warenkorb;
 
 import java.io.IOException;
@@ -23,7 +25,7 @@ public class LoginMenue {
 
 
     public void gibLoginMenueAus() {
-        System.out.println("\nWillkommen in unserem eShop!");
+        System.out.println("\nWillkommen in unserem freeShop!");
         System.out.println("(1) = Kundenanmeldung");
         System.out.println("(2) = Mitarbeiteranmeldung");
         System.out.println("(3) = Registrieren");
@@ -54,31 +56,56 @@ public class LoginMenue {
 
             switch(line){
                 case 1:
+                    Kunde k;
                     //Kunden Login
                     System.out.print("Geben Sie Ihre Kundennummer ein --> ");
                     nutzernummer = eingabeAusgabe.einlesenInteger();
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
                     passwort = eingabeAusgabe.einlesenString();
 
-                    if(shop.kundenAnmelden(nutzernummer, passwort)){
-                        Warenkorb w = new Warenkorb(nutzernummer);
-                        kundenMenue.run();
-                    }else{
+                    try {
+                        k = shop.kundenAnmelden(nutzernummer, passwort);
+
+                        if(k.getNummer() == nutzernummer && k.getPasswort().equals(passwort)){
+                            Warenkorb w = new Warenkorb(nutzernummer);
+
+                            System.out.print("\nWillkommen im freeShop, "+ k.getName() + " schoen Sie zu sehen!");
+
+                            kundenMenue.run();
+                        }else{
+                            System.out.println("Ungueltige Eingabe!");
+                        }
+                    }catch (NullPointerException e){
                         System.out.println("Ungueltige Eingabe!");
                     }
+
+
+
+
+
                     break;
                 case 2:
+                    Mitarbeiter m = null;
                     //Mitarbeiter Login
                     System.out.print("Geben Sie Ihre Mitarbeiternummer ein --> ");
                     nutzernummer = eingabeAusgabe.einlesenInteger();
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
                     passwort = eingabeAusgabe.einlesenString();
+                    try {
+                        m = shop.mitarbeiterAnmelden(nutzernummer, passwort);
 
-                    if(shop.mitarbeiterAnmelden(nutzernummer, passwort)){
-                        mitarbeiterMenue.run();
-                    }else{
+                        if(m.getNummer() == nutzernummer && m.getPasswort().equals(passwort)){
+
+                            System.out.print("\nWillkommen, "+ m.getName() + " arbeite du *********!");
+
+                            mitarbeiterMenue.run();
+                        }else{
+                            System.out.println("Ungueltige Eingabe!");
+                        }
+                    }catch (NullPointerException e){
                         System.out.println("Ungueltige Eingabe!");
                     }
+
 
                     break;
                 case 3:

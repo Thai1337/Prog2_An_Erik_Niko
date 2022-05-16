@@ -42,13 +42,13 @@ public class Mitarbeiterverwaltung {
      * @param passwort übernimmt den Wert, welcher eingegben wurde
      * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
      */
-   public boolean mitarbeiterAnmelden(int nummer, String passwort){
+   public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort){
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste
         for(Mitarbeiter m : mitarbeiterListe){
             if(m.getNummer() == nummer && m.getPasswort().equals(passwort)){
-                return true;
+                return m;
             }
         }
-           return false;
+           return null;
        }
    }

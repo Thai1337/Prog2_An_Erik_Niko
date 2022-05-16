@@ -99,7 +99,7 @@ public class Artikelverwaltung {
         if (artikelBestand.contains(einArtikel)) {
             throw new ArtikelExistiertBereitsException(einArtikel, " - in 'einfuegen()'");
         }
-        if(einArtikel.getNummer() < -1 || einArtikel.getBestand() < -1 || einArtikel.getBezeichnung().isEmpty()){
+        if(einArtikel.getNummer() <= -1 || einArtikel.getBestand() <= -1 || einArtikel.getBezeichnung().isEmpty()){
             throw new EingabeNichtLeerException();
         }
 

@@ -35,7 +35,7 @@ public class Kundenverwaltung {
     public int erstelleKunde(Kunde einKunde) throws EingabeNichtLeerException {
         //Methode zum Erstellen von Kunden
         if(einKunde.getName().isEmpty() || einKunde.getPasswort().isEmpty() || einKunde.getAdresse().getStrasse().isEmpty()
-                ||  einKunde.getAdresse().getHomeNumber() < -1 || einKunde.getAdresse().getPlz() < -1){
+                ||  einKunde.getAdresse().getHomeNumber() <= -1 || einKunde.getAdresse().getPlz() <= -1){
             throw new EingabeNichtLeerException();
         }
         kundenListe.add(einKunde);
@@ -50,14 +50,14 @@ public class Kundenverwaltung {
      * @param passwort übernimmt den Wert, welcher eingegeben wurde
      * @return Ein Boolischenwert, welcher True ist, wenn der Kunde im System ist oder False, wenn dieser nicht im System ist
      */
-    public boolean kundeAnmelden(int nummer, String passwort){
+    public Kunde kundeAnmelden(int nummer, String passwort){
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste
         for(Kunde k : kundenListe){
             if(k.getNummer() == nummer && k.getPasswort().equals(passwort)){
-                return true;
+                return k;
             }
         }
-        return false;
+        return null;
     }
 
 

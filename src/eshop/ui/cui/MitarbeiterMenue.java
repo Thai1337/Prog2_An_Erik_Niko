@@ -79,18 +79,11 @@ public class MitarbeiterMenue {
                 System.out.println("(3): Absteigend nach Bezeichnung");
                 System.out.println("(4): Absteigend nach Nummer\n");
                 System.out.print("Listen Sortierung --> ");
-
-
+                
                 nr = eingabeAusgabe.einlesenInteger();
-                //nr = Integer.parseInt(nummer);
                 System.out.println("");
                 liste = shop.gibAlleArtikel(nr);
                 eingabeAusgabe.gibListeAus(liste);
-
-                System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
-                //e.printStackTrace();
-
-
 
                 break;
             case 2:

@@ -32,7 +32,7 @@ public class EA {
             eingabe = einlesen();
             return eingabe;
         }catch (Exception e) {
-            System.out.println("\t<--Fehler bei der Eingabe-->");
+            //System.out.println("Fehler bei der Eingabe!!!!!");
             return "";
         }
     }
@@ -47,7 +47,7 @@ public class EA {
             eingabe = einlesen();
             return Integer.parseInt(eingabe);
         }catch (Exception e ) {
-            System.out.println("\t<--Fehler bei der Eingabe-->");
+            //System.out.println("Fehler bei der Eingabe!!!!!");
             return -1;
         }
     }

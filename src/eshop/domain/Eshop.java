@@ -125,7 +125,7 @@ public class Eshop {
      * @param passwort Passwort des im Systems gesuchten Mitarbeiter
      * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
      */
-    public boolean mitarbeiterAnmelden(int nummer, String passwort) {
+    public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) {
         return mitarbeiterVW.mitarbeiterAnmelden(nummer, passwort);
     }
     /**
@@ -136,7 +136,7 @@ public class Eshop {
      * @param passwort Passwort des im Systems gesuchten Kunden
      * @return Ein Boolischenwert, welcher True ist, wenn der Kunden im System ist oder False, wenn dieser nicht im System ist
      */
-    public boolean kundenAnmelden(int nummer, String passwort) {
+    public Kunde kundenAnmelden(int nummer, String passwort) {
         return kundenVW.kundeAnmelden(nummer, passwort);
     }
     /**
