@@ -1,5 +1,7 @@
 package eshop.domain;
 
+import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.valueobjects.Adresse;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
 
@@ -10,9 +12,14 @@ public class Kundenverwaltung {
 
     List<Kunde> kundenListe = new Vector<>();
     public Kundenverwaltung(){
-        Kunde k1 = new Kunde("Bea", "Bley Strasse", "passwortB");
-        Kunde k2 = new Kunde("Luggas", "Luggas Allee", "passwortL");
-        Kunde k3 = new Kunde("Lisa", "Lisa Strasse", "passwortL");
+
+        Adresse a1 = new Adresse("Ballermann", 14, 28816);
+        Adresse a2 = new Adresse("An den Ruschen", 21, 28817);
+        Adresse a3 = new Adresse("Moselstraße", 28, 28818);
+
+        Kunde k1 = new Kunde("Bea", a1, "passwortB");
+        Kunde k2 = new Kunde("Luggas", a2, "passwortL");
+        Kunde k3 = new Kunde("Lisa", a3, "passwortL");
 
         kundenListe.add(k1);
         kundenListe.add(k2);
@@ -25,10 +32,15 @@ public class Kundenverwaltung {
      * @param einKunde Kunde
      * @return gibt die Kundennummer des erstellten Kunden Zurück
      */
-    public int erstelleKunde(Kunde einKunde){
+    public int erstelleKunde(Kunde einKunde) throws EingabeNichtLeerException {
         //Methode zum Erstellen von Kunden
+        if(einKunde.getName().isEmpty() || einKunde.getPasswort().isEmpty() || einKunde.getAdresse().getStrasse().isEmpty()
+                ||  einKunde.getAdresse().getHomeNumber() < -1 || einKunde.getAdresse().getPlz() < -1){
+            throw new EingabeNichtLeerException();
+        }
         kundenListe.add(einKunde);
         return einKunde.getNummer();
+
     }
 
     /**

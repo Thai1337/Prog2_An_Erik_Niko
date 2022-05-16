@@ -1,5 +1,7 @@
 package eshop.ui.cui;
 
+import eshop.domain.exceptions.EingabeNichtLeerException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,7 +32,7 @@ public class EA {
             eingabe = einlesen();
             return eingabe;
         }catch (Exception e) {
-            System.out.println("Fehler bei der Eingabe");
+            System.out.println("\t<--Fehler bei der Eingabe-->");
             return "";
         }
     }
@@ -44,8 +46,8 @@ public class EA {
         try {
             eingabe = einlesen();
             return Integer.parseInt(eingabe);
-        }catch (Exception e) {
-            System.out.println("Fehler bei der Eingabe");
+        }catch (Exception e ) {
+            System.out.println("\t<--Fehler bei der Eingabe-->");
             return -1;
         }
     }

@@ -1,5 +1,6 @@
 package eshop.domain;
 
+import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Mitarbeiter;
 
 import java.util.List;
@@ -26,8 +27,11 @@ public class Mitarbeiterverwaltung {
      * @param einMitarbeiter Mitarbeiter
      * @return gibt die Mitarbeiternummer des erstellten Mitarbeiters Zurück
      */
-   public int erstelleMitarbeiter(Mitarbeiter einMitarbeiter){
-           //Methode zum Erstellen von Mitarbeitern
+   public int erstelleMitarbeiter(Mitarbeiter einMitarbeiter) throws EingabeNichtLeerException {
+       //Methode zum Erstellen von Mitarbeitern
+           if(einMitarbeiter.getName().isEmpty() || einMitarbeiter.getPasswort().isEmpty()){
+               throw new EingabeNichtLeerException();
+           }
            mitarbeiterListe.add(einMitarbeiter);
            return einMitarbeiter.getNummer();
    }

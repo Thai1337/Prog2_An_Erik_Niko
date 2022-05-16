@@ -8,16 +8,16 @@ package eshop.valueobjects;
  * @author heuschmann
  */
 public class Kunde extends Nutzer {
-    private String adresse;
+    private Adresse adresse;
     // TODO Adresse aufteilen z.B. Klasse adresse
-    public Kunde(String name, String adresse, String passwort) {
+    public Kunde(String name, Adresse adresse, String passwort) {
         this.name = name;
         this.nummer = counter++;
         this.adresse = adresse;
         this.passwort = passwort;
     }
 
-    public Kunde(String name, int nummer,String adresse, String passwort) {
+    public Kunde(String name, int nummer,Adresse adresse, String passwort) {
         this.name = name;
         this.nummer = nummer;
         this.adresse = adresse;
@@ -39,11 +39,11 @@ public class Kunde extends Nutzer {
 
     // Ergänzende-Methoden zum Setzen und Lesen der Kunden-Eigenschaften,
 
-    public String getAdresse() {
+    public Adresse getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(String adresse) {
+    public void setAdresse(Adresse adresse) {
         this.adresse = adresse;
     }
 

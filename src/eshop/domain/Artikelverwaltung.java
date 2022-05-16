@@ -2,6 +2,7 @@ package eshop.domain;
 
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Artikel;
 
 import java.util.*;
@@ -60,26 +61,30 @@ public class Artikelverwaltung {
      * @return Liste aller Artikel im Artikelbestand sortiert oder nicht als (Kopie)
      */
     public List<Artikel> getArtikelBestand(int sortierung) {
-        List<Artikel> sortierteListe;
+        List<Artikel> kopie = new Vector<Artikel>(artikelBestand);
 
         switch (sortierung) {
             case 1:
-                sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
+                //sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
+                Collections.sort(kopie, (a1, a2) -> a1.getBezeichnung().compareToIgnoreCase(a2.getBezeichnung()));
                 break;
             case 2:
-                sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer)).collect(Collectors.toList());
+                //sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer)).collect(Collectors.toList());
+                Collections.sort(kopie, (a1, a2) -> a1.getNummer()-a2.getNummer());
                 break;
             case 3:
-                sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER).reversed()).collect(Collectors.toList());
+                //sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getBezeichnung, String.CASE_INSENSITIVE_ORDER).reversed()).collect(Collectors.toList());
+                Collections.sort(kopie, (a1, a2) -> a2.getBezeichnung().compareToIgnoreCase(a1.getBezeichnung()));
                 break;
             case 4:
-                sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer).reversed()).collect(Collectors.toList());
+                //sortierteListe = artikelBestand.stream().sorted(Comparator.comparing(Artikel::getNummer).reversed()).collect(Collectors.toList());
+                Collections.sort(kopie, (a1, a2) -> a2.getNummer()-a1.getNummer());
                 break;
             default:
-                sortierteListe = new Vector<Artikel>(artikelBestand);
+                kopie = new Vector<Artikel>(artikelBestand);
                 break;
         }
-        return sortierteListe;
+        return kopie;
     }
 
 
@@ -90,9 +95,12 @@ public class Artikelverwaltung {
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelExistiertBereitsException wenn ein Artikel bereits existiert
      */
-    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException {
+    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
         if (artikelBestand.contains(einArtikel)) {
             throw new ArtikelExistiertBereitsException(einArtikel, " - in 'einfuegen()'");
+        }
+        if(einArtikel.getNummer() < -1 || einArtikel.getBestand() < -1 || einArtikel.getBezeichnung().isEmpty()){
+            throw new EingabeNichtLeerException();
         }
 
         // das übernimmt der Vector:

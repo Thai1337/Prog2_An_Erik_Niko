@@ -2,6 +2,8 @@ package eshop.domain;
 
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.valueobjects.Adresse;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
@@ -61,7 +63,7 @@ public class Eshop {
      * @return Artikel-Objekt, das im Erfolgsfall eingefügt wurde
      * @throws ArtikelExistiertBereitsException wenn der Artikel bereits existiert
      */
-    public Artikel fuegeArtikelEin(int nr, String bezeichnung, int bestand) throws ArtikelExistiertBereitsException {
+    public Artikel fuegeArtikelEin(int nr, String bezeichnung, int bestand) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
         Artikel a = new Artikel(nr, bezeichnung, bestand);
         artikelVW.einfuegen(a);
         return a;
@@ -110,7 +112,7 @@ public class Eshop {
      * @param passwort Passwort des Mitarbeiters, welcher eingestellt werden soll
      * @return Gibt die Mitarbeiternummer des neuen Mitarbeiters zurück
      */
-    public int erstelleMitarbeiter(String name, String passwort) {
+    public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException {
         Mitarbeiter m = new Mitarbeiter(name ,passwort);
         return mitarbeiterVW.erstelleMitarbeiter(m);
     }
@@ -142,12 +144,15 @@ public class Eshop {
      * Kundennummer zurückgegeben.
      *
      * @param name Name des Kunden, welcher Regestriert werden soll
-     * @param passwort Passwort gewählt des Kunden
-     * @param adresse
+     * @param passwort Passwort gewählt vom Kunden
+     * @param strasse Straße gewählt vom Kunden
+     * @param hausnummer Hausnummer gewählt vom Kunden
+     * @param  plz postleitzahl gewählt vom Kunden
      * @return Gibt die Kundennummer des neuen Kunden zurück
      */
-    public int registriereKunden(String name, String passwort, String adresse){
-        Kunde k = new Kunde(name, passwort, adresse);
+    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz) throws EingabeNichtLeerException {
+        Adresse a = new Adresse(strasse, hausnummer, plz);
+        Kunde k = new Kunde(name, a, passwort);
         return kundenVW.erstelleKunde(k);
     }
 }

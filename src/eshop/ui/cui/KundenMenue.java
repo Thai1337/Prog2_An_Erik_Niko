@@ -31,7 +31,7 @@ public class KundenMenue {
         System.out.println("(4) = Artikel zum Warenkorb hinzufuegen");
         System.out.println("(5) = Artikel aus dem Warenkorb entfernen");
         System.out.println("(0) = Ausloggen");
-        System.out.print("Eingabe --> ");
+        System.out.print("\nEingabe --> ");
     }
     /**
      * Methode zur Ausführung der Hauptschleife:

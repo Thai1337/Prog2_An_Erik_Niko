@@ -3,6 +3,7 @@ package eshop.ui.cui;
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.EingabeNichtLeerException;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +32,7 @@ public class MitarbeiterMenue {
         System.out.println("(5) = Artikel loeschen");
         System.out.println("(6) = Mitarbeiter hinzufuegen");
         System.out.println("(0) = Ausloggen");
-        System.out.print("Eingabe --> ");
+        System.out.print("\nEingabe --> ");
     }
     /**
      * Methode zur Ausführung der Hauptschleife:
@@ -47,9 +48,10 @@ public class MitarbeiterMenue {
             try{
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
-            }catch (IOException | ArtikelbestandUnterNullException e){
+            }catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException e){
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("\n" + e.getMessage());
+                //e.printStackTrace();
             }
 
         }while(input != (0));
@@ -59,7 +61,7 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException {
+    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException {
         String nummer, bezeichnung, bestand, name, passwort;
         int nr, bst;
         List liste;
@@ -101,13 +103,11 @@ public class MitarbeiterMenue {
             case 3:
                 System.out.println("");
                 System.out.print("Artikelnummer --> ");
-                nummer = eingabeAusgabe.einlesenString();
-                nr = Integer.parseInt(nummer);
+                nr = eingabeAusgabe.einlesenInteger();
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
                 System.out.print("Artikelbestand  --> ");
-                bestand = eingabeAusgabe.einlesenString();
-                bst = Integer.parseInt(bestand);
+                bst = eingabeAusgabe.einlesenInteger();
 
                 try {
                     shop.fuegeArtikelEin(nr, bezeichnung, bst);
@@ -127,8 +127,7 @@ public class MitarbeiterMenue {
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
                 System.out.print("Artikelbestand aendern zu --> ");
-                bestand = eingabeAusgabe.einlesenString();
-                bst = Integer.parseInt(bestand);
+                bst = eingabeAusgabe.einlesenInteger();
 
                 try {
                     shop.aendereArtikelbestand(bezeichnung, nr, bst);
