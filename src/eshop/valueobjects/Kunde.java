@@ -11,17 +11,13 @@ public class Kunde extends Nutzer {
     private Adresse adresse;
     // TODO Adresse aufteilen z.B. Klasse adresse
     public Kunde(String name, Adresse adresse, String passwort) {
-        this.name = name;
-        this.nummer = counter++;
+        super(name, passwort);
         this.adresse = adresse;
-        this.passwort = passwort;
     }
 
     public Kunde(String name, int nummer,Adresse adresse, String passwort) {
-        this.name = name;
-        this.nummer = nummer;
+        super(name, nummer, passwort);
         this.adresse = adresse;
-        this.passwort = passwort;
     }
 
     /**

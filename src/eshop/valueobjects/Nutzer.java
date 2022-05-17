@@ -15,7 +15,19 @@ public abstract class Nutzer { //abstrakt damit kein Objekt der Klasse Nutzer er
     protected String name;
     protected int nummer;
     protected String passwort;
-    protected static int counter;  
+    protected static int counter;
+
+    public Nutzer(String name, String passwort){
+        this.name = name;
+        this.nummer = counter++;
+        this.passwort = passwort;
+    }
+
+    public Nutzer(String name, int nummer, String passwort){
+        this.name = name;
+        this.nummer = nummer;
+        this.passwort = passwort;
+    }
 
     /**
      * Abstrakte vorgab einer

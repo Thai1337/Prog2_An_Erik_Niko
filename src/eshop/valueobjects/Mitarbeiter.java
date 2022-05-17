@@ -21,15 +21,11 @@ public class Mitarbeiter extends Nutzer{
     }
 
     public Mitarbeiter(String name, String passwort) {
-        this.name = name;
-        this.nummer = counter++;
-        this.passwort = passwort;
+        super(name, passwort);
     }
 
     public Mitarbeiter(String name, int nummer, String passwort) {
-        this.name = name;
-        this.nummer = nummer;
-        this.passwort = passwort;
+        super(name, nummer, passwort);
     }
 
 
