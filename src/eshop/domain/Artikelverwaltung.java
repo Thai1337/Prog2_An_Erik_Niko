@@ -96,8 +96,8 @@ public class Artikelverwaltung {
      * @throws ArtikelExistiertBereitsException wenn ein Artikel bereits existiert
      */
     public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
-        if (artikelBestand.contains(einArtikel)) {
-            throw new ArtikelExistiertBereitsException(einArtikel, " - in 'einfuegen()'");
+        if (artikelBestand.contains(einArtikel)) { //.contains() benutzt equals Methode von Artikel, welche in der Artikelklasse überschrieben wurde.
+            throw new ArtikelExistiertBereitsException(einArtikel, "im Lager");
         }
         if(einArtikel.getNummer() <= -1 || einArtikel.getBestand() <= -1 || einArtikel.getBezeichnung().isEmpty()){
             throw new EingabeNichtLeerException();

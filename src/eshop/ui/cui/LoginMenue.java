@@ -65,9 +65,10 @@ public class LoginMenue {
 
                     try {
                         k = shop.kundenAnmelden(nutzernummer, passwort);
-
+                        // TODO throw exception wenn kein Kunde vorhanden
                         if(k.getNummer() == nutzernummer && k.getPasswort().equals(passwort)){
-                            Warenkorb w = new Warenkorb(nutzernummer);
+
+                            kundenMenue.setKunde(k);
 
                             System.out.print("\nWillkommen im freeShop, "+ k.getName() + " schoen Sie zu sehen!");
 

@@ -1,5 +1,8 @@
 package eshop.valueobjects;
 
+import java.util.Hashtable;
+import java.util.Map;
+
 /**
  * Klasse zur Repräsentation einzelner Kunden.
  *
@@ -9,15 +12,32 @@ package eshop.valueobjects;
  */
 public class Kunde extends Nutzer {
     private Adresse adresse;
-    // TODO Adresse aufteilen z.B. Klasse adresse
+
+    private Warenkorb meinWarenkorb;
     public Kunde(String name, Adresse adresse, String passwort) {
         super(name, passwort);
         this.adresse = adresse;
+        this.meinWarenkorb = new Warenkorb();
     }
 
     public Kunde(String name, int nummer,Adresse adresse, String passwort) {
         super(name, nummer, passwort);
         this.adresse = adresse;
+        this.meinWarenkorb = new Warenkorb();
+    }
+    /*
+    public void artikelZuWarenkorb(Artikel artikel, int anzahlArtikel){
+        Map<Artikel, Integer> map = new Hashtable<>();
+        map.put(artikel, anzahlArtikel);
+        meinWarenkorb.setWarenkorbListe(map);
+    }*/
+
+    public Warenkorb getWarkorb(){
+        return meinWarenkorb;
+    }
+
+    public void setMeinWarenkorb(Warenkorb meinWarenkorb) {
+        this.meinWarenkorb = meinWarenkorb;
     }
 
     /**

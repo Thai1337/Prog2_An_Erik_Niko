@@ -107,7 +107,7 @@ public class MitarbeiterMenue {
                     System.out.println("Einfuegen ok");
                 } catch (ArtikelExistiertBereitsException e) {
                     // Hier Fehlerbehandlung...
-                    System.out.println("Fehler beim Einfuegen");
+                    System.out.println(e.getMessage());
                     //e.printStackTrace();
                 }
                 break;
@@ -125,7 +125,7 @@ public class MitarbeiterMenue {
                 try {
                     shop.aendereArtikelbestand(bezeichnung, nr, bst);
                 }catch (ArtikelbestandUnterNullException e){
-                    System.out.println("Artikelbestand darf nicht unter 0 fallen!");
+                    System.out.println(e.getMessage());
                 }
 
 

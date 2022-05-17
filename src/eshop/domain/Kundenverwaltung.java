@@ -56,6 +56,7 @@ public class Kundenverwaltung {
             if(k.getNummer() == nummer && k.getPasswort().equals(passwort)){
                 return k;
             }
+            // TODO throw exception wenn kein Kunde vorhanden
         }
         return null;
     }

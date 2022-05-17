@@ -3,12 +3,11 @@ package eshop.domain;
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
-import eshop.valueobjects.Adresse;
-import eshop.valueobjects.Artikel;
-import eshop.valueobjects.Kunde;
-import eshop.valueobjects.Mitarbeiter;
+import eshop.valueobjects.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * Klasse zur Verwaltung eines E-Shops.
@@ -24,6 +23,8 @@ public class Eshop {
     private Artikelverwaltung artikelVW;
     private Mitarbeiterverwaltung mitarbeiterVW;
     private Kundenverwaltung kundenVW;
+
+    private Warenkorbverwaltung warenkoerbeVW;
     /**
      * Konstruktor, der eine Artikelverwaltung, eine Mitarbeiterverwaltung und eine Kundenverwaltung erstellt.
      * (Initialisierung des E-Shops).
@@ -32,6 +33,7 @@ public class Eshop {
         artikelVW = new Artikelverwaltung();
         mitarbeiterVW = new Mitarbeiterverwaltung();
         kundenVW = new Kundenverwaltung();
+        warenkoerbeVW = new Warenkorbverwaltung();
     }
 
     /**
@@ -154,5 +156,26 @@ public class Eshop {
         Adresse a = new Adresse(strasse, hausnummer, plz);
         Kunde k = new Kunde(name, a, passwort);
         return kundenVW.erstelleKunde(k);
+    }
+
+
+    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde k1){
+
+        List<Artikel> listeArtikel = new Vector<>();
+        Artikel warenkorbArtikel;
+        listeArtikel = artikelVW.getArtikelBestand();
+
+        for (Artikel a: listeArtikel) {
+            if(a.getNummer() == artikelnummer){
+                warenkorbArtikel = a;
+                warenkoerbeVW.warenkorbzuweisen(warenkorbArtikel, anzahlArtikel, k1);
+            }
+        }
+
+
+    }
+
+    public Map<Artikel, Integer> getWarenkorb(Kunde kunde){
+        return warenkoerbeVW.getWarenkorb(kunde);
     }
 }
