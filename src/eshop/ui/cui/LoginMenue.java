@@ -1,6 +1,7 @@
 package eshop.ui.cui;
 
 import eshop.domain.Eshop;
+import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
@@ -39,7 +40,7 @@ public class LoginMenue {
             try{
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteLoginEingabe(input);
-            }catch (IOException | EingabeNichtLeerException e){
+            }catch (IOException | EingabeNichtLeerException | AnmeldungFehlgeschlagenException e){
                 // TODO Auto-generated catch block
                 System.out.println("\n" + e.getMessage());
                 //e.printStackTrace();
@@ -50,7 +51,7 @@ public class LoginMenue {
 
 
 
-    public void verarbeiteLoginEingabe(int line) throws IOException, EingabeNichtLeerException {
+    public void verarbeiteLoginEingabe(int line) throws IOException, EingabeNichtLeerException, AnmeldungFehlgeschlagenException {
             int nutzernummer, hausnummer, plz;
             String name, passwort, strasse;
 
@@ -63,25 +64,10 @@ public class LoginMenue {
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
                     passwort = eingabeAusgabe.einlesenString();
 
-                    try {
-                        k = shop.kundenAnmelden(nutzernummer, passwort);
-                        // TODO throw exception wenn kein Kunde vorhanden
-                        if(k.getNummer() == nutzernummer && k.getPasswort().equals(passwort)){
-
-                            kundenMenue.setKunde(k);
-
-                            System.out.print("\nWillkommen im freeShop, "+ k.getName() + " schoen Sie zu sehen!");
-
-                            kundenMenue.run();
-                        }else{
-                            System.out.println("Ungueltige Eingabe!");
-                        }
-                    }catch (NullPointerException e){
-                        System.out.println("Ungueltige Eingabe!");
-                    }
-
-
-
+                    k = shop.kundenAnmelden(nutzernummer, passwort);
+                    kundenMenue.setKunde(k);
+                    System.out.print("\nWillkommen im freeShop, "+ k.getName() + " schoen Sie zu sehen!");
+                    kundenMenue.run();
 
 
                     break;
@@ -92,27 +78,14 @@ public class LoginMenue {
                     nutzernummer = eingabeAusgabe.einlesenInteger();
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
                     passwort = eingabeAusgabe.einlesenString();
-                    try {
-                        m = shop.mitarbeiterAnmelden(nutzernummer, passwort);
 
-                        if(m.getNummer() == nutzernummer && m.getPasswort().equals(passwort)){
-
-                            System.out.print("\nWillkommen, "+ m.getName() + " arbeite du *********!");
-
-                            mitarbeiterMenue.run();
-                        }else{
-                            System.out.println("Ungueltige Eingabe!");
-                        }
-                    }catch (NullPointerException e){
-                        System.out.println("Ungueltige Eingabe!");
-                    }
-
+                    m = shop.mitarbeiterAnmelden(nutzernummer, passwort);
+                    System.out.print("\nWillkommen, "+ m.getName() + " arbeite du *********!");
+                    mitarbeiterMenue.run();
 
                     break;
                 case 3:
                         //Registrierung (nur für Kunden)
-
-
 
                         System.out.println("Registrieren");
                         System.out.print("Geben Sie Ihren Namen ein -->");

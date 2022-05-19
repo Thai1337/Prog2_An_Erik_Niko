@@ -7,8 +7,8 @@ public class ArtikelbestandUnterNullException extends Exception{
     private Artikel artikel;
 
     public ArtikelbestandUnterNullException(Artikel artikel, String zusatzMsg) {
-        super("Artikel mit der Bezeichnung " + artikel.getBezeichnung() + " und Nummer " + artikel.getNummer()
-                + " darf nicht unter 0 Fallen" + zusatzMsg);
+        super("\n Artikel mit der Bezeichnung " + artikel.getBezeichnung() + " und Nummer " + artikel.getNummer()
+                + " darf nicht unter 0 Fallen.\n" + zusatzMsg);
         this.artikel = artikel;
     }
 

@@ -25,12 +25,12 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Ausgabe des Mitarbeiter-Menüs.
      */
     private void gibMitarbeiterMenueAus() {
-        System.out.println("\n(1) = Artikel ausgeben");
-        System.out.println("(2) = Artikel suchen");
-        System.out.println("(3) = Artikel einfuegen");
-        System.out.println("(4) = Artikelbestand aendern");
-        System.out.println("(5) = Artikel loeschen");
-        System.out.println("(6) = Mitarbeiter hinzufuegen");
+        System.out.println("\n(1) = Artikel: ausgeben");
+        System.out.println("(2) = Artikel: suchen");
+        System.out.println("(3) = Artikel: einfuegen");
+        System.out.println("(4) = Artikel: bestand aendern");
+        System.out.println("(5) = Artikel: loeschen");
+        System.out.println("(6) = Mitarbeiter: hinzufuegen");
         System.out.println("(0) = Ausloggen");
         System.out.print("\nEingabe --> ");
     }
@@ -48,7 +48,8 @@ public class MitarbeiterMenue {
             try{
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
-            }catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException e){
+            }catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException |
+                    ArtikelExistiertBereitsException e){
                 // TODO Auto-generated catch block
                 System.out.println("\n" + e.getMessage());
                 //e.printStackTrace();
@@ -61,7 +62,7 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException {
+    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException {
         String nummer, bezeichnung, bestand, name, passwort;
         int nr, bst;
         List liste;
@@ -102,32 +103,22 @@ public class MitarbeiterMenue {
                 System.out.print("Artikelbestand  --> ");
                 bst = eingabeAusgabe.einlesenInteger();
 
-                try {
-                    shop.fuegeArtikelEin(nr, bezeichnung, bst);
-                    System.out.println("Einfuegen ok");
-                } catch (ArtikelExistiertBereitsException e) {
-                    // Hier Fehlerbehandlung...
-                    System.out.println(e.getMessage());
-                    //e.printStackTrace();
-                }
+                shop.fuegeArtikelEin(nr, bezeichnung, bst);
+                System.out.println("Einfuegen ok");
+
+
                 break;
             case 4:
 
                 System.out.println("");
                 System.out.print("Artikelnummer --> ");
-                //nummer = eingabeAusgabe.einlesenString();
                 nr = eingabeAusgabe.einlesenInteger();
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
                 System.out.print("Artikelbestand aendern zu --> ");
                 bst = eingabeAusgabe.einlesenInteger();
 
-                try {
-                    shop.aendereArtikelbestand(bezeichnung, nr, bst);
-                }catch (ArtikelbestandUnterNullException e){
-                    System.out.println(e.getMessage());
-                }
-
+                shop.aendereArtikelbestand(bezeichnung, nr, bst);
 
                 break;
             case 5:
@@ -139,7 +130,6 @@ public class MitarbeiterMenue {
                 bezeichnung = eingabeAusgabe.einlesenString();
 
                 shop.loescheArtikel(bezeichnung, nr);
-
 
                 break;
             case 6:

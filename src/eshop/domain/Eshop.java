@@ -1,5 +1,6 @@
 package eshop.domain;
 
+import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
@@ -127,7 +128,7 @@ public class Eshop {
      * @param passwort Passwort des im Systems gesuchten Mitarbeiter
      * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
      */
-    public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) {
+    public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         return mitarbeiterVW.mitarbeiterAnmelden(nummer, passwort);
     }
     /**
@@ -138,7 +139,7 @@ public class Eshop {
      * @param passwort Passwort des im Systems gesuchten Kunden
      * @return Ein Boolischenwert, welcher True ist, wenn der Kunden im System ist oder False, wenn dieser nicht im System ist
      */
-    public Kunde kundenAnmelden(int nummer, String passwort) {
+    public Kunde kundenAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         return kundenVW.kundeAnmelden(nummer, passwort);
     }
     /**
@@ -159,16 +160,10 @@ public class Eshop {
     }
 
 
-    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde k1){
-
-        List<Artikel> listeArtikel = new Vector<>();
-        Artikel warenkorbArtikel;
-        listeArtikel = artikelVW.getArtikelBestand();
-
-        for (Artikel a: listeArtikel) {
+    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde k1) throws ArtikelbestandUnterNullException {
+        for (Artikel a: artikelVW.getArtikelBestand()) {
             if(a.getNummer() == artikelnummer){
-                warenkorbArtikel = a;
-                warenkoerbeVW.warenkorbzuweisen(warenkorbArtikel, anzahlArtikel, k1);
+                warenkoerbeVW.artikelZuWarenkorbHinzufuegen(a, anzahlArtikel, k1);
             }
         }
 
@@ -177,5 +172,19 @@ public class Eshop {
 
     public Map<Artikel, Integer> getWarenkorb(Kunde kunde){
         return warenkoerbeVW.getWarenkorb(kunde);
+    }
+    public void warenkorbLoeschen(Kunde kunde){
+        warenkoerbeVW.warenkorbLoeschen(kunde);
+    }
+    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
+            for (Artikel a: artikelVW.getArtikelBestand()) {
+                if(a.getNummer() == artikelnummer){
+                    warenkoerbeVW.artikelAusWarenkorbEntfernen(a, anzahlArtikel, kunde);
+                }
+            }
+    }
+
+    public void einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException {
+        warenkoerbeVW.einkaufAbschliessen(kunde);
     }
 }

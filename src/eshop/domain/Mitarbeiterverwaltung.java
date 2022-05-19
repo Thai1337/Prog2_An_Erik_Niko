@@ -1,5 +1,6 @@
 package eshop.domain;
 
+import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Mitarbeiter;
 
@@ -42,11 +43,13 @@ public class Mitarbeiterverwaltung {
      * @param passwort übernimmt den Wert, welcher eingegben wurde
      * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
      */
-   public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort){
+   public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste
         for(Mitarbeiter m : mitarbeiterListe){
             if(m.getNummer() == nummer && m.getPasswort().equals(passwort)){
                 return m;
+            }else{
+                throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!");
             }
         }
            return null;

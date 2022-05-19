@@ -39,13 +39,13 @@ public class KundenMenue {
     // TODO Michelles Anmeldungsidee umsetzen
     // TODO Optional: Eine gemeinsame Anmeldung für Kunden und Mitarbeiter
     public void gibKundenMenueAus() {
-        System.out.println("\n(1) = Artikel ausgeben");
-        System.out.println("(2) = Artikel suchen");
-        System.out.println("(3) = Warenkorb ausgeben");
-        System.out.println("(4) = Artikel zum Warenkorb hinzufuegen");
-        System.out.println("(5) = Artikel aus dem Warenkorb entfernen");
-        System.out.println("(6) = Warenkorb leeren");
-        System.out.println("(7) = Einkauf abschließen");
+        System.out.println("\n(1) = Artikel: ausgeben");
+        System.out.println("(2) = Artikel: suchen");
+        System.out.println("(3) = Warenkorb: ausgeben");
+        System.out.println("(4) = Warenkorb: Artikel hinzufuegen");
+        System.out.println("(5) = Warenkorb: Artikel entfernen ");
+        System.out.println("(6) = Warenkorb: leeren");
+        System.out.println("(7) = Einkauf abschliessen");
         System.out.println("(0) = Ausloggen");
         System.out.print("\nEingabe --> ");
     }
@@ -66,7 +66,7 @@ public class KundenMenue {
                 verarbeiteKundenEingabe(input);
             }catch (IOException | ArtikelbestandUnterNullException e){
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
 
         }while(input != 0);
@@ -94,15 +94,10 @@ public class KundenMenue {
                 System.out.println("(4): Absteigend nach Nummer\n");
                 System.out.print("Listen Sortierung --> ");
 
-
                 nr = eingabeAusgabe.einlesenInteger();
-                //nr = Integer.parseInt(nummer);
                 System.out.println("");
                 liste = shop.gibAlleArtikel(nr);
                 eingabeAusgabe.gibListeAus(liste);
-
-                //System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
-                //e.printStackTrace();
 
                 break;
             case 2:
@@ -117,22 +112,43 @@ public class KundenMenue {
 
                 Map<Artikel, Integer> test = shop.getWarenkorb(kunde);
 
-                System.out.println("Warenkorb:");
+                System.out.println("\nWarenkorb:");
                 for (Map.Entry<Artikel, Integer> entry : test.entrySet()) {
                     System.out.println("Artikel: " + entry.getKey().getBezeichnung() + " -> Menge: " + entry.getValue());
                 }
 
                 break;
             case 4:
-                System.out.print("Geben sie die Artikelnummer ein, von dem Artikel den Sie hinzufuegen moechten -->");
+                // TODO negative zahlen
+                System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie hinzufuegen möchten --> ");
                 artikelnummer = eingabeAusgabe.einlesenInteger();
-                System.out.print("Geben sie die gewuenschte Bestellmenge an --> ");
+                System.out.print("Geben Sie die gewuenschte Bestellmenge an --> ");
                 anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
                 shop.artikelZuWarenkorb(artikelnummer, anzahlArtikel, kunde);
                 break;
             case 5:
+                System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie entfernen moechten --> ");
+                artikelnummer = eingabeAusgabe.einlesenInteger();
+                System.out.print("Geben Sie die gewuenschte Menge an, welche Sie entfernen moechten / geben Sie 0 ein und der Artikel wird entfernt --> ");
+                anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
+
+                shop.artikelAusWarenkorbEntfernen(artikelnummer, anzahlArtikel, kunde);
+
+                break;
+            case 6:
+
+                shop.warenkorbLoeschen(kunde);
+
+                break;
+            case 7:
+                System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
+                if(eingabeAusgabe.einlesenString().equalsIgnoreCase("j")){
+
+                    shop.einkaufAbschliessen(kunde);
+
+                }
                 break;
         }
     }

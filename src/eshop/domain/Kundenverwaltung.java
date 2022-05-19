@@ -1,5 +1,6 @@
 package eshop.domain;
 
+import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Adresse;
 import eshop.valueobjects.Kunde;
@@ -50,11 +51,13 @@ public class Kundenverwaltung {
      * @param passwort übernimmt den Wert, welcher eingegeben wurde
      * @return Ein Boolischenwert, welcher True ist, wenn der Kunde im System ist oder False, wenn dieser nicht im System ist
      */
-    public Kunde kundeAnmelden(int nummer, String passwort){
+    public Kunde kundeAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste
         for(Kunde k : kundenListe){
             if(k.getNummer() == nummer && k.getPasswort().equals(passwort)){
                 return k;
+            }else{
+                throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!");
             }
             // TODO throw exception wenn kein Kunde vorhanden
         }
