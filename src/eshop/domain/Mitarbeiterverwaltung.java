@@ -48,10 +48,9 @@ public class Mitarbeiterverwaltung {
         for(Mitarbeiter m : mitarbeiterListe){
             if(m.getNummer() == nummer && m.getPasswort().equals(passwort)){
                 return m;
-            }else{
-                throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!");
             }
         }
-           return null;
+        //throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!"); // musste geändert werden wegen der neuen anmeldung
+        return null;
        }
    }

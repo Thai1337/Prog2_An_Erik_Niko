@@ -66,8 +66,8 @@ public class Eshop {
      * @return Artikel-Objekt, das im Erfolgsfall eingefügt wurde
      * @throws ArtikelExistiertBereitsException wenn der Artikel bereits existiert
      */
-    public Artikel fuegeArtikelEin(int nr, String bezeichnung, int bestand) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
-        Artikel a = new Artikel(nr, bezeichnung, bestand);
+    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
+        Artikel a = new Artikel(bezeichnung, bestand, preis);
         artikelVW.einfuegen(a);
         return a;
     }
@@ -77,8 +77,10 @@ public class Eshop {
      * @param bezeichnung Bezeichnung des Artikels
      * @param bestand Bestand des Artikels
      */
-    public void aendereArtikelbestand(String bezeichnung, int nr, int bestand) throws ArtikelbestandUnterNullException {
-        Artikel a = new Artikel(nr, bezeichnung, bestand);
+    // Todo Ändern in Bearbeite Artikel
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis) throws ArtikelbestandUnterNullException {
+
+        Artikel a = new Artikel(nr, bezeichnung, bestand, preis);
         artikelVW.aendereArtikelbestand(a);
 
     }
@@ -91,7 +93,7 @@ public class Eshop {
      * @param nummer Nummer des Artikels
      */
     public void loescheArtikel(String bezeichner, int nummer) {
-        Artikel a = new Artikel(nummer, bezeichner, 0);
+        Artikel a = new Artikel(nummer, bezeichner, 0, 0);
         artikelVW.loeschen(a);
     }
 
@@ -166,11 +168,9 @@ public class Eshop {
                 warenkoerbeVW.artikelZuWarenkorbHinzufuegen(a, anzahlArtikel, k1);
             }
         }
-
-
     }
 
-    public Map<Artikel, Integer> getWarenkorb(Kunde kunde){
+    public Warenkorb getWarenkorb(Kunde kunde){
         return warenkoerbeVW.getWarenkorb(kunde);
     }
     public void warenkorbLoeschen(Kunde kunde){

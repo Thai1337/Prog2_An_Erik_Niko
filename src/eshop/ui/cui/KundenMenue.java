@@ -6,6 +6,7 @@ import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -86,7 +87,7 @@ public class KundenMenue {
         switch (line) {
             case 1:
                 System.out.println("");
-                System.out.println("Kunden Menue");
+                System.out.println("Art der Sortierung");
                 System.out.println("(0): Unsortiert");
                 System.out.println("(1): Aufsteigend nach Bezeichnung");
                 System.out.println("(2): Aufsteigend nach Nummer");
@@ -108,14 +109,16 @@ public class KundenMenue {
                 eingabeAusgabe.gibListeAus(liste);
                 break;
             case 3:
+                DecimalFormat df = new DecimalFormat("0.00");
 
-
-                Map<Artikel, Integer> test = shop.getWarenkorb(kunde);
+                Map<Artikel, Integer> test = shop.getWarenkorb(kunde).getWarenkorbListe();
 
                 System.out.println("\nWarenkorb:");
                 for (Map.Entry<Artikel, Integer> entry : test.entrySet()) {
-                    System.out.println("Artikel: " + entry.getKey().getBezeichnung() + " -> Menge: " + entry.getValue());
+                    System.out.println("Artikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR");
                 }
+
+                System.out.println("Gesamtpreis: " + df.format(shop.getWarenkorb(kunde).getGesamtpreis()) + "EUR");
 
                 break;
             case 4:

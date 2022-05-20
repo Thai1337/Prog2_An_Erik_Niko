@@ -51,6 +51,22 @@ public class EA {
             return -1;
         }
     }
+
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zum Einlesen von Benutzereingaben des Type Int.
+     */
+    public double einlesenDouble(){
+        String eingabe;
+        try {
+            eingabe = einlesen();
+            return Double.parseDouble(eingabe);
+        }catch (Exception e ) {
+            //System.out.println("Fehler bei der Eingabe!!!!!");
+            return -1.01;
+        }
+    }
+
     /* (non-Javadoc)
      *
      * Interne (private) Methode zum Ausgeben von Listen.

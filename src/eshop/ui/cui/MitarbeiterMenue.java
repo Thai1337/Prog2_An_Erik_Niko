@@ -28,7 +28,7 @@ public class MitarbeiterMenue {
         System.out.println("\n(1) = Artikel: ausgeben");
         System.out.println("(2) = Artikel: suchen");
         System.out.println("(3) = Artikel: einfuegen");
-        System.out.println("(4) = Artikel: bestand aendern");
+        System.out.println("(4) = Artikel: bearbeiten");
         System.out.println("(5) = Artikel: loeschen");
         System.out.println("(6) = Mitarbeiter: hinzufuegen");
         System.out.println("(0) = Ausloggen");
@@ -64,7 +64,8 @@ public class MitarbeiterMenue {
      */
     private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException {
         String nummer, bezeichnung, bestand, name, passwort;
-        int nr, bst;
+        int nr, neueNr, bst;
+        double preis;
         List liste;
         //TODO eigenes Menü für Artikel erstellen
         //TODO Passwort ändern
@@ -96,14 +97,13 @@ public class MitarbeiterMenue {
                 break;
             case 3:
                 System.out.println("");
-                System.out.print("Artikelnummer --> ");
-                nr = eingabeAusgabe.einlesenInteger();
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
                 System.out.print("Artikelbestand  --> ");
                 bst = eingabeAusgabe.einlesenInteger();
-
-                shop.fuegeArtikelEin(nr, bezeichnung, bst);
+                System.out.print("Artikelpreis  --> ");
+                preis = eingabeAusgabe.einlesenDouble();
+                shop.fuegeArtikelEin(bezeichnung, bst, preis);
                 System.out.println("Einfuegen ok");
 
 
@@ -113,12 +113,14 @@ public class MitarbeiterMenue {
                 System.out.println("");
                 System.out.print("Artikelnummer --> ");
                 nr = eingabeAusgabe.einlesenInteger();
-                System.out.print("Artikelbezeichnung  --> ");
+                System.out.print("Neue Bezeichnung (bei keiner Eingabe bleibt die Bezeichnung gleich)  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
-                System.out.print("Artikelbestand aendern zu --> ");
+                System.out.print("Neuer Artikelbestand (bei keiner Eingabe bleibt der Artikelbestand gleich) --> ");
                 bst = eingabeAusgabe.einlesenInteger();
+                System.out.print("Neuer Artikelpreis (bei keiner Eingabe bleibt der Artikelpreis gleich) --> ");
+                preis = eingabeAusgabe.einlesenDouble();
 
-                shop.aendereArtikelbestand(bezeichnung, nr, bst);
+                shop.aendereArtikel(bezeichnung, nr, bst, preis);
 
                 break;
             case 5:

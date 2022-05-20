@@ -56,12 +56,9 @@ public class Kundenverwaltung {
         for(Kunde k : kundenListe){
             if(k.getNummer() == nummer && k.getPasswort().equals(passwort)){
                 return k;
-            }else{
-                throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!");
             }
-            // TODO throw exception wenn kein Kunde vorhanden
         }
-        return null;
+        throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!");
     }
 
 

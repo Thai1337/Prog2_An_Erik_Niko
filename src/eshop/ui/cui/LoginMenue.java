@@ -5,6 +5,7 @@ import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
+import eshop.valueobjects.Nutzer;
 import eshop.valueobjects.Warenkorb;
 
 import java.io.IOException;
@@ -27,9 +28,8 @@ public class LoginMenue {
 
     public void gibLoginMenueAus() {
         System.out.println("\nWillkommen in unserem freeShop!");
-        System.out.println("(1) = Kundenanmeldung");
-        System.out.println("(2) = Mitarbeiteranmeldung");
-        System.out.println("(3) = Registrieren");
+        System.out.println("(1) = Anmelden");
+        System.out.println("(2) = Registrieren");
         System.out.println("(0) = Programm beenden\n");
         System.out.print("Eingabe --> ");
     }
@@ -56,7 +56,7 @@ public class LoginMenue {
             String name, passwort, strasse;
 
             switch(line){
-                case 1:
+                /*case 1:
                     Kunde k;
                     //Kunden Login
                     System.out.print("Geben Sie Ihre Kundennummer ein --> ");
@@ -83,33 +83,48 @@ public class LoginMenue {
                     System.out.print("\nWillkommen, "+ m.getName() + " arbeite du *********!");
                     mitarbeiterMenue.run();
 
+                    break;*/
+                case 1:
+
+                    System.out.print("Geben Sie Ihre Nummer ein --> ");
+                    nutzernummer = eingabeAusgabe.einlesenInteger();
+                    System.out.print("Geben Sie Ihr Passwort ein --> ");
+                    passwort = eingabeAusgabe.einlesenString();
+
+                    Mitarbeiter mitarbeiter = shop.mitarbeiterAnmelden(nutzernummer, passwort); // Die reihenfolge ist wichtig, weil nur kundenAnmelden eine exception werfen kann, mitarbeiterAnmelden muss null returnen können sonst bricht die Anmeldung ab
+                    if(mitarbeiter != null){
+                        System.out.print("\nWillkommen, "+ mitarbeiter.getName() + " arbeite du *********!");
+                        mitarbeiterMenue.run();
+                    }else{ // das else wird benötigt, damit beim ausloggen keine exception geworfen wird
+                        Kunde kunde = shop.kundenAnmelden(nutzernummer, passwort);
+                        kundenMenue.setKunde(kunde);
+                        System.out.print("\nWillkommen im freeShop, "+ kunde.getName() + " schoen Sie zu sehen!");
+                        kundenMenue.run();
+                    }
+
+
                     break;
-                case 3:
-                        //Registrierung (nur für Kunden)
+                case 2:
+                    //Registrierung (nur für Kunden)
 
-                        System.out.println("Registrieren");
-                        System.out.print("Geben Sie Ihren Namen ein -->");
-                        name = eingabeAusgabe.einlesenString();
+                    System.out.println("Registrieren");
+                    System.out.print("Geben Sie Ihren Namen ein -->");
+                    name = eingabeAusgabe.einlesenString();
 
-                        System.out.print("Geben Sie Ihr Passwort ein -->");
-                        passwort = eingabeAusgabe.einlesenString();
-                        System.out.print("Geben Sie Ihre Adresse ein: ");
+                    System.out.print("Geben Sie Ihr Passwort ein -->");
+                    passwort = eingabeAusgabe.einlesenString();
+                    System.out.print("Geben Sie Ihre Adresse ein: ");
 
-                        System.out.print("\n\tGeben Sie Ihre Strasse ein -->");
-                        strasse = eingabeAusgabe.einlesenString();
+                    System.out.print("\n\tGeben Sie Ihre Strasse ein -->");
+                    strasse = eingabeAusgabe.einlesenString();
 
-                        // TODO hier bin ich stehen geblieben(Niko) Exception für leere eingabe einbauen
-                        /*if(name.isEmpty() || passwort.isEmpty() || strasse.isEmpty()){
-                            throw new EingabeNichtLeerException(strasse, "HI");
-                        }*/
-
-                        System.out.print("\tGeben Sie Ihre Hausnummer ein -->");
-                        hausnummer = eingabeAusgabe.einlesenInteger();
-                        System.out.print("\tGeben Sie Ihre Postleitzahl ein -->");
-                        plz = eingabeAusgabe.einlesenInteger();
+                    System.out.print("\tGeben Sie Ihre Hausnummer ein -->");
+                    hausnummer = eingabeAusgabe.einlesenInteger();
+                    System.out.print("\tGeben Sie Ihre Postleitzahl ein -->");
+                    plz = eingabeAusgabe.einlesenInteger();
 
 
-                        System.out.print("\nIhre Kundennummer fuer die Anmeldung lautet --> " + shop.registriereKunden(name, passwort, strasse, hausnummer, plz) + "\n");
+                    System.out.print("\nIhre Kundennummer fuer die Anmeldung lautet --> " + shop.registriereKunden(name, passwort, strasse, hausnummer, plz) + "\n");
 
                     break;
             }
