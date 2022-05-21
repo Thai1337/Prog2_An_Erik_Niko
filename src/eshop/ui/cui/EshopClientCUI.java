@@ -28,6 +28,7 @@ public class EshopClientCUI {
         try {
             loginMenue = new LoginMenue();
             loginMenue.run();
+            // TODO Bestätigungsnachricht in Artikelverwaltung und andere
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

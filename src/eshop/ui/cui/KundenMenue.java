@@ -149,7 +149,7 @@ public class KundenMenue {
                 System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
                 if(eingabeAusgabe.einlesenString().equalsIgnoreCase("j")){
 
-                    shop.einkaufAbschliessen(kunde);
+                    System.out.println(shop.einkaufAbschliessen(kunde));
 
                 }
                 break;

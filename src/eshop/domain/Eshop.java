@@ -60,7 +60,6 @@ public class Eshop {
     /**
      * Methode zum Einfügen eines neuen Artikels in den Bestand.
      * Wenn der Artikel bereits im Bestand ist, wird der Bestand nicht geändert.
-     * @param nr Nummer des Artikels
      * @param bezeichnung Bezeichnung des Artikels
      * @param bestand Bestand des Artikels
      * @return Artikel-Objekt, das im Erfolgsfall eingefügt wurde
@@ -155,27 +154,51 @@ public class Eshop {
      * @param  plz postleitzahl gewählt vom Kunden
      * @return Gibt die Kundennummer des neuen Kunden zurück
      */
-    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz) throws EingabeNichtLeerException {
-        Adresse a = new Adresse(strasse, hausnummer, plz);
+    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException {
+        Adresse a = new Adresse(strasse, hausnummer, plz, ort);
         Kunde k = new Kunde(name, a, passwort);
         return kundenVW.erstelleKunde(k);
     }
-
-
-    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde k1) throws ArtikelbestandUnterNullException {
-        for (Artikel a: artikelVW.getArtikelBestand()) {
-            if(a.getNummer() == artikelnummer){
-                warenkoerbeVW.artikelZuWarenkorbHinzufuegen(a, anzahlArtikel, k1);
+    /**
+     * Methode zum Hinzufügen von Artikeln in eine Warenkorb map
+     *
+     * @param artikelnummer die Artikelnummer zum Warenkorb hinzugefügten Artikel
+     * @param anzahlArtikel die Anzahl der Artikel, welche zum Warenkorb hinzugefügt wurden
+     * @param kunde das Kunden Objekt
+     *
+     */
+    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
+        for (Artikel artikel: artikelVW.getArtikelBestand()) {
+            if(artikel.getNummer() == artikelnummer){
+                warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
             }
         }
     }
 
+    /**
+     *
+     * @param kunde
+     * @return
+     */
     public Warenkorb getWarenkorb(Kunde kunde){
         return warenkoerbeVW.getWarenkorb(kunde);
     }
+
+    /**
+     *
+     * @param kunde
+     */
     public void warenkorbLoeschen(Kunde kunde){
         warenkoerbeVW.warenkorbLoeschen(kunde);
     }
+
+    /**
+     *
+     * @param artikelnummer
+     * @param anzahlArtikel
+     * @param kunde
+     * @throws ArtikelbestandUnterNullException
+     */
     public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
             for (Artikel a: artikelVW.getArtikelBestand()) {
                 if(a.getNummer() == artikelnummer){
@@ -184,7 +207,13 @@ public class Eshop {
             }
     }
 
-    public void einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException {
-        warenkoerbeVW.einkaufAbschliessen(kunde);
+    /**
+     *
+     * @param kunde
+     * @return
+     * @throws ArtikelbestandUnterNullException
+     */
+    public String einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException {
+        return warenkoerbeVW.einkaufAbschliessen(kunde);
     }
 }

@@ -94,8 +94,6 @@ public class Artikelverwaltung {
         }
         return kopie;
 
-
-
     }
 
 

@@ -31,6 +31,7 @@ public class MitarbeiterMenue {
         System.out.println("(4) = Artikel: bearbeiten");
         System.out.println("(5) = Artikel: loeschen");
         System.out.println("(6) = Mitarbeiter: hinzufuegen");
+        System.out.println("(7) = Änderungsprotokoll: anzeigen");
         System.out.println("(0) = Ausloggen");
         System.out.print("\nEingabe --> ");
     }
@@ -142,6 +143,10 @@ public class MitarbeiterMenue {
                 passwort = eingabeAusgabe.einlesenString();
 
                 System.out.print("\nDie Mitarbeiternummer von ihrem erstellten Mitarbeiter lautet --> " + shop.erstelleMitarbeiter(name, passwort) + "\n");
+                break;
+            case 7:
+
+                break;
         }
     }
 }

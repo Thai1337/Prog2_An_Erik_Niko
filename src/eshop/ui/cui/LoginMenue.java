@@ -33,6 +33,13 @@ public class LoginMenue {
         System.out.println("(0) = Programm beenden\n");
         System.out.print("Eingabe --> ");
     }
+    /**
+     * Methode zur Ausführung der Hauptschleife:
+     * - Login-Menü ausgeben
+     * - Eingabe des Benutzers einlesen
+     * - Eingabe verarbeiten und Ergebnis ausgeben
+     * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
+     */
     public void run(){
         int input = -1;
         do{
@@ -49,41 +56,16 @@ public class LoginMenue {
         }while(input != 0);
     }
 
-
-
-    public void verarbeiteLoginEingabe(int line) throws IOException, EingabeNichtLeerException, AnmeldungFehlgeschlagenException {
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zur Verarbeitung von Eingaben
+     * und Ausgabe von Ergebnissen.
+     */
+    private void verarbeiteLoginEingabe(int line) throws IOException, EingabeNichtLeerException, AnmeldungFehlgeschlagenException {
             int nutzernummer, hausnummer, plz;
-            String name, passwort, strasse;
+            String name, passwort, strasse, ort;
 
             switch(line){
-                /*case 1:
-                    Kunde k;
-                    //Kunden Login
-                    System.out.print("Geben Sie Ihre Kundennummer ein --> ");
-                    nutzernummer = eingabeAusgabe.einlesenInteger();
-                    System.out.print("Geben Sie Ihr Passwort ein --> ");
-                    passwort = eingabeAusgabe.einlesenString();
-
-                    k = shop.kundenAnmelden(nutzernummer, passwort);
-                    kundenMenue.setKunde(k);
-                    System.out.print("\nWillkommen im freeShop, "+ k.getName() + " schoen Sie zu sehen!");
-                    kundenMenue.run();
-
-
-                    break;
-                case 2:
-                    Mitarbeiter m = null;
-                    //Mitarbeiter Login
-                    System.out.print("Geben Sie Ihre Mitarbeiternummer ein --> ");
-                    nutzernummer = eingabeAusgabe.einlesenInteger();
-                    System.out.print("Geben Sie Ihr Passwort ein --> ");
-                    passwort = eingabeAusgabe.einlesenString();
-
-                    m = shop.mitarbeiterAnmelden(nutzernummer, passwort);
-                    System.out.print("\nWillkommen, "+ m.getName() + " arbeite du *********!");
-                    mitarbeiterMenue.run();
-
-                    break;*/
                 case 1:
 
                     System.out.print("Geben Sie Ihre Nummer ein --> ");
@@ -91,7 +73,7 @@ public class LoginMenue {
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
                     passwort = eingabeAusgabe.einlesenString();
 
-                    Mitarbeiter mitarbeiter = shop.mitarbeiterAnmelden(nutzernummer, passwort); // Die reihenfolge ist wichtig, weil nur kundenAnmelden eine exception werfen kann, mitarbeiterAnmelden muss null returnen können sonst bricht die Anmeldung ab
+                    Mitarbeiter mitarbeiter = shop.mitarbeiterAnmelden(nutzernummer, passwort); // Die Reihenfolge ist wichtig, weil nur kundenAnmelden eine exception werfen kann, mitarbeiterAnmelden muss null returnen können sonst bricht die Anmeldung ab
                     if(mitarbeiter != null){
                         System.out.print("\nWillkommen, "+ mitarbeiter.getName() + " arbeite du *********!");
                         mitarbeiterMenue.run();
@@ -122,16 +104,14 @@ public class LoginMenue {
                     hausnummer = eingabeAusgabe.einlesenInteger();
                     System.out.print("\tGeben Sie Ihre Postleitzahl ein -->");
                     plz = eingabeAusgabe.einlesenInteger();
+                    System.out.print("\tGeben Sie Ihren Ort an ein -->");
+                    ort = eingabeAusgabe.einlesenString();
 
 
-                    System.out.print("\nIhre Kundennummer fuer die Anmeldung lautet --> " + shop.registriereKunden(name, passwort, strasse, hausnummer, plz) + "\n");
+                    System.out.print("\nIhre Kundennummer fuer die Anmeldung lautet --> " + shop.registriereKunden(name, passwort, strasse, hausnummer, plz, ort) + "\n");
 
                     break;
             }
-
-
-
-
     }
 
 }

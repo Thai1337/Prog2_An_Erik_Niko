@@ -14,9 +14,9 @@ public class Kundenverwaltung {
     List<Kunde> kundenListe = new Vector<>();
     public Kundenverwaltung(){
 
-        Adresse a1 = new Adresse("Ballermann", 14, 28816);
-        Adresse a2 = new Adresse("An den Ruschen", 21, 28817);
-        Adresse a3 = new Adresse("Moselstraße", 28, 28818);
+        Adresse a1 = new Adresse("Ballermann", 14, 28816, "Berne");
+        Adresse a2 = new Adresse("An den Ruschen", 21, 28817, "Bremen");
+        Adresse a3 = new Adresse("Moselstraße", 28, 28818, "Bremen");
 
         Kunde k1 = new Kunde("Bea", a1, "passwortB");
         Kunde k2 = new Kunde("Luggas", a2, "passwortL");
