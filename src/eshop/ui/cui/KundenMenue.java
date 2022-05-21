@@ -23,10 +23,6 @@ public class KundenMenue {
 
     private Kunde kunde;
 
-    public void setKunde(Kunde kunde) {
-        this.kunde = kunde;
-    }
-
     public KundenMenue(Eshop shop){
         eingabeAusgabe = new EA();
 
@@ -123,7 +119,7 @@ public class KundenMenue {
                 break;
             case 4:
                 // TODO negative zahlen
-                System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie hinzufuegen möchten --> ");
+                System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie hinzufuegen moechten --> ");
                 artikelnummer = eingabeAusgabe.einlesenInteger();
                 System.out.print("Geben Sie die gewuenschte Bestellmenge an --> ");
                 anzahlArtikel = eingabeAusgabe.einlesenInteger();
@@ -149,13 +145,15 @@ public class KundenMenue {
                 System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
                 if(eingabeAusgabe.einlesenString().equalsIgnoreCase("j")){
 
-                    System.out.println(shop.einkaufAbschliessen(kunde));
+                    String rechnung = shop.einkaufAbschliessen(kunde);
+
+                    System.out.println(rechnung);
 
                 }
                 break;
         }
     }
-
-
-
+    public void setKunde(Kunde kunde) {
+        this.kunde = kunde;
+    }
 }

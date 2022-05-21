@@ -24,8 +24,8 @@ public class Eshop {
     private Artikelverwaltung artikelVW;
     private Mitarbeiterverwaltung mitarbeiterVW;
     private Kundenverwaltung kundenVW;
-
     private Warenkorbverwaltung warenkoerbeVW;
+    private Protokollverwaltung protokollVW;
     /**
      * Konstruktor, der eine Artikelverwaltung, eine Mitarbeiterverwaltung und eine Kundenverwaltung erstellt.
      * (Initialisierung des E-Shops).
@@ -35,6 +35,7 @@ public class Eshop {
         mitarbeiterVW = new Mitarbeiterverwaltung();
         kundenVW = new Kundenverwaltung();
         warenkoerbeVW = new Warenkorbverwaltung();
+        protokollVW = new Protokollverwaltung();
     }
 
     /**
@@ -65,9 +66,14 @@ public class Eshop {
      * @return Artikel-Objekt, das im Erfolgsfall eingefügt wurde
      * @throws ArtikelExistiertBereitsException wenn der Artikel bereits existiert
      */
-    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
+    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
         Artikel a = new Artikel(bezeichnung, bestand, preis);
         artikelVW.einfuegen(a);
+
+
+        Protokoll protokoll = new Protokoll(mitarbeiter, a, "");
+        protokollVW.bearbeitenLog(protokoll);
+
         return a;
     }
     /**
@@ -77,10 +83,12 @@ public class Eshop {
      * @param bestand Bestand des Artikels
      */
     // Todo Ändern in Bearbeite Artikel
-    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis) throws ArtikelbestandUnterNullException {
-
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelbestandUnterNullException {
         Artikel a = new Artikel(nr, bezeichnung, bestand, preis);
-        artikelVW.aendereArtikelbestand(a);
+        String aenderung = artikelVW.aendereArtikel(a);
+
+        Protokoll protokoll = new Protokoll(mitarbeiter, a, aenderung);
+        protokollVW.bearbeitenLog(protokoll);
 
     }
 
@@ -214,6 +222,18 @@ public class Eshop {
      * @throws ArtikelbestandUnterNullException
      */
     public String einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException {
+
+
+        Protokoll protokoll = new Protokoll(kunde);
+        protokollVW.kaufLog(protokoll);
+
         return warenkoerbeVW.einkaufAbschliessen(kunde);
+
     }
+
+    public List<String> getProtokollListe(){
+        return protokollVW.getProtokollListe();
+    }
+
+
 }

@@ -1,32 +1,61 @@
 package eshop.valueobjects;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 public class Protokoll {
-    private Map<Artikel, Integer> logMap;
-    private Nutzer nutzer;
+    private Mitarbeiter mitarbeiter;
+    private Artikel artikel;
     private String datum;
 
-    public Protokoll(Map<Artikel, Integer> logMap, Nutzer nutzer, String datum){
-        this.logMap = logMap;
-        this.nutzer = nutzer;
-        this.datum = datum;
+    private Kunde kunde;
+    private String aenderung;
+
+    public Protokoll(Mitarbeiter mitarbeiter, Artikel artikel, String aenderung){
+        this.mitarbeiter = mitarbeiter;
+        this.artikel = artikel;
+        this.aenderung = aenderung;
+
+
+        LocalDateTime myObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        this.datum = myObj.format(myFormatObj);
     }
 
-    public Map<Artikel, Integer> getLogMap() {
-        return logMap;
+    public Kunde getKunde() {
+        return kunde;
     }
 
-    public void setLogMap(Map<Artikel, Integer> logMap) {
-        this.logMap = logMap;
+    public void setKunde(Kunde kunde) {
+        this.kunde = kunde;
     }
 
-    public Nutzer getNutzer() {
-        return nutzer;
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
     }
 
-    public void setNutzer(Nutzer nutzer) {
-        this.nutzer = nutzer;
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
+    }
+
+    public Protokoll(Kunde kunde){
+        LocalDateTime myObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        this.datum = myObj.format(myFormatObj);
+        this.kunde = kunde;
+    }
+
+    public String getAenderung() {
+        return aenderung;
+    }
+
+    public Artikel getArtikel() {
+        return artikel;
+    }
+
+    public void setArtikel(Artikel artikel) {
+        this.artikel = artikel;
     }
 
     public String getDatum() {

@@ -4,6 +4,8 @@ import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.valueobjects.Mitarbeiter;
+import eshop.valueobjects.Protokoll;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
  */
 public class MitarbeiterMenue {
 
+    private Mitarbeiter mitarbeiter;
     private EA eingabeAusgabe;
     private Eshop shop;
     public MitarbeiterMenue(Eshop shop){
@@ -28,10 +31,10 @@ public class MitarbeiterMenue {
         System.out.println("\n(1) = Artikel: ausgeben");
         System.out.println("(2) = Artikel: suchen");
         System.out.println("(3) = Artikel: einfuegen");
-        System.out.println("(4) = Artikel: bearbeiten");
+        System.out.println("(4) = Artikel: bearbeiten"); //TODO LOG
         System.out.println("(5) = Artikel: loeschen");
         System.out.println("(6) = Mitarbeiter: hinzufuegen");
-        System.out.println("(7) = Änderungsprotokoll: anzeigen");
+        System.out.println("(7) = Aenderungsprotokoll: anzeigen");
         System.out.println("(0) = Ausloggen");
         System.out.print("\nEingabe --> ");
     }
@@ -104,7 +107,7 @@ public class MitarbeiterMenue {
                 bst = eingabeAusgabe.einlesenInteger();
                 System.out.print("Artikelpreis  --> ");
                 preis = eingabeAusgabe.einlesenDouble();
-                shop.fuegeArtikelEin(bezeichnung, bst, preis);
+                shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter);
                 System.out.println("Einfuegen ok");
 
 
@@ -121,7 +124,7 @@ public class MitarbeiterMenue {
                 System.out.print("Neuer Artikelpreis (bei keiner Eingabe bleibt der Artikelpreis gleich) --> ");
                 preis = eingabeAusgabe.einlesenDouble();
 
-                shop.aendereArtikel(bezeichnung, nr, bst, preis);
+                shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter);
 
                 break;
             case 5:
@@ -145,8 +148,16 @@ public class MitarbeiterMenue {
                 System.out.print("\nDie Mitarbeiternummer von ihrem erstellten Mitarbeiter lautet --> " + shop.erstelleMitarbeiter(name, passwort) + "\n");
                 break;
             case 7:
+                List<String> logListe = shop.getProtokollListe();
 
+                for(String a:logListe){
+                    System.out.println(a);
+                }
                 break;
         }
+    }
+
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
     }
 }

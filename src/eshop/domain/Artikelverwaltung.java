@@ -124,7 +124,8 @@ public class Artikelverwaltung {
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelbestandUnterNullException wenn der eingegebene Artikelbestand unter -1 ist
      */
-    public void aendereArtikelbestand(Artikel einArtikel) throws ArtikelbestandUnterNullException {
+    public String aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException {
+        String aenderung = "";
         // das übernimmt der Vector:
         // TODO exception damit keine negativen Preise eingegeben werden können und die java-doc ändern!!!! dafuq?
         if (einArtikel.getBestand() < -1) {
@@ -135,16 +136,21 @@ public class Artikelverwaltung {
             if (artikel.getNummer() == einArtikel.getNummer()) {
                 if(!einArtikel.getBezeichnung().isEmpty()){
                     artikel.setBezeichnung(einArtikel.getBezeichnung());
+                    aenderung += "a";
                 }
                 if(einArtikel.getPreis() != -1.01){
                     artikel.setPreis(einArtikel.getPreis());
+                    aenderung += "b";
+
                 }
                 if(einArtikel.getBestand() != -1){
                     artikel.setBestand(einArtikel.getBestand());
+                    aenderung += "c";
                 }
             }
 
         }
+        return aenderung;
         
     }
     /**

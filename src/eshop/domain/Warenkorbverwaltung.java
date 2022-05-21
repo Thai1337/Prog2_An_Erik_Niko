@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -153,7 +154,9 @@ public class Warenkorbverwaltung {
             rechnungArtikel += "\n\tArtikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR";
         }
 
-        rechnungGesamtpreis = "\n\n\tGesamtpreis: " + df.format(kunde.getWarkorb().getGesamtpreis() + "EUR");
+        getWarenkorb(kunde); // zum berechnen des gesamtpreises
+
+        rechnungGesamtpreis = "\n\n\tGesamtpreis: " + df.format(kunde.getWarkorb().getGesamtpreis()) + "EUR";
 
         rechnung = rechnungKunde + rechnungArtikel + rechnungGesamtpreis;
 
