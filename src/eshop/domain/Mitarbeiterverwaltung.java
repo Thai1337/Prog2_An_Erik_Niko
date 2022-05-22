@@ -1,5 +1,7 @@
 package eshop.domain;
 
+import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
+import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Mitarbeiter;
 
 import java.util.List;
@@ -26,8 +28,11 @@ public class Mitarbeiterverwaltung {
      * @param einMitarbeiter Mitarbeiter
      * @return gibt die Mitarbeiternummer des erstellten Mitarbeiters Zurück
      */
-   public int erstelleMitarbeiter(Mitarbeiter einMitarbeiter){
-           //Methode zum Erstellen von Mitarbeitern
+   public int erstelleMitarbeiter(Mitarbeiter einMitarbeiter) throws EingabeNichtLeerException {
+       //Methode zum Erstellen von Mitarbeitern
+           if(einMitarbeiter.getName().isEmpty() || einMitarbeiter.getPasswort().isEmpty()){
+               throw new EingabeNichtLeerException();
+           }
            mitarbeiterListe.add(einMitarbeiter);
            return einMitarbeiter.getNummer();
    }
@@ -38,13 +43,14 @@ public class Mitarbeiterverwaltung {
      * @param passwort übernimmt den Wert, welcher eingegben wurde
      * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
      */
-   public boolean mitarbeiterAnmelden(int nummer, String passwort){
+   public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste
         for(Mitarbeiter m : mitarbeiterListe){
             if(m.getNummer() == nummer && m.getPasswort().equals(passwort)){
-                return true;
+                return m;
             }
         }
-           return false;
+        //throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!"); // musste geändert werden wegen der neuen anmeldung
+        return null;
        }
    }

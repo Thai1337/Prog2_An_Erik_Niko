@@ -1,10 +1,17 @@
 package eshop.ui.cui;
 
 import eshop.domain.Eshop;
+import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.WarenkorbLeerException;
+import eshop.valueobjects.Artikel;
+import eshop.valueobjects.Kunde;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
+
 /**
  * Klasse für das Anmelden der Kunden in einem CUI, welche zum Verarbeiten der Eingaben und Ausgaben genutzt wird.
  *
@@ -14,6 +21,10 @@ public class KundenMenue {
 
     private EA eingabeAusgabe;
     private Eshop shop;
+
+
+    private Kunde kunde;
+
     public KundenMenue(Eshop shop){
         eingabeAusgabe = new EA();
 
@@ -23,14 +34,19 @@ public class KundenMenue {
      *
      * Interne (private) Methode zur Ausgabe des Kunden-Menüs.
      */
+    // TODO 5-7 sind noch nicht Fertig
+    // TODO Michelles Anmeldungsidee umsetzen
+    // TODO Optional: Eine gemeinsame Anmeldung für Kunden und Mitarbeiter
     public void gibKundenMenueAus() {
-        System.out.println("\n(1) = Artikel ausgeben");
-        System.out.println("(2) = Artikel suchen");
-        System.out.println("(3) = Warenkorb ausgeben");
-        System.out.println("(4) = Artikel zum Warenkorb hinzufuegen");
-        System.out.println("(5) = Artikel aus dem Warenkorb entfernen");
+        System.out.println("\n(1) = Artikel: ausgeben");
+        System.out.println("(2) = Artikel: suchen");
+        System.out.println("(3) = Warenkorb: ausgeben");
+        System.out.println("(4) = Warenkorb: Artikel hinzufuegen");
+        System.out.println("(5) = Warenkorb: Artikel entfernen ");
+        System.out.println("(6) = Warenkorb: leeren");
+        System.out.println("(7) = Einkauf abschliessen");
         System.out.println("(0) = Ausloggen");
-        System.out.print("Eingabe --> ");
+        System.out.print("\nEingabe --> ");
     }
     /**
      * Methode zur Ausführung der Hauptschleife:
@@ -41,14 +57,15 @@ public class KundenMenue {
      */
     public void run(){
         int input = -1;
+
         do{
             gibKundenMenueAus();
             try{
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteKundenEingabe(input);
-            }catch (IOException | ArtikelbestandUnterNullException e){
+            }catch (IOException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | WarenkorbLeerException e){
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
 
         }while(input != 0);
@@ -58,9 +75,9 @@ public class KundenMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException {
+    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, WarenkorbLeerException {
         String nummer, bezeichnung, bestand;
-        int nr, bst;
+        int nr, bst, artikelnummer, anzahlArtikel;
         List liste;
         //TODO eigenes Menü für Artikel erstellen
         //TODO Passwort ändern
@@ -68,7 +85,7 @@ public class KundenMenue {
         switch (line) {
             case 1:
                 System.out.println("");
-                System.out.println("Kunden Menue");
+                System.out.println("Art der Sortierung");
                 System.out.println("(0): Unsortiert");
                 System.out.println("(1): Aufsteigend nach Bezeichnung");
                 System.out.println("(2): Aufsteigend nach Nummer");
@@ -76,15 +93,10 @@ public class KundenMenue {
                 System.out.println("(4): Absteigend nach Nummer\n");
                 System.out.print("Listen Sortierung --> ");
 
-
                 nr = eingabeAusgabe.einlesenInteger();
-                //nr = Integer.parseInt(nummer);
                 System.out.println("");
                 liste = shop.gibAlleArtikel(nr);
                 eingabeAusgabe.gibListeAus(liste);
-
-                //System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
-                //e.printStackTrace();
 
                 break;
             case 2:
@@ -95,17 +107,61 @@ public class KundenMenue {
                 eingabeAusgabe.gibListeAus(liste);
                 break;
             case 3:
+                DecimalFormat df = new DecimalFormat("0.00");
+
+                Map<Artikel, Integer> test = shop.getWarenkorb(kunde).getWarenkorbListe();
+
+                System.out.println("\nWarenkorb:");
+                for (Map.Entry<Artikel, Integer> entry : test.entrySet()) {
+                    System.out.println("Artikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR");
+                }
+
+                System.out.println("Gesamtpreis: " + df.format(shop.getWarenkorb(kunde).getGesamtpreis()) + "EUR");
 
                 break;
             case 4:
+                // TODO negative zahlen
+                System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie hinzufuegen moechten --> ");
+                artikelnummer = eingabeAusgabe.einlesenInteger();
+                System.out.print("Geben Sie die gewuenschte Bestellmenge an --> ");
+                anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
+                shop.artikelZuWarenkorb(artikelnummer, anzahlArtikel, kunde);
+                System.out.println("\nEinfuegen des Artikels in den Warenkorb war erfolgreich!");
                 break;
             case 5:
+                System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie entfernen moechten --> ");
+                artikelnummer = eingabeAusgabe.einlesenInteger();
+                System.out.print("Geben Sie die gewuenschte Menge an, welche Sie entfernen moechten / geben Sie 0 ein und der Artikel wird entfernt --> ");
+                anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
+
+                shop.artikelAusWarenkorbEntfernen(artikelnummer, anzahlArtikel, kunde);
+                System.out.println("\nEntfernen des Artikels aus dem Warenkorb erfolgreich!");
+
+                break;
+            case 6:
+
+                shop.warenkorbLoeschen(kunde);
+                System.out.println("\nLoeschen des Warenkorbs erfolgreich!");
+
+                break;
+            case 7:
+                System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
+                if(eingabeAusgabe.einlesenString().equalsIgnoreCase("j")){
+
+
+                    String rechnung = shop.einkaufAbschliessen(kunde);
+
+                    System.out.println(rechnung);
+
+                }else{
+                    System.out.println("\nViel Spaß beim Einkaufen!");
+                }
                 break;
         }
     }
-
-
-
+    public void setKunde(Kunde kunde) {
+        this.kunde = kunde;
+    }
 }

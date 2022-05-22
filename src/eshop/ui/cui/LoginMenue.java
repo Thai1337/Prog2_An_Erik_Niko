@@ -1,6 +1,12 @@
 package eshop.ui.cui;
 
 import eshop.domain.Eshop;
+import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
+import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.valueobjects.Kunde;
+import eshop.valueobjects.Mitarbeiter;
+import eshop.valueobjects.Nutzer;
+import eshop.valueobjects.Warenkorb;
 
 import java.io.IOException;
 
@@ -22,12 +28,18 @@ public class LoginMenue {
 
     public void gibLoginMenueAus() {
         System.out.println("\nWillkommen in unserem eShop!");
-        System.out.println("(1) = Kundenanmeldung");
-        System.out.println("(2) = Mitarbeiteranmeldung");
-        System.out.println("(3) = Registrieren");
+        System.out.println("(1) = Anmelden");
+        System.out.println("(2) = Registrieren");
         System.out.println("(0) = Programm beenden\n");
         System.out.print("Eingabe --> ");
     }
+    /**
+     * Methode zur Ausführung der Hauptschleife:
+     * - Login-Menü ausgeben
+     * - Eingabe des Benutzers einlesen
+     * - Eingabe verarbeiten und Ergebnis ausgeben
+     * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
+     */
     public void run(){
         int input = -1;
         do{
@@ -35,66 +47,72 @@ public class LoginMenue {
             try{
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteLoginEingabe(input);
-            }catch (IOException e){
+            }catch (IOException | EingabeNichtLeerException | AnmeldungFehlgeschlagenException e){
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("\n" + e.getMessage());
+                //e.printStackTrace();
             }
 
         }while(input != 0);
     }
 
-
-
-    public void verarbeiteLoginEingabe(int line) throws IOException {
-            int nutzernummer;
-            String name, adresse, passwort;
+    /* (non-Javadoc)
+     *
+     * Interne (private) Methode zur Verarbeitung von Eingaben
+     * und Ausgabe von Ergebnissen.
+     */
+    private void verarbeiteLoginEingabe(int line) throws IOException, EingabeNichtLeerException, AnmeldungFehlgeschlagenException {
+            int nutzernummer, hausnummer, plz;
+            String name, passwort, strasse, ort;
 
             switch(line){
                 case 1:
-                    //Kunden Login
-                    System.out.print("Geben Sie Ihre Kundennummer ein --> ");
-                    nutzernummer = Integer.parseInt(eingabeAusgabe.einlesenString());
+
+                    System.out.print("Geben Sie Ihre Nummer ein --> ");
+                    nutzernummer = eingabeAusgabe.einlesenInteger();
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
                     passwort = eingabeAusgabe.einlesenString();
 
-                    if(shop.kundenAnmelden(nutzernummer, passwort)){
+                    Mitarbeiter mitarbeiter = shop.mitarbeiterAnmelden(nutzernummer, passwort); // Die Reihenfolge ist wichtig, weil nur kundenAnmelden eine exception werfen kann, mitarbeiterAnmelden muss null returnen können sonst bricht die Anmeldung ab
+                    if(mitarbeiter != null){
+                        mitarbeiterMenue.setMitarbeiter(mitarbeiter);
+                        System.out.print("\nWillkommen, "+ mitarbeiter.getName() + " arbeite du *********!");
+                        mitarbeiterMenue.run();
+                    }else{ // das else wird benötigt, damit beim ausloggen keine exception geworfen wird
+                        Kunde kunde = shop.kundenAnmelden(nutzernummer, passwort);
+                        kundenMenue.setKunde(kunde);
+                        System.out.print("\nWillkommen im eShop, "+ kunde.getName() + " schoen Sie zu sehen!");
                         kundenMenue.run();
-                    }else{
-                        System.out.println("Ungueltige Eingabe!");
                     }
+
+
                     break;
                 case 2:
-                    //Mitarbeiter Login
-                    System.out.print("Geben Sie Ihre Mitarbeiternummer ein --> ");
-                    nutzernummer = Integer.parseInt(eingabeAusgabe.einlesenString());
-                    System.out.print("Geben Sie Ihr Passwort ein --> ");
+                    //Registrierung (nur für Kunden)
+
+                    System.out.println("Registrieren");
+                    System.out.print("Geben Sie Ihren Namen ein -->");
+                    name = eingabeAusgabe.einlesenString();
+
+                    System.out.print("Geben Sie Ihr Passwort ein -->");
                     passwort = eingabeAusgabe.einlesenString();
+                    System.out.print("Geben Sie Ihre Adresse ein: ");
 
-                    if(shop.mitarbeiterAnmelden(nutzernummer, passwort)){
-                        mitarbeiterMenue.run();
-                    }else{
-                        System.out.println("Ungueltige Eingabe!");
-                    }
+                    System.out.print("\n\tGeben Sie Ihre Strasse ein -->");
+                    strasse = eingabeAusgabe.einlesenString();
 
-                    break;
-                case 3:
-                        //Registrierung (nur für Kunden)
-                        System.out.println("Registrieren");
-                        System.out.print("Geben Sie Ihren Namen ein -->");
-                        name = eingabeAusgabe.einlesenString();
-                        System.out.print("Geben Sie Ihre Adresse ein -->");
-                        adresse = eingabeAusgabe.einlesenString();
-                        System.out.print("Geben Sie Ihr Passwort ein -->");
-                        passwort = eingabeAusgabe.einlesenString();
+                    System.out.print("\tGeben Sie Ihre Hausnummer ein -->");
+                    hausnummer = eingabeAusgabe.einlesenInteger();
+                    System.out.print("\tGeben Sie Ihre Postleitzahl ein -->");
+                    plz = eingabeAusgabe.einlesenInteger();
+                    System.out.print("\tGeben Sie Ihren Ort an ein -->");
+                    ort = eingabeAusgabe.einlesenString();
 
-                        System.out.print("\nIhre Kundennummer fuer die Anmeldung lautet --> " + shop.registriereKunden(name, adresse, passwort) + "\n");
+
+                    System.out.print("\nIhre Kundennummer fuer die Anmeldung lautet --> " + shop.registriereKunden(name, passwort, strasse, hausnummer, plz, ort) + "\n");
 
                     break;
             }
-
-
-
-
     }
 
 }

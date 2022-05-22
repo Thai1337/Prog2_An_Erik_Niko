@@ -1,5 +1,8 @@
 package eshop.valueobjects;
 
+import java.util.Hashtable;
+import java.util.Map;
+
 /**
  * Klasse zur Repräsentation einzelner Kunden.
  *
@@ -8,20 +11,33 @@ package eshop.valueobjects;
  * @author heuschmann
  */
 public class Kunde extends Nutzer {
-    private String adresse;
-    // TODO Adresse aufteilen z.B. Klasse adresse
-    public Kunde(String name, String adresse, String passwort) {
-        this.name = name;
-        this.nummer = counter++;
+    private Adresse adresse;
+
+    private Warenkorb meinWarenkorb;
+    public Kunde(String name, Adresse adresse, String passwort) {
+        super(name, passwort);
         this.adresse = adresse;
-        this.passwort = passwort;
+        this.meinWarenkorb = new Warenkorb();
     }
 
-    public Kunde(String name, int nummer,String adresse, String passwort) {
-        this.name = name;
-        this.nummer = nummer;
+    public Kunde(String name, int nummer,Adresse adresse, String passwort) {
+        super(name, nummer, passwort);
         this.adresse = adresse;
-        this.passwort = passwort;
+        this.meinWarenkorb = new Warenkorb();
+    }
+    /*
+    public void artikelZuWarenkorb(Artikel artikel, int anzahlArtikel){
+        Map<Artikel, Integer> map = new Hashtable<>();
+        map.put(artikel, anzahlArtikel);
+        meinWarenkorb.setWarenkorbListe(map);
+    }*/
+
+    public Warenkorb getWarkorb(){
+        return meinWarenkorb;
+    }
+
+    public void setMeinWarenkorb(Warenkorb meinWarenkorb) {
+        this.meinWarenkorb = meinWarenkorb;
     }
 
     /**
@@ -39,11 +55,11 @@ public class Kunde extends Nutzer {
 
     // Ergänzende-Methoden zum Setzen und Lesen der Kunden-Eigenschaften,
 
-    public String getAdresse() {
+    public Adresse getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(String adresse) {
+    public void setAdresse(Adresse adresse) {
         this.adresse = adresse;
     }
 

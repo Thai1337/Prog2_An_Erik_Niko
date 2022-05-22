@@ -1,12 +1,11 @@
 package eshop.domain;
 
-import eshop.domain.exceptions.ArtikelExistiertBereitsException;
-import eshop.domain.exceptions.ArtikelbestandUnterNullException;
-import eshop.valueobjects.Artikel;
-import eshop.valueobjects.Kunde;
-import eshop.valueobjects.Mitarbeiter;
+import eshop.domain.exceptions.*;
+import eshop.valueobjects.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * Klasse zur Verwaltung eines E-Shops.
@@ -22,6 +21,8 @@ public class Eshop {
     private Artikelverwaltung artikelVW;
     private Mitarbeiterverwaltung mitarbeiterVW;
     private Kundenverwaltung kundenVW;
+    private Warenkorbverwaltung warenkoerbeVW;
+    private Protokollverwaltung protokollVW;
     /**
      * Konstruktor, der eine Artikelverwaltung, eine Mitarbeiterverwaltung und eine Kundenverwaltung erstellt.
      * (Initialisierung des E-Shops).
@@ -30,6 +31,8 @@ public class Eshop {
         artikelVW = new Artikelverwaltung();
         mitarbeiterVW = new Mitarbeiterverwaltung();
         kundenVW = new Kundenverwaltung();
+        warenkoerbeVW = new Warenkorbverwaltung();
+        protokollVW = new Protokollverwaltung();
     }
 
     /**
@@ -55,16 +58,17 @@ public class Eshop {
     /**
      * Methode zum Einfügen eines neuen Artikels in den Bestand.
      * Wenn der Artikel bereits im Bestand ist, wird der Bestand nicht geändert.
-     * @param nr Nummer des Artikels
      * @param bezeichnung Bezeichnung des Artikels
      * @param bestand Bestand des Artikels
      * @return Artikel-Objekt, das im Erfolgsfall eingefügt wurde
      * @throws ArtikelExistiertBereitsException wenn der Artikel bereits existiert
      */
-    public Artikel fuegeArtikelEin(int nr, String bezeichnung, int bestand) throws ArtikelExistiertBereitsException {
-        Artikel a = new Artikel(nr, bezeichnung, bestand);
-        artikelVW.einfuegen(a);
-        return a;
+    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException {
+        Artikel artikel = new Artikel(bezeichnung, bestand, preis);
+        artikelVW.einfuegen(artikel);
+
+        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, artikel, true));
+        return artikel;
     }
     /**
      * Methode zum ändern des Artikelbestandes.
@@ -72,9 +76,12 @@ public class Eshop {
      * @param bezeichnung Bezeichnung des Artikels
      * @param bestand Bestand des Artikels
      */
-    public void aendereArtikelbestand(String bezeichnung, int nr, int bestand) throws ArtikelbestandUnterNullException {
-        Artikel a = new Artikel(nr, bezeichnung, bestand);
-        artikelVW.aendereArtikelbestand(a);
+    // Todo Ändern in Bearbeite Artikel
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws EingabeNichtLeerException, ArtikelbestandUnterNullException {
+        Artikel a = new Artikel(nr, bezeichnung, bestand, preis);
+        artikelVW.aendereArtikel(a);
+
+        protokollVW.bearbeitenLog(new Protokoll(mitarbeiter, a));
 
     }
 
@@ -85,9 +92,11 @@ public class Eshop {
      * @param bezeichner Bezeichnung des Artikels
      * @param nummer Nummer des Artikels
      */
-    public void loescheArtikel(String bezeichner, int nummer) {
-        Artikel a = new Artikel(nummer, bezeichner, 0);
-        artikelVW.loeschen(a);
+    public void loescheArtikel(String bezeichner, int nummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
+        Artikel artikel = new Artikel(nummer, bezeichner, 0, 0);
+        artikel = artikelVW.loeschen(artikel);
+
+        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, artikel, false));
     }
 
     /**
@@ -110,7 +119,7 @@ public class Eshop {
      * @param passwort Passwort des Mitarbeiters, welcher eingestellt werden soll
      * @return Gibt die Mitarbeiternummer des neuen Mitarbeiters zurück
      */
-    public int erstelleMitarbeiter(String name, String passwort) {
+    public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException {
         Mitarbeiter m = new Mitarbeiter(name ,passwort);
         return mitarbeiterVW.erstelleMitarbeiter(m);
     }
@@ -123,7 +132,7 @@ public class Eshop {
      * @param passwort Passwort des im Systems gesuchten Mitarbeiter
      * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
      */
-    public boolean mitarbeiterAnmelden(int nummer, String passwort) {
+    public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         return mitarbeiterVW.mitarbeiterAnmelden(nummer, passwort);
     }
     /**
@@ -134,7 +143,7 @@ public class Eshop {
      * @param passwort Passwort des im Systems gesuchten Kunden
      * @return Ein Boolischenwert, welcher True ist, wenn der Kunden im System ist oder False, wenn dieser nicht im System ist
      */
-    public boolean kundenAnmelden(int nummer, String passwort) {
+    public Kunde kundenAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         return kundenVW.kundeAnmelden(nummer, passwort);
     }
     /**
@@ -142,12 +151,88 @@ public class Eshop {
      * Kundennummer zurückgegeben.
      *
      * @param name Name des Kunden, welcher Regestriert werden soll
-     * @param passwort Passwort gewählt des Kunden
-     * @param adresse
+     * @param passwort Passwort gewählt vom Kunden
+     * @param strasse Straße gewählt vom Kunden
+     * @param hausnummer Hausnummer gewählt vom Kunden
+     * @param  plz postleitzahl gewählt vom Kunden
      * @return Gibt die Kundennummer des neuen Kunden zurück
      */
-    public int registriereKunden(String name, String passwort, String adresse){
-        Kunde k = new Kunde(name, passwort, adresse);
+    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException {
+        Adresse a = new Adresse(strasse, hausnummer, plz, ort);
+        Kunde k = new Kunde(name, a, passwort);
         return kundenVW.erstelleKunde(k);
     }
+    /**
+     * Methode zum Hinzufügen von Artikeln in eine Warenkorb map
+     *
+     * @param artikelnummer die Artikelnummer zum Warenkorb hinzugefügten Artikel
+     * @param anzahlArtikel die Anzahl der Artikel, welche zum Warenkorb hinzugefügt wurden
+     * @param kunde das Kunden Objekt
+     *
+     */
+    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+        boolean artikelIstVorhanden = false;
+        for (Artikel artikel: artikelVW.getArtikelBestand()) {
+            if(artikel.getNummer() == artikelnummer){
+                artikelIstVorhanden = warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
+            }
+        }
+        if (!artikelIstVorhanden)
+            throw new ArtikelNichtVorhandenException("unserem Lager");
+    }
+
+    /**
+     *
+     * @param kunde
+     * @return
+     */
+    public Warenkorb getWarenkorb(Kunde kunde){
+        return warenkoerbeVW.getWarenkorb(kunde);
+    }
+
+    /**
+     *
+     * @param kunde
+     */
+    public void warenkorbLoeschen(Kunde kunde){
+        warenkoerbeVW.warenkorbLoeschen(kunde);
+    }
+
+    /**
+     *
+     * @param artikelnummer
+     * @param anzahlArtikel
+     * @param kunde
+     * @throws ArtikelbestandUnterNullException
+     */
+    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+        boolean artikelIstVorhanden = false;
+        for (Artikel a: artikelVW.getArtikelBestand()) {
+                if(a.getNummer() == artikelnummer){
+                    artikelIstVorhanden = warenkoerbeVW.artikelAusWarenkorbEntfernen(a, anzahlArtikel, kunde);
+                }
+            }
+        if (!artikelIstVorhanden)
+            throw new ArtikelNichtVorhandenException("Ihrem Warenkorb");
+    }
+
+    /**
+     *
+     * @param kunde
+     * @return
+     * @throws ArtikelbestandUnterNullException
+     */
+    public String einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException {
+        Protokoll protokoll = new Protokoll(kunde);
+        protokollVW.kaufLog(protokoll);
+
+        return warenkoerbeVW.einkaufAbschliessen(kunde);
+
+    }
+
+    public List<String> getProtokollListe(){
+        return protokollVW.getProtokollListe();
+    }
+
+
 }

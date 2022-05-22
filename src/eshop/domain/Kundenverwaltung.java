@@ -1,5 +1,8 @@
 package eshop.domain;
 
+import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
+import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.valueobjects.Adresse;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
 
@@ -10,9 +13,14 @@ public class Kundenverwaltung {
 
     List<Kunde> kundenListe = new Vector<>();
     public Kundenverwaltung(){
-        Kunde k1 = new Kunde("Bea", "Bley Strasse", "passwortB");
-        Kunde k2 = new Kunde("Luggas", "Luggas Allee", "passwortL");
-        Kunde k3 = new Kunde("Lisa", "Lisa Strasse", "passwortL");
+
+        Adresse a1 = new Adresse("Ballermann", 14, 28816, "Berne");
+        Adresse a2 = new Adresse("An den Ruschen", 21, 28817, "Bremen");
+        Adresse a3 = new Adresse("Moselstraße", 28, 28818, "Bremen");
+
+        Kunde k1 = new Kunde("Bea", a1, "passwortB");
+        Kunde k2 = new Kunde("Luggas", a2, "passwortL");
+        Kunde k3 = new Kunde("Lisa", a3, "passwortL");
 
         kundenListe.add(k1);
         kundenListe.add(k2);
@@ -25,10 +33,15 @@ public class Kundenverwaltung {
      * @param einKunde Kunde
      * @return gibt die Kundennummer des erstellten Kunden Zurück
      */
-    public int erstelleKunde(Kunde einKunde){
+    public int erstelleKunde(Kunde einKunde) throws EingabeNichtLeerException {
         //Methode zum Erstellen von Kunden
+        if(einKunde.getName().isEmpty() || einKunde.getPasswort().isEmpty() || einKunde.getAdresse().getStrasse().isEmpty()
+                ||  einKunde.getAdresse().getHomeNumber() <= -1 || einKunde.getAdresse().getPlz() <= -1){
+            throw new EingabeNichtLeerException();
+        }
         kundenListe.add(einKunde);
         return einKunde.getNummer();
+
     }
 
     /**
@@ -38,14 +51,14 @@ public class Kundenverwaltung {
      * @param passwort übernimmt den Wert, welcher eingegeben wurde
      * @return Ein Boolischenwert, welcher True ist, wenn der Kunde im System ist oder False, wenn dieser nicht im System ist
      */
-    public boolean kundeAnmelden(int nummer, String passwort){
+    public Kunde kundeAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste
         for(Kunde k : kundenListe){
             if(k.getNummer() == nummer && k.getPasswort().equals(passwort)){
-                return true;
+                return k;
             }
         }
-        return false;
+        throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!");
     }
 
 

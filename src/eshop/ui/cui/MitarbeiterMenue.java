@@ -2,10 +2,15 @@ package eshop.ui.cui;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
+import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.valueobjects.Mitarbeiter;
+import eshop.valueobjects.Protokoll;
 
 import java.io.IOException;
 import java.util.List;
+
 /**
  * Klasse für das Anmelden der Mitarbeiter in einem CUI, welche zum Verarbeiten der Eingaben und Ausgaben genutzt wird.
  *
@@ -13,6 +18,7 @@ import java.util.List;
  */
 public class MitarbeiterMenue {
 
+    private Mitarbeiter mitarbeiter;
     private EA eingabeAusgabe;
     private Eshop shop;
     public MitarbeiterMenue(Eshop shop){
@@ -24,14 +30,15 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Ausgabe des Mitarbeiter-Menüs.
      */
     private void gibMitarbeiterMenueAus() {
-        System.out.println("\n(1) = Artikel ausgeben");
-        System.out.println("(2) = Artikel suchen");
-        System.out.println("(3) = Artikel einfuegen");
-        System.out.println("(4) = Artikelbestand aendern");
-        System.out.println("(5) = Artikel loeschen");
-        System.out.println("(6) = Mitarbeiter hinzufuegen");
+        System.out.println("\n(1) = Artikel: ausgeben");
+        System.out.println("(2) = Artikel: suchen");
+        System.out.println("(3) = Artikel: einfuegen");
+        System.out.println("(4) = Artikel: bearbeiten"); //TODO LOG
+        System.out.println("(5) = Artikel: loeschen");
+        System.out.println("(6) = Mitarbeiter: hinzufuegen");
+        System.out.println("(7) = Aenderungsprotokoll: anzeigen");
         System.out.println("(0) = Ausloggen");
-        System.out.print("Eingabe --> ");
+        System.out.print("\nEingabe --> ");
     }
     /**
      * Methode zur Ausführung der Hauptschleife:
@@ -47,9 +54,11 @@ public class MitarbeiterMenue {
             try{
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
-            }catch (IOException | ArtikelbestandUnterNullException e){
+            }catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException |
+                    ArtikelExistiertBereitsException | ArtikelNichtVorhandenException e){
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("\n" + e.getMessage());
+                //e.printStackTrace();
             }
 
         }while(input != (0));
@@ -59,9 +68,10 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException {
+    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException, ArtikelNichtVorhandenException {
         String nummer, bezeichnung, bestand, name, passwort;
-        int nr, bst;
+        int nr, neueNr, bst;
+        double preis;
         List liste;
         //TODO eigenes Menü für Artikel erstellen
         //TODO Passwort ändern
@@ -77,18 +87,11 @@ public class MitarbeiterMenue {
                 System.out.println("(3): Absteigend nach Bezeichnung");
                 System.out.println("(4): Absteigend nach Nummer\n");
                 System.out.print("Listen Sortierung --> ");
-
-
+                
                 nr = eingabeAusgabe.einlesenInteger();
-                //nr = Integer.parseInt(nummer);
                 System.out.println("");
                 liste = shop.gibAlleArtikel(nr);
                 eingabeAusgabe.gibListeAus(liste);
-
-                System.out.println("Fehler bei der Eingabe: Bitte nur Zahlen sind gueltig");
-                //e.printStackTrace();
-
-
 
                 break;
             case 2:
@@ -100,43 +103,31 @@ public class MitarbeiterMenue {
                 break;
             case 3:
                 System.out.println("");
-                System.out.print("Artikelnummer --> ");
-                nummer = eingabeAusgabe.einlesenString();
-                nr = Integer.parseInt(nummer);
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
                 System.out.print("Artikelbestand  --> ");
-                bestand = eingabeAusgabe.einlesenString();
-                bst = Integer.parseInt(bestand);
+                bst = eingabeAusgabe.einlesenInteger();
+                System.out.print("Artikelpreis  --> ");
+                preis = eingabeAusgabe.einlesenDouble();
+                shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter);
+                System.out.println("Einfuegen ok");
 
-                try {
-                    shop.fuegeArtikelEin(nr, bezeichnung, bst);
-                    System.out.println("Einfuegen ok");
-                } catch (ArtikelExistiertBereitsException e) {
-                    // Hier Fehlerbehandlung...
-                    System.out.println("Fehler beim Einfuegen");
-                    //e.printStackTrace();
-                }
+
                 break;
             case 4:
 
                 System.out.println("");
                 System.out.print("Artikelnummer --> ");
-                //nummer = eingabeAusgabe.einlesenString();
                 nr = eingabeAusgabe.einlesenInteger();
-                System.out.print("Artikelbezeichnung  --> ");
+                System.out.print("Neue Bezeichnung (bei keiner Eingabe bleibt die Bezeichnung gleich)  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
-                System.out.print("Artikelbestand aendern zu --> ");
-                bestand = eingabeAusgabe.einlesenString();
-                bst = Integer.parseInt(bestand);
+                System.out.print("Neuer Artikelbestand (bei keiner Eingabe bleibt der Artikelbestand gleich) --> ");
+                bst = eingabeAusgabe.einlesenInteger();
+                System.out.print("Neuer Artikelpreis (bei keiner Eingabe bleibt der Artikelpreis gleich) --> ");
+                preis = eingabeAusgabe.einlesenDouble();
 
-                try {
-                    shop.aendereArtikelbestand(bezeichnung, nr, bst);
-                }catch (ArtikelbestandUnterNullException e){
-                    System.out.println("Artikelbestand darf nicht unter 0 fallen!");
-                }
-
-
+                shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter);
+                System.out.println("Bearbeitung erfolgreich!");
                 break;
             case 5:
 
@@ -146,8 +137,7 @@ public class MitarbeiterMenue {
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
 
-                shop.loescheArtikel(bezeichnung, nr);
-
+                shop.loescheArtikel(bezeichnung, nr, mitarbeiter);
 
                 break;
             case 6:
@@ -158,6 +148,18 @@ public class MitarbeiterMenue {
                 passwort = eingabeAusgabe.einlesenString();
 
                 System.out.print("\nDie Mitarbeiternummer von ihrem erstellten Mitarbeiter lautet --> " + shop.erstelleMitarbeiter(name, passwort) + "\n");
+                break;
+            case 7:
+                List<String> logListe = shop.getProtokollListe();
+
+                for(String a:logListe){
+                    System.out.println(a);
+                }
+                break;
         }
+    }
+
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
     }
 }
