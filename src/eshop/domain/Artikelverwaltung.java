@@ -109,10 +109,10 @@ public class Artikelverwaltung {
         if (artikelBestand.contains(einArtikel)) { //.contains() benutzt equals Methode von Artikel, welche in der Artikelklasse überschrieben wurde.
             throw new ArtikelExistiertBereitsException(einArtikel, " im Lager!");
         }
-        if (einArtikel.getBestand() <= -1) {
+        if (einArtikel.getBestand() < -1) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
         }
-        if(einArtikel.getNummer() <= -1 || einArtikel.getPreis() <0 ||einArtikel.getBezeichnung().isEmpty()){
+        if(einArtikel.getNummer() <= -1 || einArtikel.getPreis() <0 || einArtikel.getBestand() == -1 ||einArtikel.getBezeichnung().isEmpty()){
             // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
             throw new EingabeNichtLeerException();
         }
@@ -128,14 +128,16 @@ public class Artikelverwaltung {
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelbestandUnterNullException wenn der eingegebene Artikelbestand unter -1 ist
      */
-    public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException {
+    public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelNichtVorhandenException {
         // das übernimmt der Vector:
         // TODO exception damit keine negativen Preise eingegeben werden können und die java-doc ändern!!!! dafuq?
-
-        if (einArtikel.getBestand() <= -1) {
+        if(!artikelBestand.contains(einArtikel)){
+            throw new ArtikelNichtVorhandenException("in unserem Bestand!");
+        }
+        if (einArtikel.getBestand() < -1) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
         }
-        if(einArtikel.getNummer() <= -1 || einArtikel.getPreis() <0 ||einArtikel.getBezeichnung().isEmpty()) {
+        if(einArtikel.getNummer() <= -1 && einArtikel.getPreis() <0 && einArtikel.getBestand() == -1 && einArtikel.getBezeichnung().isEmpty()) {
             // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
             throw new EingabeNichtLeerException();
         }

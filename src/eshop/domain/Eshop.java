@@ -77,7 +77,7 @@ public class Eshop {
      * @param bestand Bestand des Artikels
      */
     // Todo Ändern in Bearbeite Artikel
-    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws EingabeNichtLeerException, ArtikelbestandUnterNullException {
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
         Artikel a = new Artikel(nr, bezeichnung, bestand, preis);
         artikelVW.aendereArtikel(a);
 

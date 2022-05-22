@@ -19,9 +19,9 @@ public class Protokollverwaltung {
         String mitarbeiter = "\n"+protokoll.getDatum() + " | " + "M | Nummer: " +protokoll.getMitarbeiter().getNummer() +" | Name: " + protokoll.getMitarbeiter().getName();
 
         if(protokoll.getEinfuegenLoeschen()){ //Einfügen
-            mitarbeiter += "\n\t | Typ: Artikelanlegung | Artikelnummer:" +protokoll.getArtikel().getNummer()+ " | Bezeichnung: "+protokoll.getArtikel().getBezeichnung()+ " | Bestand: "+ protokoll.getArtikel().getBestand();
+            mitarbeiter += "\n\t | Typ: Artikelanlegung | Artikelnummer: " +protokoll.getArtikel().getNummer()+ " | Bezeichnung: "+protokoll.getArtikel().getBezeichnung()+ " | Bestand: "+ protokoll.getArtikel().getBestand();
         }else{
-            mitarbeiter += "\n\t | Typ: Artikelloeschung | Artikelnummer:" +protokoll.getArtikel().getNummer()+ " | Bezeichnung: "+protokoll.getArtikel().getBezeichnung()+ " | Bestand: "+ protokoll.getArtikel().getBestand();
+            mitarbeiter += "\n\t | Typ: Artikelloeschung | Artikelnummer: " +protokoll.getArtikel().getNummer()+ " | Bezeichnung: "+protokoll.getArtikel().getBezeichnung()+ " | Bestand: "+ protokoll.getArtikel().getBestand();
         }
         protokollString = mitarbeiter;
         protokollListe.add(protokollString);
