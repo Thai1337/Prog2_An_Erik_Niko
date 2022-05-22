@@ -2,6 +2,7 @@ package eshop.ui.cui;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
+import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Mitarbeiter;
@@ -9,6 +10,7 @@ import eshop.valueobjects.Protokoll;
 
 import java.io.IOException;
 import java.util.List;
+
 /**
  * Klasse für das Anmelden der Mitarbeiter in einem CUI, welche zum Verarbeiten der Eingaben und Ausgaben genutzt wird.
  *
@@ -53,7 +55,7 @@ public class MitarbeiterMenue {
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
             }catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException |
-                    ArtikelExistiertBereitsException e){
+                    ArtikelExistiertBereitsException | ArtikelNichtVorhandenException e){
                 // TODO Auto-generated catch block
                 System.out.println("\n" + e.getMessage());
                 //e.printStackTrace();
@@ -66,7 +68,7 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException {
+    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException, ArtikelNichtVorhandenException {
         String nummer, bezeichnung, bestand, name, passwort;
         int nr, neueNr, bst;
         double preis;
@@ -125,7 +127,7 @@ public class MitarbeiterMenue {
                 preis = eingabeAusgabe.einlesenDouble();
 
                 shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter);
-
+                System.out.println("Bearbeitung erfolgreich!");
                 break;
             case 5:
 
@@ -135,7 +137,7 @@ public class MitarbeiterMenue {
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
 
-                shop.loescheArtikel(bezeichnung, nr);
+                shop.loescheArtikel(bezeichnung, nr, mitarbeiter);
 
                 break;
             case 6:

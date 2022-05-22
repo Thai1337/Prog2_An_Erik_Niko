@@ -1,9 +1,6 @@
 package eshop.domain;
 
-import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
-import eshop.domain.exceptions.ArtikelExistiertBereitsException;
-import eshop.domain.exceptions.ArtikelbestandUnterNullException;
-import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.domain.exceptions.*;
 import eshop.valueobjects.*;
 
 import java.util.List;
@@ -66,15 +63,12 @@ public class Eshop {
      * @return Artikel-Objekt, das im Erfolgsfall eingefügt wurde
      * @throws ArtikelExistiertBereitsException wenn der Artikel bereits existiert
      */
-    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
-        Artikel a = new Artikel(bezeichnung, bestand, preis);
-        artikelVW.einfuegen(a);
+    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException {
+        Artikel artikel = new Artikel(bezeichnung, bestand, preis);
+        artikelVW.einfuegen(artikel);
 
-
-        Protokoll protokoll = new Protokoll(mitarbeiter, a, "");
-        protokollVW.bearbeitenLog(protokoll);
-
-        return a;
+        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, artikel, true));
+        return artikel;
     }
     /**
      * Methode zum ändern des Artikelbestandes.
@@ -83,12 +77,11 @@ public class Eshop {
      * @param bestand Bestand des Artikels
      */
     // Todo Ändern in Bearbeite Artikel
-    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelbestandUnterNullException {
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws EingabeNichtLeerException, ArtikelbestandUnterNullException {
         Artikel a = new Artikel(nr, bezeichnung, bestand, preis);
-        String aenderung = artikelVW.aendereArtikel(a);
+        artikelVW.aendereArtikel(a);
 
-        Protokoll protokoll = new Protokoll(mitarbeiter, a, aenderung);
-        protokollVW.bearbeitenLog(protokoll);
+        protokollVW.bearbeitenLog(new Protokoll(mitarbeiter, a));
 
     }
 
@@ -99,9 +92,11 @@ public class Eshop {
      * @param bezeichner Bezeichnung des Artikels
      * @param nummer Nummer des Artikels
      */
-    public void loescheArtikel(String bezeichner, int nummer) {
-        Artikel a = new Artikel(nummer, bezeichner, 0, 0);
-        artikelVW.loeschen(a);
+    public void loescheArtikel(String bezeichner, int nummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
+        Artikel artikel = new Artikel(nummer, bezeichner, 0, 0);
+        artikel = artikelVW.loeschen(artikel);
+
+        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, artikel, false));
     }
 
     /**
@@ -175,12 +170,15 @@ public class Eshop {
      * @param kunde das Kunden Objekt
      *
      */
-    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
+    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+        boolean artikelIstVorhanden = false;
         for (Artikel artikel: artikelVW.getArtikelBestand()) {
             if(artikel.getNummer() == artikelnummer){
-                warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
+                artikelIstVorhanden = warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
             }
         }
+        if (!artikelIstVorhanden)
+            throw new ArtikelNichtVorhandenException("unserem Lager");
     }
 
     /**
@@ -207,12 +205,15 @@ public class Eshop {
      * @param kunde
      * @throws ArtikelbestandUnterNullException
      */
-    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
-            for (Artikel a: artikelVW.getArtikelBestand()) {
+    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+        boolean artikelIstVorhanden = false;
+        for (Artikel a: artikelVW.getArtikelBestand()) {
                 if(a.getNummer() == artikelnummer){
-                    warenkoerbeVW.artikelAusWarenkorbEntfernen(a, anzahlArtikel, kunde);
+                    artikelIstVorhanden = warenkoerbeVW.artikelAusWarenkorbEntfernen(a, anzahlArtikel, kunde);
                 }
             }
+        if (!artikelIstVorhanden)
+            throw new ArtikelNichtVorhandenException("Ihrem Warenkorb");
     }
 
     /**
@@ -221,9 +222,7 @@ public class Eshop {
      * @return
      * @throws ArtikelbestandUnterNullException
      */
-    public String einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException {
-
-
+    public String einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException {
         Protokoll protokoll = new Protokoll(kunde);
         protokollVW.kaufLog(protokoll);
 

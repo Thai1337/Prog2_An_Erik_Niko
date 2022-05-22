@@ -10,18 +10,28 @@ public class Protokoll {
     private String datum;
 
     private Kunde kunde;
-    private String aenderung;
+    private boolean einfuegenLoeschen;
 
-    public Protokoll(Mitarbeiter mitarbeiter, Artikel artikel, String aenderung){
+    public Protokoll(Mitarbeiter mitarbeiter, Artikel artikel, boolean einfuegenLoeschen){
         this.mitarbeiter = mitarbeiter;
         this.artikel = artikel;
-        this.aenderung = aenderung;
+        this.einfuegenLoeschen = einfuegenLoeschen;
 
 
         LocalDateTime myObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         this.datum = myObj.format(myFormatObj);
     }
+
+    public Protokoll(Mitarbeiter mitarbeiter, Artikel artikel){
+        this.mitarbeiter = mitarbeiter;
+        this.artikel = artikel;
+
+        LocalDateTime myObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        this.datum = myObj.format(myFormatObj);
+    }
+
 
     public Kunde getKunde() {
         return kunde;
@@ -46,8 +56,8 @@ public class Protokoll {
         this.kunde = kunde;
     }
 
-    public String getAenderung() {
-        return aenderung;
+    public boolean getEinfuegenLoeschen() {
+        return einfuegenLoeschen;
     }
 
     public Artikel getArtikel() {

@@ -1,6 +1,7 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.ArtikelExistiertBereitsException;
+import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.valueobjects.Artikel;
@@ -104,11 +105,14 @@ public class Artikelverwaltung {
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelExistiertBereitsException wenn ein Artikel bereits existiert
      */
-    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException {
+    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException {
         if (artikelBestand.contains(einArtikel)) { //.contains() benutzt equals Methode von Artikel, welche in der Artikelklasse überschrieben wurde.
-            throw new ArtikelExistiertBereitsException(einArtikel, "im Lager");
+            throw new ArtikelExistiertBereitsException(einArtikel, " im Lager!");
         }
-        if(einArtikel.getNummer() <= -1 || einArtikel.getBestand() <= -1 || einArtikel.getBezeichnung().isEmpty()){
+        if (einArtikel.getBestand() <= -1) {
+            throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
+        }
+        if(einArtikel.getNummer() <= -1 || einArtikel.getPreis() <0 ||einArtikel.getBezeichnung().isEmpty()){
             // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
             throw new EingabeNichtLeerException();
         }
@@ -124,33 +128,31 @@ public class Artikelverwaltung {
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelbestandUnterNullException wenn der eingegebene Artikelbestand unter -1 ist
      */
-    public String aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException {
-        String aenderung = "";
+    public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException {
         // das übernimmt der Vector:
         // TODO exception damit keine negativen Preise eingegeben werden können und die java-doc ändern!!!! dafuq?
-        if (einArtikel.getBestand() < -1) {
+
+        if (einArtikel.getBestand() <= -1) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
         }
-
+        if(einArtikel.getNummer() <= -1 || einArtikel.getPreis() <0 ||einArtikel.getBezeichnung().isEmpty()) {
+            // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
+            throw new EingabeNichtLeerException();
+        }
         for (Artikel artikel : artikelBestand) {
             if (artikel.getNummer() == einArtikel.getNummer()) {
                 if(!einArtikel.getBezeichnung().isEmpty()){
                     artikel.setBezeichnung(einArtikel.getBezeichnung());
-                    aenderung += "a";
                 }
                 if(einArtikel.getPreis() != -1.01){
                     artikel.setPreis(einArtikel.getPreis());
-                    aenderung += "b";
-
                 }
                 if(einArtikel.getBestand() != -1){
                     artikel.setBestand(einArtikel.getBestand());
-                    aenderung += "c";
                 }
             }
 
         }
-        return aenderung;
         
     }
     /**
@@ -158,9 +160,18 @@ public class Artikelverwaltung {
      *
      * @param einArtikel der löschende Artikel
      */
-    public void loeschen(Artikel einArtikel) {
+    public Artikel loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException {
         // das übernimmt der Vector:
-        artikelBestand.remove(einArtikel);
+        Artikel artikel;
+
+        if(artikelBestand.contains(einArtikel)){
+            artikel = artikelBestand.get(einArtikel.getNummer());
+            artikelBestand.remove(einArtikel);
+        }else{
+            throw new ArtikelNichtVorhandenException("unserem Lager!\n Bitte geben Sie eine gueltige Artikelbezeichnung ein!");
+        }
+
+        return artikel;
     }
 
     /**

@@ -1,7 +1,9 @@
 package eshop.ui.cui;
 
 import eshop.domain.Eshop;
+import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.WarenkorbLeerException;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
 
@@ -61,7 +63,7 @@ public class KundenMenue {
             try{
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteKundenEingabe(input);
-            }catch (IOException | ArtikelbestandUnterNullException e){
+            }catch (IOException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | WarenkorbLeerException e){
                 // TODO Auto-generated catch block
                 System.out.println(e.getMessage());
             }
@@ -73,7 +75,7 @@ public class KundenMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException {
+    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, WarenkorbLeerException {
         String nummer, bezeichnung, bestand;
         int nr, bst, artikelnummer, anzahlArtikel;
         List liste;
@@ -125,6 +127,7 @@ public class KundenMenue {
                 anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
                 shop.artikelZuWarenkorb(artikelnummer, anzahlArtikel, kunde);
+                System.out.println("\nEinfuegen des Artikels in den Warenkorb war erfolgreich!");
                 break;
             case 5:
                 System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie entfernen moechten --> ");
@@ -134,21 +137,26 @@ public class KundenMenue {
 
 
                 shop.artikelAusWarenkorbEntfernen(artikelnummer, anzahlArtikel, kunde);
+                System.out.println("\nEntfernen des Artikels aus dem Warenkorb erfolgreich!");
 
                 break;
             case 6:
 
                 shop.warenkorbLoeschen(kunde);
+                System.out.println("\nLoeschen des Warenkorbs erfolgreich!");
 
                 break;
             case 7:
                 System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
                 if(eingabeAusgabe.einlesenString().equalsIgnoreCase("j")){
 
+
                     String rechnung = shop.einkaufAbschliessen(kunde);
 
                     System.out.println(rechnung);
 
+                }else{
+                    System.out.println("\nViel Spaß beim Einkaufen!");
                 }
                 break;
         }
