@@ -27,7 +27,7 @@ public class LoginMenue {
 
 
     public void gibLoginMenueAus() {
-        System.out.println("\nWillkommen in unserem eShop!");
+        System.out.println("\nWillkommen in unserem freeShop!");
         System.out.println("(1) = Anmelden");
         System.out.println("(2) = Registrieren");
         System.out.println("(0) = Programm beenden\n");
@@ -73,15 +73,15 @@ public class LoginMenue {
                     System.out.print("Geben Sie Ihr Passwort ein --> ");
                     passwort = eingabeAusgabe.einlesenString();
 
-                    Mitarbeiter mitarbeiter = shop.mitarbeiterAnmelden(nutzernummer, passwort); // Die Reihenfolge ist wichtig, weil nur kundenAnmelden eine exception werfen kann, mitarbeiterAnmelden muss null returnen können sonst bricht die Anmeldung ab
+                    Mitarbeiter mitarbeiter = shop.mitarbeiterAnmelden(nutzernummer, passwort); // Die Reihenfolge ist wichtig, weil nur kundenAnmelden() eine exception werfen kann, mitarbeiterAnmelden muss null returnen können sonst bricht die Anmeldung ab
                     if(mitarbeiter != null){
-                        mitarbeiterMenue.setMitarbeiter(mitarbeiter);
-                        System.out.print("\nWillkommen, "+ mitarbeiter.getName() + " arbeite du *********!");
+                        mitarbeiterMenue.setMitarbeiter(mitarbeiter); // wird für das logging benötigt
+                        System.out.print("\nWillkommen, "+ mitarbeiter.getName() + " arbeiten Sie bitte!");
                         mitarbeiterMenue.run();
                     }else{ // das else wird benötigt, damit beim ausloggen keine exception geworfen wird
-                        Kunde kunde = shop.kundenAnmelden(nutzernummer, passwort);
+                        Kunde kunde = shop.kundenAnmelden(nutzernummer, passwort); // nur kundenAnmelden() wirft eine Anmeldung fehlgeschlagen exception
                         kundenMenue.setKunde(kunde);
-                        System.out.print("\nWillkommen im eShop, "+ kunde.getName() + " schoen Sie zu sehen!");
+                        System.out.print("\nWillkommen im freeShop, "+ kunde.getName() + " schoen Sie zu sehen!");
                         kundenMenue.run();
                     }
 

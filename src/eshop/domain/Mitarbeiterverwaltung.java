@@ -46,9 +46,9 @@ public class Mitarbeiterverwaltung {
      */
    public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) {
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste
-        for(Mitarbeiter m : mitarbeiterListe){
-            if(m.getNummer() == nummer && m.getPasswort().equals(passwort)){
-                return m;
+        for(Mitarbeiter mitarbeiter : mitarbeiterListe){
+            if(mitarbeiter.getNummer() == nummer && mitarbeiter.getPasswort().equals(passwort)){
+                return mitarbeiter;
             }
         }
         //throw new AnmeldungFehlgeschlagenException(" Ungueltige Anmeldedaten!"); // musste geändert werden wegen der neuen anmeldung

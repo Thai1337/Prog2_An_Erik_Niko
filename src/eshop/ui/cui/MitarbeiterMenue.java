@@ -33,7 +33,7 @@ public class MitarbeiterMenue {
         System.out.println("\n(1) = Artikel: ausgeben");
         System.out.println("(2) = Artikel: suchen");
         System.out.println("(3) = Artikel: einfuegen");
-        System.out.println("(4) = Artikel: bearbeiten"); //TODO LOG
+        System.out.println("(4) = Artikel: bearbeiten");
         System.out.println("(5) = Artikel: loeschen");
         System.out.println("(6) = Mitarbeiter: hinzufuegen");
         System.out.println("(7) = Aenderungsprotokoll: anzeigen");
@@ -56,7 +56,6 @@ public class MitarbeiterMenue {
                 verarbeiteMitarbeiterEingabe(input);
             }catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException |
                     ArtikelExistiertBereitsException | ArtikelNichtVorhandenException e){
-                // TODO Auto-generated catch block
                 System.out.println("\n" + e.getMessage());
                 //e.printStackTrace();
             }
@@ -77,10 +76,10 @@ public class MitarbeiterMenue {
         //TODO Passwort ändern
         //TODO Mitarbeiter daten einsehen
         //TODO Mitarbeiter verwalten Kunden
+        //TODO Protokoll für Kunden/Mitarbeiter | registrieren/löschen
         switch (line) {
             case 1:
-                System.out.println("");
-                System.out.println("Mitarbeiter Menue");
+                System.out.println("\nMitarbeiter Menue");
                 System.out.println("(0): Unsortiert");
                 System.out.println("(1): Aufsteigend nach Bezeichnung");
                 System.out.println("(2): Aufsteigend nach Nummer");
@@ -102,8 +101,8 @@ public class MitarbeiterMenue {
                 eingabeAusgabe.gibListeAus(liste);
                 break;
             case 3:
-                System.out.println("");
-                System.out.print("Artikelbezeichnung  --> ");
+
+                System.out.print("\nArtikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
                 System.out.print("Artikelbestand  --> ");
                 bst = eingabeAusgabe.einlesenInteger();
@@ -134,10 +133,11 @@ public class MitarbeiterMenue {
                 System.out.println("");
                 System.out.print("Artikelnummer --> ");
                 nr = eingabeAusgabe.einlesenInteger();
-                System.out.print("Artikelbezeichnung  --> ");
-                bezeichnung = eingabeAusgabe.einlesenString();
+                //System.out.print("Artikelbezeichnung  --> ");
+                //bezeichnung = eingabeAusgabe.einlesenString();
 
-                shop.loescheArtikel(bezeichnung, nr, mitarbeiter);
+                shop.loescheArtikel(nr, mitarbeiter);
+                System.out.println("Loeschen erfolgreich!");
 
                 break;
             case 6:

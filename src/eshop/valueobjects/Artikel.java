@@ -47,7 +47,7 @@ public class Artikel {
                 ", preis=" + preis +
                 '}';
     }
-    
+
     // Methoden zum Setzen und Lesen der Artikel-Eigenschaften,
 
     public double getPreis() {return preis;}

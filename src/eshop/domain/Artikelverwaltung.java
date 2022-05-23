@@ -175,7 +175,7 @@ public class Artikelverwaltung {
             artikel = artikelBestand.get(einArtikel.getNummer());
             artikelBestand.remove(einArtikel);
         }else{
-            throw new ArtikelNichtVorhandenException("unserem Lager!\n Bitte geben Sie eine gueltige Artikelbezeichnung ein!");
+            throw new ArtikelNichtVorhandenException("unserem Lager!");
         }
 
         return artikel;

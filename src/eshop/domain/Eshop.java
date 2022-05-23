@@ -92,12 +92,11 @@ public class Eshop {
      * Methode zum Löschen eines Artikels aus dem Bestand.
      * Es wird nur das erste Vorkommen des Artikels gelöscht.
      *
-     * @param bezeichner Bezeichnung des Artikels
      * @param nummer Nummer des Artikels
      * @throws ArtikelNichtVorhandenException wenn die eingegebenden Daten zu keinem Artikel übereinstimmen
      */
-    public void loescheArtikel(String bezeichner, int nummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
-        Artikel artikel = new Artikel(nummer, bezeichner, 0, 0);
+    public void loescheArtikel(int nummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
+        Artikel artikel = new Artikel(nummer, "", 0, 0);
         artikel = artikelVW.loeschen(artikel);
 
         protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, artikel, false));
@@ -177,6 +176,7 @@ public class Eshop {
      * @throws ArtikelNichtVorhandenException wenn der Artikel nicht im Warenkorb ist
      */
     public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+        // TODO methode um einen artikel mit der id zu finden in der warenkorbVW
         boolean artikelIstVorhanden = false;
         for (Artikel artikel: artikelVW.getArtikelBestand()) {
             if(artikel.getNummer() == artikelnummer){
@@ -213,6 +213,7 @@ public class Eshop {
      * @throws ArtikelNichtVorhandenException wenn der Artikel nicht im Warenkorb ist
      */
     public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+        // TODO methode um einen artikel mit der id zu finden in der warenkorbVW
         boolean artikelIstVorhanden = false;
         for (Artikel artikel: artikelVW.getArtikelBestand()) {
                 if(artikel.getNummer() == artikelnummer){
