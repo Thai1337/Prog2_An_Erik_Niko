@@ -1,5 +1,12 @@
 package eshop.valueobjects;
 
+/**
+ * Klasse zur Repräsentation einzelner Adressen.
+ *
+ * @author seliger
+ * @author nguyen
+ * @author heuschmann
+ */
 public class Adresse {
     private String strasse;
     private int hausnummer;

@@ -31,6 +31,13 @@ public class Artikel {
         this.preis = preis;
     }
 
+    /**
+     * Standard-Methode von Object überschrieben.
+     * Methode wird immer automatisch aufgerufen, wenn ein Artikel-Objekt als String
+     * benutzt wird (z.B. in println(artikel);)
+     *
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         return "Artikel{" +
@@ -40,36 +47,16 @@ public class Artikel {
                 ", preis=" + preis +
                 '}';
     }
-
-    /**
-     * Standard-Methode von Object überschrieben.
-     * Methode wird immer automatisch aufgerufen, wenn ein Artikel-Objekt als String
-     * benutzt wird (z.B. in println(artikel);)
-     *
-     * @see java.lang.Object#toString()
-     */
-
-
-
-
-
+    
     // Methoden zum Setzen und Lesen der Artikel-Eigenschaften,
 
-    public double getPreis() {
-        return preis;
-    }
+    public double getPreis() {return preis;}
 
-    public void setPreis(double preis) {
-        this.preis = preis;
-    }
+    public void setPreis(double preis) {this.preis = preis;}
 
-    public int getNummer() {
-        return nummer;
-    }
+    public int getNummer() {return nummer;}
 
-    public void setNummer(int nummer) {
-        this.nummer = nummer;
-    }
+    public void setNummer(int nummer) {this.nummer = nummer;}
 
     public String getBezeichnung() {
         return bezeichnung;

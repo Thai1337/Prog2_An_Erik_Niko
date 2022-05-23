@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Vector;
 
 public class Kundenverwaltung {
-
+    /**
+     * Konstruktor welcher Kunden erstellt
+     */
     List<Kunde> kundenListe = new Vector<>();
     public Kundenverwaltung(){
 
@@ -32,6 +34,7 @@ public class Kundenverwaltung {
      * Methode, womit Kunden sich selbst registrieren können und diesen Kunden in einen Vektor speichern
      * @param einKunde Kunde
      * @return gibt die Kundennummer des erstellten Kunden Zurück
+     * @throws EingabeNichtLeerException wenn eines der Eingabefelder leer ist oder ein negativer Wert eingegeben wird
      */
     public int erstelleKunde(Kunde einKunde) throws EingabeNichtLeerException {
         //Methode zum Erstellen von Kunden
@@ -50,6 +53,7 @@ public class Kundenverwaltung {
      * @param nummer übernimmt den Wert, welcher eingegeben wurde
      * @param passwort übernimmt den Wert, welcher eingegeben wurde
      * @return Ein Boolischenwert, welcher True ist, wenn der Kunde im System ist oder False, wenn dieser nicht im System ist
+     * @throws AnmeldungFehlgeschlagenException wenn die Anmeldedaten nicht mit den Angegeben daten überstimmen
      */
     public Kunde kundeAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste

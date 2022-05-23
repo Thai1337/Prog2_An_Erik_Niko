@@ -31,7 +31,7 @@ public class Warenkorbverwaltung {
      * @param artikel der Artikel, welcher zum Warenkorb hinzugefügt wird
      * @param anzahlArtikel Anzahl vom hinzugefügten Artikel
      * @param kunde Kunde, dem der Warenkorb zugewiesen wurde
-     * @throws ArtikelbestandUnterNullException
+     * @throws ArtikelbestandUnterNullException wenn der hinzugefügte Artikelbestand kleiner 0 sein sollte
      */
     public boolean artikelZuWarenkorbHinzufuegen(Artikel artikel, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
         warenkorb = kunde.getWarkorb();
@@ -69,7 +69,7 @@ public class Warenkorbverwaltung {
      * @param artikel bestimmter Artikel
      * @param anzahlArtikel Anzahl vom Artikel
      * @param kunde Kunde, dem der Warenkorb zugewiesen wurde
-     * @throws ArtikelbestandUnterNullException
+     * @throws ArtikelbestandUnterNullException wenn der zu entfernende Artikelbestand kleiner 0 sein sollte
      */
     public boolean artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
         warenkorb = kunde.getWarkorb();
@@ -124,7 +124,8 @@ public class Warenkorbverwaltung {
      * Methode zum Abschließen des Einkaufs
      * @param kunde Kunde, dem der Warenkorb zugewiesen wurde
      * @return Aufrufen der erstelle Rechnung methode
-     * @throws ArtikelbestandUnterNullException
+     * @throws ArtikelbestandUnterNullException wenn eines der gekauften Artikel nicht mehr zu kaufen ist, da die Menge im Warenkorb größer als die im Lager ist
+     * @throws WarenkorbLeerException wenn sich keine Artikel im Warenkorb befinden
      */
     public String einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException {
         // TODO rechnung muss noch erstellt werden

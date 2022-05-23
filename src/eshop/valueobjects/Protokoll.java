@@ -4,6 +4,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+/**
+ * Klasse zur Repräsentation einzelner Protokolle.
+ *
+ * @author seliger
+ * @author nguyen
+ * @author heuschmann
+ */
 public class Protokoll {
     private Mitarbeiter mitarbeiter;
     private Artikel artikel;

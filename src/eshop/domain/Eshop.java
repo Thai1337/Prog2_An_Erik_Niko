@@ -60,6 +60,8 @@ public class Eshop {
      * @param bestand Bestand des Artikels
      * @return Artikel-Objekt, das im Erfolgsfall eingefügt wurde
      * @throws ArtikelExistiertBereitsException wenn der Artikel bereits existiert
+     * @throws EingabeNichtLeerException Wenn die Eingabe leer oder falsch ist
+     * @throws ArtikelbestandUnterNullException wenn der angegebene bestand beim Einfügen unter null ist
      */
     public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException {
         Artikel artikel = new Artikel(bezeichnung, bestand, preis);
@@ -73,6 +75,9 @@ public class Eshop {
      * @param nr Nummer des Artikels
      * @param bezeichnung Bezeichnung des Artikels
      * @param bestand Bestand des Artikels
+     * @throws EingabeNichtLeerException Wenn die Eingabe leer oder falsch ist
+     * @throws ArtikelbestandUnterNullException Wenn der Artikelbestand unter null fällt oder fallen würde
+     * @throws ArtikelNichtVorhandenException Wenn der Artikel nicht in unserem Lager ist
      */
     // Todo Ändern in Bearbeite Artikel
     public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
@@ -89,6 +94,7 @@ public class Eshop {
      *
      * @param bezeichner Bezeichnung des Artikels
      * @param nummer Nummer des Artikels
+     * @throws ArtikelNichtVorhandenException wenn die eingegebenden Daten zu keinem Artikel übereinstimmen
      */
     public void loescheArtikel(String bezeichner, int nummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
         Artikel artikel = new Artikel(nummer, bezeichner, 0, 0);
@@ -115,6 +121,7 @@ public class Eshop {
      * @param name Name des Mitarbeiters, welcher eingestellt werden soll
      * @param passwort Passwort des Mitarbeiters, welcher eingestellt werden soll
      * @return Gibt die Mitarbeiternummer des neuen Mitarbeiters zurück
+     * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
     public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException {
         Mitarbeiter mitarbeiter = new Mitarbeiter(name ,passwort);
@@ -153,6 +160,7 @@ public class Eshop {
      * @param hausnummer Hausnummer gewählt vom Kunden
      * @param  plz postleitzahl gewählt vom Kunden
      * @return Gibt die Kundennummer des neuen Kunden zurück
+     * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
     public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException {
         Adresse artikel = new Adresse(strasse, hausnummer, plz, ort);
@@ -165,7 +173,8 @@ public class Eshop {
      * @param artikelnummer die Artikelnummer zum Warenkorb hinzugefügten Artikel
      * @param anzahlArtikel die Anzahl der Artikel, welche zum Warenkorb hinzugefügt wurden
      * @param kunde das Kunden Objekt
-     *
+     * @throws ArtikelbestandUnterNullException wenn der Artikelbestand, den man einfügen will, unter null fällt oder fallen würde
+     * @throws ArtikelNichtVorhandenException wenn der Artikel nicht im Warenkorb ist
      */
     public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
         boolean artikelIstVorhanden = false;
@@ -179,28 +188,29 @@ public class Eshop {
     }
 
     /**
-     *
-     * @param kunde
-     * @return
+     * Methode, die den Warenkorb mit den Artikeln und Gesamtpreis vom Kunden zurückgibt
+     * @param kunde das Kundenobjekt
+     * @return Warenkorb mit Artikelinfo und aktueller Gesamtpreis (Aufrufen der Warenkorb löschen Methode)
      */
     public Warenkorb getWarenkorb(Kunde kunde){
         return warenkoerbeVW.getWarenkorb(kunde);
     }
 
     /**
-     *
-     * @param kunde
+     * Löscht alle Artikel, die sich im Warenkorb befinden mithilfe der clear methode
+     * @param kunde das Kundenobjekt
      */
     public void warenkorbLoeschen(Kunde kunde){
         warenkoerbeVW.warenkorbLoeschen(kunde);
     }
 
     /**
-     *
-     * @param artikelnummer
-     * @param anzahlArtikel
-     * @param kunde
-     * @throws ArtikelbestandUnterNullException
+     *Entfernt einen bestimmten Artikel aus dem Warenkorb
+     * @param artikelnummer die Artikelnummer des zu entfernenden Artikels
+     * @param anzahlArtikel die Anzahl des zu entfernenden Artikels
+     * @param kunde das Kundenobjekt
+     * @throws ArtikelbestandUnterNullException wenn der bestand im Warenkorb, der zu entfernen ist, unter null ist
+     * @throws ArtikelNichtVorhandenException wenn der Artikel nicht im Warenkorb ist
      */
     public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
         boolean artikelIstVorhanden = false;
@@ -214,10 +224,13 @@ public class Eshop {
     }
 
     /**
-     *
-     * @param kunde
-     * @return
-     * @throws ArtikelbestandUnterNullException
+     * Methode, welche die Rechnung mit den Artikeln erstellt. Außerdem wird ein Log für den EinKauf in der Protokollverwaltung angefertigt.
+     * Bei der Methode wird zusätzlich noch abgefragt, ob noch zum jeweiligen Artikel genug im Lager ist. In dem Fall wird der Kunde
+     * darauf hingewiesen, dass er zu langsam war
+     * @param kunde das Kundenobjekt
+     * @return Aufrufen der einkauf abschließen methode
+     * @throws ArtikelbestandUnterNullException wird geworfen, wenn der Bestand im Lager kleiner ist als der Bestand im Warenkorb den man kaufen will
+     * @throws WarenkorbLeerException wenn keine Artikel im Warenkorb sind
      */
     public String einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException {
         Protokoll protokoll = new Protokoll(kunde);
@@ -227,6 +240,10 @@ public class Eshop {
 
     }
 
+    /**
+     * Gibt die Liste aller Protokolle an die KundenMenu CUI weiter in eimen String Vektor
+     * @return Protkolllisten Vektor
+     */
     public List<String> getProtokollListe(){
         return protokollVW.getProtokollListe();
     }

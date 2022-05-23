@@ -104,6 +104,8 @@ public class Artikelverwaltung {
      *
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelExistiertBereitsException wenn ein Artikel bereits existiert
+     * @throws EingabeNichtLeerException wenn eines der eingegebenen Daten leer ist
+     * @throws ArtikelbestandUnterNullException wenn der artikelbestand unter -1 ist
      */
     public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException {
         if (artikelBestand.contains(einArtikel)) { //.contains() benutzt equals Methode von Artikel, welche in der Artikelklasse überschrieben wurde.
@@ -127,6 +129,8 @@ public class Artikelverwaltung {
      *
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelbestandUnterNullException wenn der eingegebene Artikelbestand unter -1 ist
+     * @throws EingabeNichtLeerException wenn alle eingegebenen Werte leer sind
+     * @throws ArtikelNichtVorhandenException wenn der Artikel nicht in unserem Lager ist
      */
     public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelNichtVorhandenException {
         // das übernimmt der Vector:
@@ -161,6 +165,7 @@ public class Artikelverwaltung {
      * Methode zum Löschen eines Artikels aus dem Bestand.
      *
      * @param einArtikel der löschende Artikel
+     * @throws ArtikelNichtVorhandenException wenn sich der zu löschende Artikel nicht in unserem Lager befindet
      */
     public Artikel loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException {
         // das übernimmt der Vector:

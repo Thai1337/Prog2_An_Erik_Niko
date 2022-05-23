@@ -27,6 +27,7 @@ public class Mitarbeiterverwaltung {
      * Methode womit Mitarbeiter andere Mitarbeiter erstellen können und diese in einen Vektor speichern
      * @param einMitarbeiter Mitarbeiter
      * @return gibt die Mitarbeiternummer des erstellten Mitarbeiters Zurück
+     * @throws EingabeNichtLeerException wenn bei der erstellung eines Mitarbeiters kein Name oder Passwort angegeben wird
      */
    public int erstelleMitarbeiter(Mitarbeiter einMitarbeiter) throws EingabeNichtLeerException {
        //Methode zum Erstellen von Mitarbeitern
@@ -43,7 +44,7 @@ public class Mitarbeiterverwaltung {
      * @param passwort übernimmt den Wert, welcher eingegben wurde
      * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
      */
-   public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
+   public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) {
         //Vergleicht Eingabe mit den Werten aus der Mitarbeiterliste
         for(Mitarbeiter m : mitarbeiterListe){
             if(m.getNummer() == nummer && m.getPasswort().equals(passwort)){
