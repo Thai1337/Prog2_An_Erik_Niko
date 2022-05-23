@@ -36,7 +36,7 @@ public class Warenkorbverwaltung {
     public boolean artikelZuWarenkorbHinzufuegen(Artikel artikel, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
         warenkorb = kunde.getWarkorb();
 // TODO keine Negativen werte
-        if(anzahlArtikel < 0){
+        if(anzahlArtikel <= 0){
             throw new ArtikelbestandUnterNullException(artikel, " Bitte geben Sie ein Bestellmenge groesser als 0 ein!");
         }
 
@@ -71,9 +71,9 @@ public class Warenkorbverwaltung {
      * @param kunde Kunde, dem der Warenkorb zugewiesen wurde
      * @throws ArtikelbestandUnterNullException
      */
-    public boolean artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
+    public boolean artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
         warenkorb = kunde.getWarkorb();
-        if(anzahlArtikel < 0){
+        if(anzahlArtikel < 0){ // eingabe darf nicht kleiner als 0 sein
             throw new ArtikelbestandUnterNullException(artikel, " Bitte geben Sie ein Entfernmenge groesser als 0 ein!");
         }
 
@@ -83,18 +83,15 @@ public class Warenkorbverwaltung {
 
         int alteWarenkorbMenge = warenkorb.getWarenkorbListe().get(artikel);
         // TODO vielleicht noch ändern, dass wenn alterWert - anzahlArtikel <= 0 der Artikel entfernt wird. Tutor fragen ob das mehr Sinn macht, würde die unter exception überflüssig machen
-        if(alteWarenkorbMenge - anzahlArtikel < 0){
+        if(alteWarenkorbMenge - anzahlArtikel < 0){ // Menge im Warenkorb darf nicht negativ sein z.B. 90 im Warenkorb - 92 welche entfernt werden sollen
             throw new ArtikelbestandUnterNullException(artikel, " Der Bestand ihres Warenkorbs darf nicht unter 0 fallen!");
         }
         if(anzahlArtikel == 0 || (alteWarenkorbMenge - anzahlArtikel) == 0){ // wenn die eingegebene Menge im warenkorb 0 ist oder das ergebnis z.B. 92-92 0 wird, wird der Artikel entfernt
             warenkorb.getWarenkorbListe().remove(artikel);
-            return true;
         }else{ // sonst wird die Menge des Artikels im Warenkorb geändert
             warenkorb.setWarenkorbListe(artikel,  alteWarenkorbMenge - anzahlArtikel);
-            return true;
         }
-
-
+        return true;
     }
 
     /**

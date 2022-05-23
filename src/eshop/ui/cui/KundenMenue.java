@@ -127,7 +127,7 @@ public class KundenMenue {
                 anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
                 shop.artikelZuWarenkorb(artikelnummer, anzahlArtikel, kunde);
-                System.out.println("\nEinfuegen des Artikels in den Warenkorb war erfolgreich!");
+                System.out.println("\nEinfuegen war erfolgreich!");
                 break;
             case 5:
                 System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie entfernen moechten --> ");
@@ -137,7 +137,7 @@ public class KundenMenue {
 
 
                 shop.artikelAusWarenkorbEntfernen(artikelnummer, anzahlArtikel, kunde);
-                System.out.println("\nEntfernen des Artikels aus dem Warenkorb erfolgreich!");
+                System.out.println("\nEntfernen war erfolgreich!");
 
                 break;
             case 6:

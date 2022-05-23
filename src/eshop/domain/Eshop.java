@@ -41,7 +41,6 @@ public class Eshop {
      * @return Vector aller Artikel
      */
   public List<Artikel> gibAlleArtikel(){
-      // einfach delegieren an meineBuecher
       return artikelVW.getArtikelBestand();
   }
 
@@ -51,7 +50,6 @@ public class Eshop {
      * @return Vector aller Artikel
      */
     public List<Artikel> gibAlleArtikel(int sortierung){
-        // einfach delegieren an meineBuecher
         return artikelVW.getArtikelBestand(sortierung);
     }
 
@@ -78,10 +76,10 @@ public class Eshop {
      */
     // Todo Ändern in Bearbeite Artikel
     public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
-        Artikel a = new Artikel(nr, bezeichnung, bestand, preis);
-        artikelVW.aendereArtikel(a);
+        Artikel artikel = new Artikel(nr, bezeichnung, bestand, preis);
+        artikelVW.aendereArtikel(artikel);
 
-        protokollVW.bearbeitenLog(new Protokoll(mitarbeiter, a));
+        protokollVW.bearbeitenLog(new Protokoll(mitarbeiter, artikel));
 
     }
 
@@ -107,7 +105,6 @@ public class Eshop {
      * @return Liste der gefundenen Artikel (evtl. leer)
      */
     public List<Artikel> sucheNachbezeichnung(String bezeichnung) {
-        // Methode zum suchen von Buechern nach der Bezeichnung
         return artikelVW.sucheArtikel(bezeichnung);
     }
 
@@ -120,8 +117,8 @@ public class Eshop {
      * @return Gibt die Mitarbeiternummer des neuen Mitarbeiters zurück
      */
     public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException {
-        Mitarbeiter m = new Mitarbeiter(name ,passwort);
-        return mitarbeiterVW.erstelleMitarbeiter(m);
+        Mitarbeiter mitarbeiter = new Mitarbeiter(name ,passwort);
+        return mitarbeiterVW.erstelleMitarbeiter(mitarbeiter);
     }
 
     /**
@@ -158,9 +155,9 @@ public class Eshop {
      * @return Gibt die Kundennummer des neuen Kunden zurück
      */
     public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException {
-        Adresse a = new Adresse(strasse, hausnummer, plz, ort);
-        Kunde k = new Kunde(name, a, passwort);
-        return kundenVW.erstelleKunde(k);
+        Adresse artikel = new Adresse(strasse, hausnummer, plz, ort);
+        Kunde kunde = new Kunde(name, artikel, passwort);
+        return kundenVW.erstelleKunde(kunde);
     }
     /**
      * Methode zum Hinzufügen von Artikeln in eine Warenkorb map
@@ -178,7 +175,7 @@ public class Eshop {
             }
         }
         if (!artikelIstVorhanden)
-            throw new ArtikelNichtVorhandenException("unserem Lager");
+            throw new ArtikelNichtVorhandenException("unserem Lager"); // muss hier geworfen werden, weil wenn der Artikel nicht gefunden wird, wird warenkoerbeVW.artikelZuWarenkorbHinzufuegen(...) nicht aufgerufen und es können keine Exceptions geworfen werden.
     }
 
     /**
@@ -207,13 +204,13 @@ public class Eshop {
      */
     public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
         boolean artikelIstVorhanden = false;
-        for (Artikel a: artikelVW.getArtikelBestand()) {
-                if(a.getNummer() == artikelnummer){
-                    artikelIstVorhanden = warenkoerbeVW.artikelAusWarenkorbEntfernen(a, anzahlArtikel, kunde);
+        for (Artikel artikel: artikelVW.getArtikelBestand()) {
+                if(artikel.getNummer() == artikelnummer){
+                    artikelIstVorhanden = warenkoerbeVW.artikelAusWarenkorbEntfernen(artikel, anzahlArtikel, kunde);
                 }
             }
         if (!artikelIstVorhanden)
-            throw new ArtikelNichtVorhandenException("Ihrem Warenkorb");
+            throw new ArtikelNichtVorhandenException("Ihrem Warenkorb"); // muss hier geworfen werden, weil wenn der Artikel nicht gefunden wird, wird warenkoerbeVW.artikelAusWarenkorbEntfernen(...) nicht aufgerufen und es können keine Exceptions geworfen werden.
     }
 
     /**
