@@ -64,11 +64,11 @@ public class Eshop {
      * @throws ArtikelbestandUnterNullException wenn der angegebene bestand beim Einfügen unter null ist
      */
     public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException {
-        Artikel artikel = new Artikel(bezeichnung, bestand, preis);
-        artikelVW.einfuegen(artikel);
+        Artikel neuerArtikel = new Artikel(bezeichnung, bestand, preis);
+        artikelVW.einfuegen(neuerArtikel);
 
-        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, artikel, true));
-        return artikel;
+        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, neuerArtikel, true));
+        return neuerArtikel;
     }
     /**
      * Methode zum ändern des Artikelbestandes.
@@ -92,14 +92,16 @@ public class Eshop {
      * Methode zum Löschen eines Artikels aus dem Bestand.
      * Es wird nur das erste Vorkommen des Artikels gelöscht.
      *
-     * @param nummer Nummer des Artikels
+     * @param artikelnummer Nummer des Artikels
      * @throws ArtikelNichtVorhandenException wenn die eingegebenden Daten zu keinem Artikel übereinstimmen
      */
-    public void loescheArtikel(int nummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
-        Artikel artikel = new Artikel(nummer, "", 0, 0);
-        artikel = artikelVW.loeschen(artikel);
+    public void loescheArtikel(int artikelnummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
+        Artikel zuEntfernenderArtikel; // new Artikel(artikelnummer, "", 0, 0);
 
-        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, artikel, false));
+        zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
+        artikelVW.loeschen(zuEntfernenderArtikel);
+
+        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, zuEntfernenderArtikel, false));
     }
 
     /**
@@ -109,7 +111,7 @@ public class Eshop {
      * @param bezeichnung Bezeichnung des gesuchten Artikels
      * @return Liste der gefundenen Artikel (evtl. leer)
      */
-    public List<Artikel> sucheNachbezeichnung(String bezeichnung) {
+    public List<Artikel> sucheNachBezeichnung(String bezeichnung) {
         return artikelVW.sucheArtikel(bezeichnung);
     }
 
@@ -131,23 +133,23 @@ public class Eshop {
      * Methode zum Anmelden von Mitarbeitern anhand ihrer Mitarbeiternummer und ihres Passworts.
      * Es wird ein Boolischenwert (true) zurückgegeben, wenn die Eingaben im System exakt übereinstimmenden.
      *
-     * @param nummer Nummer der im System gesuchten Mitarbeiternummer
+     * @param mitarbeiternummer Nummer der im System gesuchten Mitarbeiternummer
      * @param passwort Passwort des im Systems gesuchten Mitarbeiter
      * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
      */
-    public Mitarbeiter mitarbeiterAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
-        return mitarbeiterVW.mitarbeiterAnmelden(nummer, passwort);
+    public Mitarbeiter mitarbeiterAnmelden(int mitarbeiternummer, String passwort) throws AnmeldungFehlgeschlagenException {
+        return mitarbeiterVW.mitarbeiterAnmelden(mitarbeiternummer, passwort);
     }
     /**
      * Methode zum Anmelden von Kunden anhand ihrer Kundennummer und des Passworts.
      * Es wird ein Boolischenwert (true) zurückgegeben, wenn die Eingaben im System exakt übereinstimmen.
      *
-     * @param nummer Nummer der im System gesuchten Kundennummer
+     * @param kundennummer Nummer der im System gesuchten Kundennummer
      * @param passwort Passwort des im Systems gesuchten Kunden
      * @return Ein Boolischenwert, welcher True ist, wenn der Kunden im System ist oder False, wenn dieser nicht im System ist
      */
-    public Kunde kundenAnmelden(int nummer, String passwort) throws AnmeldungFehlgeschlagenException {
-        return kundenVW.kundeAnmelden(nummer, passwort);
+    public Kunde kundenAnmelden(int kundennummer, String passwort) throws AnmeldungFehlgeschlagenException {
+        return kundenVW.kundeAnmelden(kundennummer, passwort);
     }
     /**
      * Methode zum Registrieren von Kunden anhand eines Namens, Passworts und einer Adresse. Es wird ein neuer Kunde mit der
@@ -163,8 +165,8 @@ public class Eshop {
      */
     public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException {
         Adresse artikel = new Adresse(strasse, hausnummer, plz, ort);
-        Kunde kunde = new Kunde(name, artikel, passwort);
-        return kundenVW.erstelleKunde(kunde);
+        Kunde neuerKunde = new Kunde(name, artikel, passwort);
+        return kundenVW.erstelleKunde(neuerKunde);
     }
     /**
      * Methode zum Hinzufügen von Artikeln in eine Warenkorb map
@@ -176,15 +178,8 @@ public class Eshop {
      * @throws ArtikelNichtVorhandenException wenn der Artikel nicht im Warenkorb ist
      */
     public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
-        // TODO methode um einen artikel mit der id zu finden in der warenkorbVW
-        boolean artikelIstVorhanden = false;
-        for (Artikel artikel: artikelVW.getArtikelBestand()) {
-            if(artikel.getNummer() == artikelnummer){
-                artikelIstVorhanden = warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
-            }
-        }
-        if (!artikelIstVorhanden)
-            throw new ArtikelNichtVorhandenException("unserem Lager"); // muss hier geworfen werden, weil wenn der Artikel nicht gefunden wird, wird warenkoerbeVW.artikelZuWarenkorbHinzufuegen(...) nicht aufgerufen und es können keine Exceptions geworfen werden.
+        Artikel artikel = artikelVW.gibArtikelNachNummer(artikelnummer);
+        warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
     }
 
     /**
@@ -207,21 +202,14 @@ public class Eshop {
     /**
      *Entfernt einen bestimmten Artikel aus dem Warenkorb
      * @param artikelnummer die Artikelnummer des zu entfernenden Artikels
-     * @param anzahlArtikel die Anzahl des zu entfernenden Artikels
+     * @param anzahlZuEntfernenderArtikel die Anzahl des zu entfernenden Artikels
      * @param kunde das Kundenobjekt
      * @throws ArtikelbestandUnterNullException wenn der bestand im Warenkorb, der zu entfernen ist, unter null ist
      * @throws ArtikelNichtVorhandenException wenn der Artikel nicht im Warenkorb ist
      */
-    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
-        // TODO methode um einen artikel mit der id zu finden in der warenkorbVW
-        boolean artikelIstVorhanden = false;
-        for (Artikel artikel: artikelVW.getArtikelBestand()) {
-                if(artikel.getNummer() == artikelnummer){
-                    artikelIstVorhanden = warenkoerbeVW.artikelAusWarenkorbEntfernen(artikel, anzahlArtikel, kunde);
-                }
-            }
-        if (!artikelIstVorhanden)
-            throw new ArtikelNichtVorhandenException("Ihrem Warenkorb"); // muss hier geworfen werden, weil wenn der Artikel nicht gefunden wird, wird warenkoerbeVW.artikelAusWarenkorbEntfernen(...) nicht aufgerufen und es können keine Exceptions geworfen werden.
+    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+        Artikel zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
+        warenkoerbeVW.artikelAusWarenkorbEntfernen(zuEntfernenderArtikel, anzahlZuEntfernenderArtikel, kunde);
     }
 
     /**

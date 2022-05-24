@@ -24,74 +24,69 @@ public class Warenkorbverwaltung {
     public Warenkorbverwaltung(){
 
     }
-//todo Messages ob erfolgreich hinzugefügt wurde
+
 
     /**
-     * Übergibt den Warenkorb
+     * Fügt Artikel dem Warenkorb hinzu
      * @param artikel der Artikel, welcher zum Warenkorb hinzugefügt wird
-     * @param anzahlArtikel Anzahl vom hinzugefügten Artikel
+     * @param warenkorbArtikelAnzahl Anzahl an hinzugefügten Artikel
      * @param kunde Kunde, dem der Warenkorb zugewiesen wurde
      * @throws ArtikelbestandUnterNullException wenn der hinzugefügte Artikelbestand kleiner 0 sein sollte
      */
-    public boolean artikelZuWarenkorbHinzufuegen(Artikel artikel, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException {
+    public void artikelZuWarenkorbHinzufuegen(Artikel artikel, int warenkorbArtikelAnzahl, Kunde kunde) throws ArtikelbestandUnterNullException {
         warenkorb = kunde.getWarkorb();
-// TODO keine Negativen werte
-        if(anzahlArtikel <= 0){
+
+        if(warenkorbArtikelAnzahl <= 0){
             throw new ArtikelbestandUnterNullException(artikel, " Bitte geben Sie ein Bestellmenge groesser als 0 ein!");
         }
 
-        //anzahlArtikel > wasimwarenkorbsteht
+        if(warenkorb.getWarenkorbListe().containsKey(artikel)){ // wenn der artikel vorhanden ist ....
 
-        if(warenkorb.getWarenkorbListe().containsKey(artikel)){
-            // TODO
-             int alteWarenkorbMenge = warenkorb.getWarenkorbListe().get(artikel); // gibt eine Nullpointerexception wenn außerhalb des ifs, weil versucht wird auf einen leeren artikel zuzugreifen, falls diese nichts existierts(deswegen containsKey)
-
-            if((anzahlArtikel + alteWarenkorbMenge) > artikel.getBestand()) { // Wenn die Menge im Warenkorb größer ist als der Bestand des Artikels im Lager throw exception
+            int alteWarenkorbArtikelAnzahl = warenkorb.getWarenkorbListe().get(artikel);    // gibt eine NullPointerException, wenn außerhalb des ifs, weil versucht wird auf einen leeren artikel zuzugreifen, falls diese nichts existiert(deswegen containsKey)
+            if((warenkorbArtikelAnzahl + alteWarenkorbArtikelAnzahl) > artikel.getBestand()) {   // Wenn die Menge im Warenkorb größer ist als der Bestand des Artikels im Lager throw exception
                 throw new ArtikelbestandUnterNullException(artikel, " Die Menge dieses Arikels in Ihrem Warenkorb ist höher als der Bestand im Shop");
             }
-
-             warenkorb.setWarenkorbListe(artikel, anzahlArtikel + alteWarenkorbMenge);
-            return true;
+            warenkorb.addWarenkorbListe(artikel, warenkorbArtikelAnzahl + alteWarenkorbArtikelAnzahl); // .... erhöhe bestand im Warenkorb um die neue Menge
         }else{
 
-            if(anzahlArtikel > artikel.getBestand()){
+            if(warenkorbArtikelAnzahl > artikel.getBestand()){
                 throw new ArtikelbestandUnterNullException(artikel, " Die Menge dieses Artikels in Ihrem Warenkorb ist höher als der Bestand im Shop");
             }
-
-            warenkorb.setWarenkorbListe(artikel, anzahlArtikel);
-            return true;
+            warenkorb.addWarenkorbListe(artikel, warenkorbArtikelAnzahl); //artikel wird zum Warenkorb hinzugefügt
         }
-        //kunde.setMeinWarenkorb(warenkorb);
+        warenkorb.gesamtpreisErhoehen(artikel.getPreis() * warenkorbArtikelAnzahl);
     }
 
     /**
      * Methode, die einen Artikel aus dem Warenkorb entfernt
      * @param artikel bestimmter Artikel
-     * @param anzahlArtikel Anzahl vom Artikel
+     * @param anzahlZuEntfernenderArtikel Anzahl vom Artikel
      * @param kunde Kunde, dem der Warenkorb zugewiesen wurde
      * @throws ArtikelbestandUnterNullException wenn der zu entfernende Artikelbestand kleiner 0 sein sollte
      */
-    public boolean artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+    public void artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
         warenkorb = kunde.getWarkorb();
-        if(anzahlArtikel < 0){ // eingabe darf nicht kleiner als 0 sein
+        if(anzahlZuEntfernenderArtikel < 0){ // eingabe darf nicht kleiner als 0 sein
             throw new ArtikelbestandUnterNullException(artikel, " Bitte geben Sie ein Entfernmenge groesser als 0 ein!");
         }
 
         if(!warenkorb.getWarenkorbListe().containsKey(artikel)){ // das wird benötigt, weil wenn man einen im "Lager" vorhandenen artikel entfernen will, dieser aber nicht im Warenkorb existiert gibt es eine NullPointerException
-            return false;
+            throw new ArtikelNichtVorhandenException();
         }
 
-        int alteWarenkorbMenge = warenkorb.getWarenkorbListe().get(artikel);
-        // TODO vielleicht noch ändern, dass wenn alterWert - anzahlArtikel <= 0 der Artikel entfernt wird. Tutor fragen ob das mehr Sinn macht, würde die unter exception überflüssig machen
-        if(alteWarenkorbMenge - anzahlArtikel < 0){ // Menge im Warenkorb darf nicht negativ sein z.B. 90 im Warenkorb - 92 welche entfernt werden sollen
+        int warenkorbArtikelAnzahl = warenkorb.getWarenkorbListe().get(artikel);
+        if(warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel < 0){ // Menge im Warenkorb darf nicht negativ sein z.B. 90 im Warenkorb - 92 welche entfernt werden sollen
             throw new ArtikelbestandUnterNullException(artikel, " Der Bestand ihres Warenkorbs darf nicht unter 0 fallen!");
         }
-        if(anzahlArtikel == 0 || (alteWarenkorbMenge - anzahlArtikel) == 0){ // wenn die eingegebene Menge im warenkorb 0 ist oder das ergebnis z.B. 92-92 0 wird, wird der Artikel entfernt
+
+        if(anzahlZuEntfernenderArtikel == 0 || (warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel) == 0){ // wenn die eingegebene Menge im warenkorb 0 ist oder das ergebnis z.B. 92-92 0 wird, wird der Artikel entfernt
             warenkorb.getWarenkorbListe().remove(artikel);
+            warenkorb.gesamtpreisVerringern(artikel.getPreis() * warenkorbArtikelAnzahl);
         }else{ // sonst wird die Menge des Artikels im Warenkorb geändert
-            warenkorb.setWarenkorbListe(artikel,  alteWarenkorbMenge - anzahlArtikel);
+            warenkorb.addWarenkorbListe(artikel,  warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel);
+            warenkorb.gesamtpreisVerringern(artikel.getPreis() * anzahlZuEntfernenderArtikel);
         }
-        return true;
+
     }
 
     /**
@@ -101,13 +96,6 @@ public class Warenkorbverwaltung {
      */
     public Warenkorb getWarenkorb(Kunde kunde){
         warenkorb = kunde.getWarkorb();
-
-        double gesamtpreis = 0;
-
-        for (Map.Entry<Artikel, Integer> entry: warenkorb.getWarenkorbListe().entrySet()) {
-            gesamtpreis += entry.getValue() * entry.getKey().getPreis(); //Berechnung für den Gesamtpreis, welcher für die Rechnung nötig ist
-        }
-        warenkorb.setGesamtpreis(gesamtpreis);
         return warenkorb;
     }
 
@@ -117,6 +105,7 @@ public class Warenkorbverwaltung {
      */
     public void warenkorbLoeschen(Kunde kunde){
         warenkorb = kunde.getWarkorb();
+        warenkorb.setGesamtpreis(0);
         warenkorb.getWarenkorbListe().clear();
     }
 
@@ -169,7 +158,7 @@ public class Warenkorbverwaltung {
             rechnungArtikel += "\n\tArtikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR";
         }
 
-        getWarenkorb(kunde); // zum berechnen des gesamtpreises
+        //getWarenkorb(kunde); // zum berechnen des gesamtpreises
 
         rechnungGesamtpreis = "\n\n\tGesamtpreis: " + df.format(kunde.getWarkorb().getGesamtpreis()) + "EUR";
 

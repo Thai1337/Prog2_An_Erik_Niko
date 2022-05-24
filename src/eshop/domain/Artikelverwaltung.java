@@ -23,13 +23,13 @@ public class Artikelverwaltung {
      * Konstruktor welcher Artikel erstellt und der Vector des Bestandes hinzufügt
      */
     public Artikelverwaltung() {
-        Artikel a1 = new Artikel("Holz", 100, 99.99);
-        Artikel a12 = new Artikel("Holzbrett", 6, 10.55);
-        Artikel a2 = new Artikel("Metall", 50, 99.0);
-        Artikel a3 = new Artikel( "Ball", 50, 99.97);
-        Artikel a4 = new Artikel("Cola", 50, 99.98);
-        Artikel a5 = new Artikel("Ananas", 50, 99.49);
-        Artikel a6 = new Artikel( "Buch", 1, 99.19);
+        Artikel a1 = new Artikel("Holz", 100, 2.01);
+        Artikel a12 = new Artikel("Holzbrett", 6, 4.01);
+        Artikel a2 = new Artikel("Metall", 50, 6.01);
+        Artikel a3 = new Artikel( "Ball", 50, 8.01);
+        Artikel a4 = new Artikel("Cola", 50, 10.01);
+        Artikel a5 = new Artikel("Ananas", 50, 11.01);
+        Artikel a6 = new Artikel( "Buch", 1, 12.01);
         artikelBestand.add(a1);
         artikelBestand.add(a2);
         artikelBestand.add(a3);
@@ -38,6 +38,15 @@ public class Artikelverwaltung {
         artikelBestand.add(a6);
         artikelBestand.add(a12);
 
+    }
+
+    public Artikel gibArtikelNachNummer(int artikelNummer) throws ArtikelNichtVorhandenException {
+        for(Artikel gesuchterArtikel : artikelBestand){
+            if(gesuchterArtikel.getNummer() == artikelNummer){
+                return gesuchterArtikel;
+            }
+        }
+        throw new ArtikelNichtVorhandenException();
     }
 
     /**
@@ -136,7 +145,7 @@ public class Artikelverwaltung {
         // das übernimmt der Vector:
         // TODO exception damit keine negativen Preise eingegeben werden können und die java-doc ändern!!!! dafuq?
         if(!artikelBestand.contains(einArtikel)){
-            throw new ArtikelNichtVorhandenException("in unserem Bestand!");
+            throw new ArtikelNichtVorhandenException();
         }
         if (einArtikel.getBestand() < -1) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
@@ -167,18 +176,9 @@ public class Artikelverwaltung {
      * @param einArtikel der löschende Artikel
      * @throws ArtikelNichtVorhandenException wenn sich der zu löschende Artikel nicht in unserem Lager befindet
      */
-    public Artikel loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException {
+    public void loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException {
         // das übernimmt der Vector:
-        Artikel artikel;
-
-        if(artikelBestand.contains(einArtikel)){
-            artikel = artikelBestand.get(einArtikel.getNummer());
-            artikelBestand.remove(einArtikel);
-        }else{
-            throw new ArtikelNichtVorhandenException("unserem Lager!");
-        }
-
-        return artikel;
+        artikelBestand.remove(einArtikel);
     }
 
     /**

@@ -97,26 +97,22 @@ public class MitarbeiterMenue {
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
 
-                liste = shop.sucheNachbezeichnung(bezeichnung);
+                liste = shop.sucheNachBezeichnung(bezeichnung);
                 eingabeAusgabe.gibListeAus(liste);
                 break;
             case 3:
-
                 System.out.print("\nArtikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
                 System.out.print("Artikelbestand  --> ");
                 bst = eingabeAusgabe.einlesenInteger();
                 System.out.print("Artikelpreis  --> ");
                 preis = eingabeAusgabe.einlesenDouble();
+
                 shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter);
                 System.out.println("Einfuegen ok");
-
-
                 break;
             case 4:
-
-                System.out.println("");
-                System.out.print("Artikelnummer --> ");
+                System.out.print("\nArtikelnummer --> ");
                 nr = eingabeAusgabe.einlesenInteger();
                 System.out.print("Neue Bezeichnung (bei keiner Eingabe bleibt die Bezeichnung gleich)  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
@@ -129,9 +125,7 @@ public class MitarbeiterMenue {
                 System.out.println("Bearbeitung erfolgreich!");
                 break;
             case 5:
-
-                System.out.println("");
-                System.out.print("Artikelnummer --> ");
+                System.out.print("\nArtikelnummer --> ");
                 nr = eingabeAusgabe.einlesenInteger();
                 //System.out.print("Artikelbezeichnung  --> ");
                 //bezeichnung = eingabeAusgabe.einlesenString();
@@ -151,10 +145,7 @@ public class MitarbeiterMenue {
                 break;
             case 7:
                 List<String> logListe = shop.getProtokollListe();
-
-                for(String a:logListe){
-                    System.out.println(a);
-                }
+                eingabeAusgabe.gibListeAus(logListe);
                 break;
         }
     }

@@ -71,14 +71,18 @@ public class EA {
      *
      */
     public void gibListeAus(List liste) {
-        if (liste.isEmpty()) {
-            System.out.println("Liste ist leer.");
-        } else {
-            // Durchlaufen des Vectors mittels for each-Schleife
-            // (alternativ: Iterator)
-            for (Object artikel: liste) {
-                System.out.println(artikel);
+        try{
+            if (liste.isEmpty()) {
+                System.out.println("Liste ist leer.");
+            } else {
+                // Durchlaufen des Vectors mittels for each-Schleife
+                // (alternativ: Iterator)
+                for (Object artikel: liste) {
+                    System.out.println(artikel);
+                }
             }
+        }catch (Exception e){
+            System.out.println("\nFehler bei der Ausgabe der Liste!");
         }
     }
 

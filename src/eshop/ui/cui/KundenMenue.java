@@ -103,7 +103,7 @@ public class KundenMenue {
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
 
-                liste = shop.sucheNachbezeichnung(bezeichnung);
+                liste = shop.sucheNachBezeichnung(bezeichnung);
                 eingabeAusgabe.gibListeAus(liste);
                 break;
             case 3:
@@ -120,7 +120,6 @@ public class KundenMenue {
 
                 break;
             case 4:
-                // TODO negative zahlen
                 System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie hinzufuegen moechten --> ");
                 artikelnummer = eingabeAusgabe.einlesenInteger();
                 System.out.print("Geben Sie die gewuenschte Bestellmenge an --> ");

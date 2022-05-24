@@ -23,17 +23,17 @@ public class Protokollverwaltung {
      */
     public void einfuegenLoeschenLog(Protokoll protokoll){
         String protokollString;
-        String mitarbeiter = "\n"+protokoll.getDatum() + " | " + "M | Nummer: " +protokoll.getMitarbeiter().getNummer() +" | Name: " + protokoll.getMitarbeiter().getName();
+        String mitarbeiterProtokoll = "\n"+protokoll.getDatum() + " | " + "M | Nummer: " +protokoll.getMitarbeiter().getNummer() +" | Name: " + protokoll.getMitarbeiter().getName();
 
         if(protokoll.getEinfuegenLoeschen()){ //Einfügen
-            mitarbeiter += "\n\t | Typ: Artikelanlegung";
+            mitarbeiterProtokoll += "\n\t | Typ: Artikelanlegung";
         }else{
-            mitarbeiter += "\n\t | Typ: Artikelloeschung";
+            mitarbeiterProtokoll += "\n\t | Typ: Artikelloeschung";
         }
 
-        mitarbeiter += " | Artikelnummer: " +protokoll.getArtikel().getNummer()+ " | Bezeichnung: "+protokoll.getArtikel().getBezeichnung()+ " | Bestand: "+ protokoll.getArtikel().getBestand();
+        mitarbeiterProtokoll += " | Artikelnummer: " +protokoll.getArtikel().getNummer()+ " | Bezeichnung: "+protokoll.getArtikel().getBezeichnung()+ " | Bestand: "+ protokoll.getArtikel().getBestand();
 
-        protokollString = mitarbeiter;
+        protokollString = mitarbeiterProtokoll;
         protokollListe.add(protokollString);
     }
 
@@ -47,18 +47,18 @@ public class Protokollverwaltung {
         }
 
         String protokollString;
-        String mitarbeiter = "\n"+protokoll.getDatum() + " | " + "M | Nummer: " +protokoll.getMitarbeiter().getNummer() +" | Name: " + protokoll.getMitarbeiter().getName() + "\n\t | Typ: Bearbeitung | ";
+        String mitarbeiterProtokoll = "\n"+protokoll.getDatum() + " | " + "M | Nummer: " +protokoll.getMitarbeiter().getNummer() +" | Name: " + protokoll.getMitarbeiter().getName() + "\n\t | Typ: Bearbeitung";
         if(!protokoll.getArtikel().getBezeichnung().isEmpty()){ //Bezeichnung
-            mitarbeiter += "Bezeichnungseanderung zu: " + protokoll.getArtikel().getBezeichnung();
+            mitarbeiterProtokoll += " | Bezeichnungseanderung zu: " + protokoll.getArtikel().getBezeichnung();
         }
         if(protokoll.getArtikel().getPreis() != -1.01){ //Preis
-            mitarbeiter += "Preisaenderung zu: " + protokoll.getArtikel().getPreis();
+            mitarbeiterProtokoll += " | Preisaenderung zu: " + protokoll.getArtikel().getPreis();
         }
         if(protokoll.getArtikel().getBestand() != -1){ //Bestand
-            mitarbeiter += "Bestandsaenderung zu: " + protokoll.getArtikel().getBestand();
+            mitarbeiterProtokoll += " | Bestandsaenderung zu: " + protokoll.getArtikel().getBestand();
         }
 
-        protokollString = mitarbeiter;
+        protokollString = mitarbeiterProtokoll;
         protokollListe.add(protokollString);
     }
 
@@ -68,23 +68,23 @@ public class Protokollverwaltung {
      * @param protokoll Kaufänderungen werden im Protokoll eingefügt
      */
     public void kaufLog(Protokoll protokoll){
-        Kunde kundeObjekt =  protokoll.getKunde();
-        if(kundeObjekt.getWarkorb().getWarenkorbListe().isEmpty()){ // damit kein log erstellt wird, wenn der kunde ohne Artikel im warenkorb eine rechnung erstellt
+        Kunde kunde =  protokoll.getKunde();
+        if(kunde.getWarkorb().getWarenkorbListe().isEmpty()){ // damit kein log erstellt wird, wenn der kunde ohne Artikel im warenkorb eine rechnung erstellt
             return;
         }
 
-        String kunde = "\n" + protokoll.getDatum() + " | " + "K | Nummer: " +protokoll.getKunde().getNummer() +" | Name: " + protokoll.getKunde().getName() + "\n\t | Typ: Kauf | ";
+        String kundenProtokoll = "\n" + protokoll.getDatum() + " | " + "K | Nummer: " +protokoll.getKunde().getNummer() +" | Name: " + protokoll.getKunde().getName() + "\n\t | Typ: Kauf | ";
         String protokollString;
-        for(Map.Entry<Artikel, Integer> entry:kundeObjekt.getWarkorb().getWarenkorbListe().entrySet()){
-            kunde += "Artikelnummer: " + entry.getKey().getNummer() + " | Bezeichnung: "+ entry.getKey().getBezeichnung() +" | Bestandsaenderung: -"+ entry.getValue();
+        for(Map.Entry<Artikel, Integer> entry:kunde.getWarkorb().getWarenkorbListe().entrySet()){
+            kundenProtokoll += "Artikelnummer: " + entry.getKey().getNummer() + " | Bezeichnung: "+ entry.getKey().getBezeichnung() +" | Bestandsaenderung: -"+ entry.getValue();
         }
 
-        protokollString = kunde;
+        protokollString = kundenProtokoll;
         protokollListe.add(protokollString);
     }
 
     /**
-     * Gibt die Liste aller Protokolle an den Eshop weiter in eimen String Vektor
+     * Gibt die Liste aller Protokolle an den Eshop weiter in einen String Vektor
      * @return Protkolllisten Vektor
      */
     public List<String> getProtokollListe() {

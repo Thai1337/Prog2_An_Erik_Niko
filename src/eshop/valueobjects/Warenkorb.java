@@ -26,7 +26,7 @@ public class Warenkorb {
      * @param artikel fuegt dem Warenkorb einen bestimmten Artikel ein
      * @param anzahlArtikel Menge des jeweiligen Artikels im Warenkorb
      */
-    public void setWarenkorbListe(Artikel artikel, int anzahlArtikel){
+    public void addWarenkorbListe(Artikel artikel, int anzahlArtikel){
         warenkorbListe.put(artikel, anzahlArtikel);
     }
 
@@ -40,8 +40,16 @@ public class Warenkorb {
         return gesamtpreis;
     }
 
-    public void setGesamtpreis(double gesamtpreis) {
+    public void setGesamtpreis(double gesamtpreis){
         this.gesamtpreis = gesamtpreis;
+    }
+
+    public void gesamtpreisErhoehen(double gesamtpreis) {
+        this.gesamtpreis += gesamtpreis;
+    }
+
+    public void gesamtpreisVerringern(double gesamtpreis) {
+        this.gesamtpreis -= gesamtpreis;
     }
 
 
