@@ -76,7 +76,10 @@ public class Protokollverwaltung {
         String kundenProtokoll = "\n" + protokoll.getDatum() + " | " + "K | Nummer: " +protokoll.getKunde().getNummer() +" | Name: " + protokoll.getKunde().getName() + "\n\t | Typ: Kauf | ";
         String protokollString;
         for(Map.Entry<Artikel, Integer> entry:kunde.getWarkorb().getWarenkorbListe().entrySet()){
-            kundenProtokoll += "Artikelnummer: " + entry.getKey().getNummer() + " | Bezeichnung: "+ entry.getKey().getBezeichnung() +" | Bestandsaenderung: -"+ entry.getValue();
+            if(!protokoll.getArtikelListe().contains(entry.getKey())){
+                return;
+            }
+            kundenProtokoll += "\n\t | Artikelnummer: " + entry.getKey().getNummer() + " | Bezeichnung: "+ entry.getKey().getBezeichnung() +" | Bestandsaenderung: -"+ entry.getValue();
         }
 
         protokollString = kundenProtokoll;

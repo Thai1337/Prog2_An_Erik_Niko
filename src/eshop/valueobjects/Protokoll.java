@@ -2,6 +2,7 @@ package eshop.valueobjects;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +19,7 @@ public class Protokoll {
 
     private Kunde kunde;
     private boolean einfuegenLoeschen;
+    private List<Artikel> artikelListe;
 
     public Protokoll(Mitarbeiter mitarbeiter, Artikel artikel, boolean einfuegenLoeschen){
         this.mitarbeiter = mitarbeiter;
@@ -56,11 +58,20 @@ public class Protokoll {
         this.mitarbeiter = mitarbeiter;
     }
 
-    public Protokoll(Kunde kunde){
+    public Protokoll(Kunde kunde, List<Artikel> artikelListe){
         LocalDateTime myObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         this.datum = myObj.format(myFormatObj);
         this.kunde = kunde;
+        this.artikelListe = artikelListe;
+    }
+
+    public List<Artikel> getArtikelListe() {
+        return artikelListe;
+    }
+
+    public void setArtikelListe(List<Artikel> artikelListe) {
+        this.artikelListe = artikelListe;
     }
 
     public boolean getEinfuegenLoeschen() {

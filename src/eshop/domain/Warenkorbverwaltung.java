@@ -11,10 +11,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.DataFormatException;
 
 public class Warenkorbverwaltung {
@@ -121,17 +118,25 @@ public class Warenkorbverwaltung {
      * @throws ArtikelbestandUnterNullException wenn eines der gekauften Artikel nicht mehr zu kaufen ist, da die Menge im Warenkorb größer als die im Lager ist
      * @throws WarenkorbLeerException wenn sich keine Artikel im Warenkorb befinden
      */
-    public String einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException {
+    public String einkaufAbschliessen(Kunde kunde, List<Artikel> artikelBestand) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException {
         warenkorb = kunde.getWarkorb();
 
         if(warenkorb.getWarenkorbListe().isEmpty()){
             throw new WarenkorbLeerException();
         }
 
+        //TODO überprüfen ob der Artikel beim Zeitpunkt des Kaufes noch existiert (das selbe für Protokoll)
         for (Map.Entry<Artikel, Integer> entry: warenkorb.getWarenkorbListe().entrySet()) {
             if((entry.getKey().getBestand() - entry.getValue()) < 0){ //überprüft ob der Artikelbestand beim abschliessen des Kaufes immer noch über den Lagerbestand liegt(vllt war ein anderer Kunde schneller)
-                warenkorb.getWarenkorbListe().remove(entry.getKey()); // entfernt den nicht vorhandenen artikel aus dem warenkorb
+                 // entfernt den nicht vorhandenen artikel aus dem warenkorb
+                warenkorb.gesamtpreisVerringern(entry.getKey().getPreis() * entry.getValue());
+                warenkorb.getWarenkorbListe().remove(entry.getKey());
                 throw new ArtikelbestandUnterNullException(entry.getKey(), " DU WARST ZU LANGSAM BEIM EINKAUF. NICE TRY! ¯\\_(ツ)_/¯");
+            }
+            if(!artikelBestand.contains(entry.getKey())){
+                warenkorb.gesamtpreisVerringern(entry.getKey().getPreis() * entry.getValue());
+                warenkorb.getWarenkorbListe().remove(entry.getKey());
+                throw new ArtikelNichtVorhandenException(entry.getKey(), " Überprüfen sie ihren Warenkorb, da ein Artikel aus ihrem Warenkorb nicht mehr in unserem Shop vorhanden ist ");
             }
             entry.getKey().setBestand(entry.getKey().getBestand() - entry.getValue()); // wenn einkauf erfolgreich: entferne Bestellung aus Bestand
         }
@@ -158,8 +163,6 @@ public class Warenkorbverwaltung {
         for (Map.Entry<Artikel, Integer> entry: kunde.getWarkorb().getWarenkorbListe().entrySet()){
             rechnungArtikel += "\n\tArtikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR";
         }
-
-        //getWarenkorb(kunde); // zum berechnen des gesamtpreises
 
         rechnungGesamtpreis = "\n\n\tGesamtpreis: " + df.format(kunde.getWarkorb().getGesamtpreis()) + "EUR";
 
