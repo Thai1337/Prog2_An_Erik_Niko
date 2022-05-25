@@ -107,6 +107,7 @@ public class Warenkorbverwaltung {
      */
     public void warenkorbLoeschen(Kunde kunde){
         warenkorb = kunde.getWarkorb();
+        //warenkorb.keeren();
         warenkorb.setGesamtpreis(0);
         warenkorb.getWarenkorbListe().clear();
     }
@@ -125,7 +126,6 @@ public class Warenkorbverwaltung {
             throw new WarenkorbLeerException();
         }
 
-        //TODO überprüfen ob der Artikel beim Zeitpunkt des Kaufes noch existiert (das selbe für Protokoll)
         for (Map.Entry<Artikel, Integer> entry: warenkorb.getWarenkorbListe().entrySet()) {
             if((entry.getKey().getBestand() - entry.getValue()) < 0){ //überprüft ob der Artikelbestand beim abschliessen des Kaufes immer noch über den Lagerbestand liegt(vllt war ein anderer Kunde schneller)
                  // entfernt den nicht vorhandenen artikel aus dem warenkorb

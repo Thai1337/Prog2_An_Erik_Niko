@@ -13,12 +13,19 @@ import java.util.Map;
  * @author heuschmann
  */
 public class Protokoll {
+
+    enum EreignisTyp { NEU, KAUF, EINLAGERUNG, AUSLAGERUNG, LÖSCHUNG };
+
     private Mitarbeiter mitarbeiter;
     private Artikel artikel;
     private String datum;
 
     private Kunde kunde;
+        private Nutzer nutzer;
+
     private boolean einfuegenLoeschen;
+        private EreignisTyp aktion;
+
     private List<Artikel> artikelListe;
 
     public Protokoll(Mitarbeiter mitarbeiter, Artikel artikel, boolean einfuegenLoeschen){
@@ -26,6 +33,7 @@ public class Protokoll {
         this.artikel = artikel;
         this.einfuegenLoeschen = einfuegenLoeschen;
 
+        aktion = EreignisTyp.KAUF;
 
         LocalDateTime myObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");

@@ -230,7 +230,7 @@ public class Eshop {
     }
 
     /**
-     * Gibt die Liste aller Protokolle an die KundenMenu CUI weiter in eimen String Vektor
+     * Gibt die Liste aller Protokolle an die KundenMenu CUI weiter in einem String Vektor
      * @return Protkolllisten Vektor
      */
     public List<String> getProtokollListe(){

@@ -30,6 +30,9 @@ public class Warenkorb {
         warenkorbListe.put(artikel, anzahlArtikel);
     }
 
+    // leeren
+
+    // bestand ändern
 
 
     public Map<Artikel, Integer> getWarenkorbListe() {
@@ -39,7 +42,8 @@ public class Warenkorb {
     public double getGesamtpreis() {
         return gesamtpreis;
     }
-
+    // getter: gesamtpreis hier errechnen
+    // setter: weg
     public void setGesamtpreis(double gesamtpreis){
         this.gesamtpreis = gesamtpreis;
     }
