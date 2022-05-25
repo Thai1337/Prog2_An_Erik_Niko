@@ -135,7 +135,7 @@ public class Eshop {
      *
      * @param mitarbeiternummer Nummer der im System gesuchten Mitarbeiternummer
      * @param passwort Passwort des im Systems gesuchten Mitarbeiter
-     * @return Ein Boolischenwert, welcher True ist, wenn der Mitarbeiter im System ist oder False, wenn dieser nicht im System ist
+     * @return Ein Mitarbeiter
      */
     public Mitarbeiter mitarbeiterAnmelden(int mitarbeiternummer, String passwort) throws AnmeldungFehlgeschlagenException {
         return mitarbeiterVW.mitarbeiterAnmelden(mitarbeiternummer, passwort);
@@ -146,7 +146,7 @@ public class Eshop {
      *
      * @param kundennummer Nummer der im System gesuchten Kundennummer
      * @param passwort Passwort des im Systems gesuchten Kunden
-     * @return Ein Boolischenwert, welcher True ist, wenn der Kunden im System ist oder False, wenn dieser nicht im System ist
+     * @return Ein Kunden
      */
     public Kunde kundenAnmelden(int kundennummer, String passwort) throws AnmeldungFehlgeschlagenException {
         return kundenVW.kundeAnmelden(kundennummer, passwort);
@@ -164,8 +164,8 @@ public class Eshop {
      * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
     public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException {
-        Adresse artikel = new Adresse(strasse, hausnummer, plz, ort);
-        Kunde neuerKunde = new Kunde(name, artikel, passwort);
+        Adresse adresse = new Adresse(strasse, hausnummer, plz, ort);
+        Kunde neuerKunde = new Kunde(name, adresse, passwort);
         return kundenVW.erstelleKunde(neuerKunde);
     }
     /**
