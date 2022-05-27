@@ -67,7 +67,7 @@ public class Eshop {
         Artikel neuerArtikel = new Artikel(bezeichnung, bestand, preis);
         artikelVW.einfuegen(neuerArtikel);
 
-        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, neuerArtikel, true));
+        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, neuerArtikel, Protokoll.EreignisTyp.EINFUEGEN));
         return neuerArtikel;
     }
     /**
@@ -84,7 +84,7 @@ public class Eshop {
         Artikel artikel = new Artikel(nr, bezeichnung, bestand, preis);
         artikelVW.aendereArtikel(artikel);
 
-        protokollVW.bearbeitenLog(new Protokoll(mitarbeiter, artikel));
+        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
 
     }
 
@@ -101,7 +101,7 @@ public class Eshop {
         zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
         artikelVW.loeschen(zuEntfernenderArtikel);
 
-        protokollVW.einfuegenLoeschenLog(new Protokoll(mitarbeiter, zuEntfernenderArtikel, false));
+        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, zuEntfernenderArtikel, Protokoll.EreignisTyp.LOESCHUNG));
     }
 
     /**
@@ -222,8 +222,8 @@ public class Eshop {
      * @throws WarenkorbLeerException wenn keine Artikel im Warenkorb sind
      */
     public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException {
-        Protokoll protokoll = new Protokoll(kunde, artikelVW.getArtikelBestand());
-        protokollVW.kaufLog(protokoll);
+        Protokoll protokoll = new Protokoll(kunde, Protokoll.EreignisTyp.EINKAUFEN);
+        protokollVW.logZuProtokollListe(protokoll);
 
         return warenkoerbeVW.einkaufAbschliessen(kunde, artikelVW.getArtikelBestand());
 
@@ -233,7 +233,7 @@ public class Eshop {
      * Gibt die Liste aller Protokolle an die KundenMenu CUI weiter in einem String Vektor
      * @return Protkolllisten Vektor
      */
-    public List<String> getProtokollListe(){
+    public List<Protokoll> getProtokollListe(){
         return protokollVW.getProtokollListe();
     }
 

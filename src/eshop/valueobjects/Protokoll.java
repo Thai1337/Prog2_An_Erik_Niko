@@ -1,9 +1,13 @@
 package eshop.valueobjects;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+import static eshop.valueobjects.Protokoll.EreignisTyp.LOESCHUNG;
 
 /**
  * Klasse zur Repräsentation einzelner Protokolle.
@@ -14,76 +18,82 @@ import java.util.Map;
  */
 public class Protokoll {
 
-    enum EreignisTyp { NEU, KAUF, EINLAGERUNG, AUSLAGERUNG, LÖSCHUNG };
+    //enum EreignisTyp { NEU, KAUF, EINLAGERUNG, AUSLAGERUNG, LÖSCHUNG };
+    public enum EreignisTyp { EINFUEGEN, EINKAUFEN, AENDERUNG, LOESCHUNG };
 
-    private Mitarbeiter mitarbeiter;
+    private Warenkorb warenkorb;
+
     private Artikel artikel;
     private String datum;
+    private Nutzer nutzer;
+    private EreignisTyp aktion;
 
-    private Kunde kunde;
-        private Nutzer nutzer;
+    //private List<Artikel> artikelListe;
 
-    private boolean einfuegenLoeschen;
-        private EreignisTyp aktion;
-
-    private List<Artikel> artikelListe;
-
-    public Protokoll(Mitarbeiter mitarbeiter, Artikel artikel, boolean einfuegenLoeschen){
-        this.mitarbeiter = mitarbeiter;
+    public Protokoll(Nutzer nutzer, Artikel artikel, EreignisTyp aktion){
+        this.nutzer = nutzer;
         this.artikel = artikel;
-        this.einfuegenLoeschen = einfuegenLoeschen;
-
-        aktion = EreignisTyp.KAUF;
-
-        LocalDateTime myObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        this.datum = myObj.format(myFormatObj);
-    }
-
-    public Protokoll(Mitarbeiter mitarbeiter, Artikel artikel){
-        this.mitarbeiter = mitarbeiter;
-        this.artikel = artikel;
+        //aktion = EreignisTyp.KAUF;
+        this.aktion = aktion;
 
         LocalDateTime myObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         this.datum = myObj.format(myFormatObj);
     }
 
-
-    public Kunde getKunde() {
-        return kunde;
-    }
-
-    public void setKunde(Kunde kunde) {
-        this.kunde = kunde;
-    }
-
-    public Mitarbeiter getMitarbeiter() {
-        return mitarbeiter;
-    }
-
-    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
-        this.mitarbeiter = mitarbeiter;
-    }
-
-    public Protokoll(Kunde kunde, List<Artikel> artikelListe){
+    public Protokoll(Nutzer nutzer, EreignisTyp aktion){
         LocalDateTime myObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        this.aktion = aktion;
         this.datum = myObj.format(myFormatObj);
-        this.kunde = kunde;
-        this.artikelListe = artikelListe;
+        this.nutzer = nutzer;
+
+        //this.warenkorb = new Warenkorb(warenkorb);
+
+        Kunde k = (Kunde) nutzer;
+        this.warenkorb = new Warenkorb(k.getWarkorb());
     }
 
-    public List<Artikel> getArtikelListe() {
-        return artikelListe;
+    @Override
+    public String toString() {
+        // TODO exceptions überprüfen
+        // TODO vllt das Protokoll in Mitarbeiter und Nutzer aufteilen
+        String protokoll = "\n"+ this.datum + " | " + (nutzer instanceof Kunde ? "K" : "M") + " | Nummer: " + nutzer.getNummer() +" | Name: " + nutzer.getName() + "\n\t | Typ: " + aktion;
+        //mitarbeiterProtokoll += " | Artikelnummer: " +protokoll.getArtikel().getNummer()+ " | Bezeichnung: "+protokoll.getArtikel().getBezeichnung()+ " | Bestand: "+ protokoll.getArtikel().getBestand();//
+        switch (aktion){
+            case EINFUEGEN, LOESCHUNG:
+                protokoll += " | Artikelnummer: " + artikel.getNummer() + " | Bezeichnung: " + artikel.getBezeichnung() + " | Bestand: " + artikel.getBestand();
+                break;
+            case AENDERUNG:
+                if(!artikel.getBezeichnung().isEmpty()){ //Bezeichnung
+                    protokoll += " | Bezeichnungseanderung zu: " + artikel.getBezeichnung();
+                }
+                if(artikel.getPreis() != -1.01){ //Preis
+                    protokoll += " | Preisaenderung zu: " + artikel.getPreis();
+                }
+                if(artikel.getBestand() != -1){ //Bestand
+                    protokoll += " | Bestandsaenderung zu: " + artikel.getBestand();
+                }
+                break;
+            case EINKAUFEN:
+                for(Map.Entry<Artikel, Integer> entry : warenkorb.getWarenkorbListe().entrySet()){
+                    protokoll += "\n\t | Artikelnummer: " + entry.getKey().getNummer() + " | Bezeichnung: " + entry.getKey().getBezeichnung() + " | Bestandsaenderung: -" +entry.getValue();
+                }
+                break;
+
+        }
+
+
+        return protokoll;
     }
 
-    public void setArtikelListe(List<Artikel> artikelListe) {
-        this.artikelListe = artikelListe;
+    public Nutzer getNutzer() {
+        return nutzer;
     }
 
-    public boolean getEinfuegenLoeschen() {
-        return einfuegenLoeschen;
+    public void setNutzer(Nutzer nutzer) {
+        this.nutzer = nutzer;
     }
 
     public Artikel getArtikel() {

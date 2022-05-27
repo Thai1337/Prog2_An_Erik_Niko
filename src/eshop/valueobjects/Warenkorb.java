@@ -21,6 +21,10 @@ public class Warenkorb {
         warenkorbListe = new Hashtable<>();
     }
 
+    public Warenkorb(Warenkorb warenkorb){
+        this.warenkorbListe = new Hashtable<>(warenkorb.getWarenkorbListe());
+    }
+
     /**
      * Methode zum hinzufuegen von Artikeln in eine Hash-table mit ihrer Menge
      * @param artikel fuegt dem Warenkorb einen bestimmten Artikel ein

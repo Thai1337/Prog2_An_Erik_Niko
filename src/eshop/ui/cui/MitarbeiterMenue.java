@@ -108,8 +108,7 @@ public class MitarbeiterMenue {
                 System.out.print("Artikelpreis  --> ");
                 preis = eingabeAusgabe.einlesenDouble();
 
-                shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter);
-                System.out.println("Einfuegen ok");
+                System.out.print("\nDie Artikelnummer von ihrem erstellten Artikel lautet --> " + shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter).getNummer() + "\n");
                 break;
             case 4:
                 System.out.print("\nArtikelnummer --> ");
@@ -144,7 +143,7 @@ public class MitarbeiterMenue {
                 System.out.print("\nDie Mitarbeiternummer von ihrem erstellten Mitarbeiter lautet --> " + shop.erstelleMitarbeiter(name, passwort) + "\n");
                 break;
             case 7:
-                List<String> logListe = shop.getProtokollListe();
+                List<Protokoll> logListe = shop.getProtokollListe();
                 eingabeAusgabe.gibListeAus(logListe);
                 break;
         }
