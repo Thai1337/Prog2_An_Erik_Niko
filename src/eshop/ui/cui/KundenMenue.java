@@ -6,6 +6,7 @@ import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.WarenkorbLeerException;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
+import eshop.valueobjects.Rechnung;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -148,9 +149,7 @@ public class KundenMenue {
             case 7:
                 System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
                 if(eingabeAusgabe.einlesenString().equalsIgnoreCase("j")){
-
-
-                    String rechnung = shop.einkaufAbschliessen(kunde);
+                    Rechnung rechnung = shop.einkaufAbschliessen(kunde);
 
                     System.out.println(rechnung);
 

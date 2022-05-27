@@ -5,6 +5,7 @@ import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.WarenkorbLeerException;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
+import eshop.valueobjects.Rechnung;
 import eshop.valueobjects.Warenkorb;
 
 import java.text.DateFormat;
@@ -80,7 +81,7 @@ public class Warenkorbverwaltung {
         }
 
         if(anzahlZuEntfernenderArtikel == 0 || (warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel) == 0){ // wenn die eingegebene Menge im warenkorb 0 ist oder das ergebnis z.B. 92-92 0 wird, wird der Artikel entfernt
-            warenkorb.getWarenkorbListe().remove(artikel);
+            warenkorb.removeArtikelVonWarenkorbListe(artikel);
         }else{ // sonst wird die Menge des Artikels im Warenkorb geändert
             warenkorb.addArtikelZuWarenkorbListe(artikel,  warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel);
         }
@@ -115,7 +116,7 @@ public class Warenkorbverwaltung {
      * @throws ArtikelbestandUnterNullException wenn eines der gekauften Artikel nicht mehr zu kaufen ist, da die Menge im Warenkorb größer als die im Lager ist
      * @throws WarenkorbLeerException wenn sich keine Artikel im Warenkorb befinden
      */
-    public String einkaufAbschliessen(Kunde kunde, List<Artikel> artikelBestand) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException {
+    public Rechnung einkaufAbschliessen(Kunde kunde, List<Artikel> artikelBestand) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException {
         warenkorb = kunde.getWarkorb();
 
         if(warenkorb.getWarenkorbListe().isEmpty()){
@@ -134,15 +135,11 @@ public class Warenkorbverwaltung {
             }
             entry.getKey().setBestand(entry.getKey().getBestand() - entry.getValue()); // wenn einkauf erfolgreich: entferne Bestellung aus Bestand
         }
-        return erstelleRechnung(kunde);
+        return new Rechnung(kunde);
     }
 
-    /**
-     * Methode welche einen String erstellt mit den Inhalten des Einkaufes und den Warenkorb leert
-     * @param kunde Kunde, dem der Warenkorb zugewiesen wurde
-     * @return der zusammengesetzte Rechnungstring wird zurückgegeben
-     */
-    private String erstelleRechnung(Kunde kunde){
+
+    /*private String erstelleRechnung(Kunde kunde){
         String rechnungKunde, rechnungArtikel, rechnung, rechnungGesamtpreis;
         DecimalFormat df = new DecimalFormat("0.00");
 
@@ -165,6 +162,6 @@ public class Warenkorbverwaltung {
         warenkorbLoeschen(kunde);
 
         return rechnung;
-    }
+    }*/
 
 }
