@@ -12,7 +12,7 @@ import java.util.Map;
  * @author heuschmann
  */
 public class Warenkorb {
-    private double gesamtpreis;
+    //private double gesamtpreis;
 
 
     private Map<Artikel, Integer> warenkorbListe;
@@ -26,8 +26,20 @@ public class Warenkorb {
      * @param artikel fuegt dem Warenkorb einen bestimmten Artikel ein
      * @param anzahlArtikel Menge des jeweiligen Artikels im Warenkorb
      */
-    public void addWarenkorbListe(Artikel artikel, int anzahlArtikel){
+    public void addArtikelZuWarenkorbListe(Artikel artikel, int anzahlArtikel){
         warenkorbListe.put(artikel, anzahlArtikel);
+    }
+
+    public void removeArtikelVonWarenkorbListe(Artikel artikel){
+        warenkorbListe.remove(artikel);
+    }
+
+    public void warenkorbLeeren() {
+        warenkorbListe.clear();
+    }
+
+    public int getArtikelAnzahlImWarenkorb(Artikel artikel){
+        return warenkorbListe.get(artikel);
     }
 
     // leeren
@@ -40,11 +52,15 @@ public class Warenkorb {
     }
 
     public double getGesamtpreis() {
+        double gesamtpreis = 0;
+        for(Map.Entry<Artikel, Integer> entry : warenkorbListe.entrySet()){
+            gesamtpreis += entry.getKey().getPreis() * entry.getValue();
+        }
         return gesamtpreis;
     }
     // getter: gesamtpreis hier errechnen
     // setter: weg
-    public void setGesamtpreis(double gesamtpreis){
+    /*public void setGesamtpreis(double gesamtpreis){
         this.gesamtpreis = gesamtpreis;
     }
 
@@ -54,7 +70,7 @@ public class Warenkorb {
 
     public void gesamtpreisVerringern(double gesamtpreis) {
         this.gesamtpreis -= gesamtpreis;
-    }
+    }*/
 
 
 }

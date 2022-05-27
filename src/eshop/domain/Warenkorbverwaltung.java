@@ -44,15 +44,14 @@ public class Warenkorbverwaltung {
         }
 
         if(!warenkorb.getWarenkorbListe().containsKey(artikel)) {
-            warenkorb.addWarenkorbListe(artikel, warenkorbArtikelAnzahl); //artikel wird zum Warenkorb hinzugefügt
+            warenkorb.addArtikelZuWarenkorbListe(artikel, warenkorbArtikelAnzahl); //artikel wird zum Warenkorb hinzugefügt
         }else {
-            int alteWarenkorbArtikelAnzahl = warenkorb.getWarenkorbListe().get(artikel);    // gibt eine NullPointerException, wenn außerhalb des if, weil versucht wird auf einen leeren artikel zuzugreifen, falls diese nichts existiert(deswegen containsKey)
+            int alteWarenkorbArtikelAnzahl = warenkorb.getArtikelAnzahlImWarenkorb(artikel);    // gibt eine NullPointerException, wenn außerhalb des if, weil versucht wird auf einen leeren artikel zuzugreifen, falls diese nichts existiert(deswegen containsKey)
             if((warenkorbArtikelAnzahl + alteWarenkorbArtikelAnzahl) > artikel.getBestand()) {
                 throw new ArtikelbestandUnterNullException(artikel, " Die Menge dieses Artikels in Ihrem Warenkorb ist höher als der Bestand im Shop!");
             }
-            warenkorb.addWarenkorbListe(artikel, warenkorbArtikelAnzahl + alteWarenkorbArtikelAnzahl); // erhöht bestand im Warenkorb um die neu angegebene Menge, wenn Artikel bereits im Warenkorb
+            warenkorb.addArtikelZuWarenkorbListe(artikel, warenkorbArtikelAnzahl + alteWarenkorbArtikelAnzahl); // erhöht bestand im Warenkorb um die neu angegebene Menge, wenn Artikel bereits im Warenkorb
         }
-        warenkorb.gesamtpreisErhoehen(artikel.getPreis() * warenkorbArtikelAnzahl);
     }
 
     /**
@@ -75,17 +74,15 @@ public class Warenkorbverwaltung {
             throw new ArtikelNichtVorhandenException();
         }
 
-        int warenkorbArtikelAnzahl = warenkorb.getWarenkorbListe().get(artikel);
+        int warenkorbArtikelAnzahl = warenkorb.getArtikelAnzahlImWarenkorb(artikel);
         if(warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel < 0){ // Menge im Warenkorb darf nicht negativ sein z.B. 90 im Warenkorb - 92 welche entfernt werden sollen
             throw new ArtikelbestandUnterNullException(artikel, " Der Bestand ihres Warenkorbs darf nicht unter 0 fallen!");
         }
 
         if(anzahlZuEntfernenderArtikel == 0 || (warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel) == 0){ // wenn die eingegebene Menge im warenkorb 0 ist oder das ergebnis z.B. 92-92 0 wird, wird der Artikel entfernt
             warenkorb.getWarenkorbListe().remove(artikel);
-            warenkorb.gesamtpreisVerringern(artikel.getPreis() * warenkorbArtikelAnzahl);
         }else{ // sonst wird die Menge des Artikels im Warenkorb geändert
-            warenkorb.addWarenkorbListe(artikel,  warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel);
-            warenkorb.gesamtpreisVerringern(artikel.getPreis() * anzahlZuEntfernenderArtikel);
+            warenkorb.addArtikelZuWarenkorbListe(artikel,  warenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel);
         }
 
     }
@@ -108,8 +105,7 @@ public class Warenkorbverwaltung {
     public void warenkorbLoeschen(Kunde kunde){
         warenkorb = kunde.getWarkorb();
         //warenkorb.keeren();
-        warenkorb.setGesamtpreis(0);
-        warenkorb.getWarenkorbListe().clear();
+        warenkorb.warenkorbLeeren();
     }
 
     /**
@@ -129,13 +125,11 @@ public class Warenkorbverwaltung {
         for (Map.Entry<Artikel, Integer> entry: warenkorb.getWarenkorbListe().entrySet()) {
             if((entry.getKey().getBestand() - entry.getValue()) < 0){ //überprüft ob der Artikelbestand beim abschliessen des Kaufes immer noch über den Lagerbestand liegt(vllt war ein anderer Kunde schneller)
                  // entfernt den nicht vorhandenen artikel aus dem warenkorb
-                warenkorb.gesamtpreisVerringern(entry.getKey().getPreis() * entry.getValue());
-                warenkorb.getWarenkorbListe().remove(entry.getKey());
+                warenkorb.removeArtikelVonWarenkorbListe(entry.getKey());
                 throw new ArtikelbestandUnterNullException(entry.getKey(), " DU WARST ZU LANGSAM BEIM EINKAUF. NICE TRY! ¯\\_(ツ)_/¯");
             }
             if(!artikelBestand.contains(entry.getKey())){
-                warenkorb.gesamtpreisVerringern(entry.getKey().getPreis() * entry.getValue());
-                warenkorb.getWarenkorbListe().remove(entry.getKey());
+                warenkorb.removeArtikelVonWarenkorbListe(entry.getKey());
                 throw new ArtikelNichtVorhandenException(entry.getKey(), " Überprüfen sie ihren Warenkorb, da ein Artikel aus ihrem Warenkorb nicht mehr in unserem Shop vorhanden ist ");
             }
             entry.getKey().setBestand(entry.getKey().getBestand() - entry.getValue()); // wenn einkauf erfolgreich: entferne Bestellung aus Bestand
