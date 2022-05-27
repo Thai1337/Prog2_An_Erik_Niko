@@ -17,14 +17,14 @@ public class Artikel {
 
     private static int counter;
 
-    public Artikel(int nummer, String bezeichnung, int bestand, double preis){
+    public Artikel(int nummer, String bezeichnung, int bestand, double preis) {
         this.nummer = nummer;
         this.bezeichnung = bezeichnung;
         this.bestand = bestand;
         this.preis = preis;
     }
 
-    public Artikel(String bezeichnung, int bestand, double preis){
+    public Artikel(String bezeichnung, int bestand, double preis) {
         this.nummer = counter++;
         this.bezeichnung = bezeichnung;
         this.bestand = bestand;
@@ -50,13 +50,21 @@ public class Artikel {
 
     // Methoden zum Setzen und Lesen der Artikel-Eigenschaften,
 
-    public double getPreis() {return preis;}
+    public double getPreis() {
+        return preis;
+    }
 
-    public void setPreis(double preis) {this.preis = preis;}
+    public void setPreis(double preis) {
+        this.preis = preis;
+    }
 
-    public int getNummer() {return nummer;}
+    public int getNummer() {
+        return nummer;
+    }
 
-    public void setNummer(int nummer) {this.nummer = nummer;}
+    public void setNummer(int nummer) {
+        this.nummer = nummer;
+    }
 
     public String getBezeichnung() {
         return bezeichnung;

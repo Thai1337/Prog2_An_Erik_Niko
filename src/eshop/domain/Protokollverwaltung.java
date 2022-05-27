@@ -13,18 +13,20 @@ public class Protokollverwaltung {
     /**
      * Konstruktor, welcher einen String Verktor mit dem Namen Protokollliste ertsellt
      */
-    public Protokollverwaltung(){
+    public Protokollverwaltung() {
         protokollListe = new Vector<Protokoll>();
     }
+
     /**
      * Methode, welche eine Log erstellt, sofern ein Mitarbeiter ein Artikel einfügt oder löscht.
+     *
      * @param protokoll die Artikeländerungen werden im Protokoll angezeigt und aufgerufen
      */
-    public void logZuProtokollListe(Protokoll protokoll){
+    public void logZuProtokollListe(Protokoll protokoll) {
         protokollListe.add(protokoll);
     }
 
     public List<Protokoll> getProtokollListe() {
-      return protokollListe;
+        return protokollListe;
     }
 }

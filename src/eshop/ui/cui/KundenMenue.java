@@ -15,8 +15,6 @@ import java.util.Map;
 
 /**
  * Klasse für das Anmelden der Kunden in einem CUI, welche zum Verarbeiten der Eingaben und Ausgaben genutzt wird.
- *
- *
  */
 public class KundenMenue {
 
@@ -26,11 +24,12 @@ public class KundenMenue {
 
     private Kunde kunde;
 
-    public KundenMenue(Eshop shop){
+    public KundenMenue(Eshop shop) {
         eingabeAusgabe = new EA();
 
         this.shop = shop;
     }
+
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Ausgabe des Kunden-Menüs.
@@ -49,6 +48,7 @@ public class KundenMenue {
         System.out.println("(0) = Ausloggen");
         System.out.print("\nEingabe --> ");
     }
+
     /**
      * Methode zur Ausführung der Hauptschleife:
      * - Kunden-Menü ausgeben
@@ -56,21 +56,23 @@ public class KundenMenue {
      * - Eingabe verarbeiten und Ergebnis ausgeben
      * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
      */
-    public void run(){
+    public void run() {
         int input = -1;
 
-        do{
+        do {
             gibKundenMenueAus();
-            try{
+            try {
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteKundenEingabe(input);
-            }catch (IOException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | WarenkorbLeerException e){
+            } catch (IOException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException |
+                     WarenkorbLeerException e) {
                 // TODO Auto-generated catch block
                 System.out.println(e.getMessage());
             }
 
-        }while(input != 0);
+        } while (input != 0);
     }
+
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Verarbeitung von Eingaben
@@ -114,7 +116,7 @@ public class KundenMenue {
 
                 System.out.println("\nWarenkorb:");
                 for (Map.Entry<Artikel, Integer> entry : test.entrySet()) {
-                    System.out.println("Artikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR");
+                    System.out.println("Artikelnummer: " + entry.getKey().getNummer() + " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue() * entry.getKey().getPreis()) + "EUR");
                 }
 
                 System.out.println("Gesamtpreis: " + df.format(shop.getWarenkorb(kunde).getGesamtpreis()) + "EUR");
@@ -148,17 +150,18 @@ public class KundenMenue {
                 break;
             case 7:
                 System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
-                if(eingabeAusgabe.einlesenString().equalsIgnoreCase("j")){
+                if (eingabeAusgabe.einlesenString().equalsIgnoreCase("j")) {
                     Rechnung rechnung = shop.einkaufAbschliessen(kunde);
 
                     System.out.println(rechnung);
 
-                }else{
+                } else {
                     System.out.println("\nViel Spaß beim Einkaufen!");
                 }
                 break;
         }
     }
+
     public void setKunde(Kunde kunde) {
         this.kunde = kunde;
     }

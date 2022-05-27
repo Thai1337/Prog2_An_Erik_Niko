@@ -13,18 +13,18 @@ import java.util.List;
 
 /**
  * Klasse für das Anmelden der Mitarbeiter in einem CUI, welche zum Verarbeiten der Eingaben und Ausgaben genutzt wird.
- *
- *
  */
 public class MitarbeiterMenue {
 
     private Mitarbeiter mitarbeiter;
     private EA eingabeAusgabe;
     private Eshop shop;
-    public MitarbeiterMenue(Eshop shop){
+
+    public MitarbeiterMenue(Eshop shop) {
         eingabeAusgabe = new EA();
         this.shop = shop;
     }
+
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Ausgabe des Mitarbeiter-Menüs.
@@ -40,6 +40,7 @@ public class MitarbeiterMenue {
         System.out.println("(0) = Ausloggen");
         System.out.print("\nEingabe --> ");
     }
+
     /**
      * Methode zur Ausführung der Hauptschleife:
      * - Mitarbeiter-Menü ausgeben
@@ -47,21 +48,22 @@ public class MitarbeiterMenue {
      * - Eingabe verarbeiten und Ergebnis ausgeben
      * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
      */
-    public void run(){
+    public void run() {
         int input = -1;
-        do{
+        do {
             gibMitarbeiterMenueAus();
-            try{
+            try {
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
-            }catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException |
-                    ArtikelExistiertBereitsException | ArtikelNichtVorhandenException e){
+            } catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException |
+                     ArtikelExistiertBereitsException | ArtikelNichtVorhandenException e) {
                 System.out.println("\n" + e.getMessage());
                 //e.printStackTrace();
             }
 
-        }while(input != (0));
+        } while (input != (0));
     }
+
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Verarbeitung von Eingaben
@@ -86,7 +88,7 @@ public class MitarbeiterMenue {
                 System.out.println("(3): Absteigend nach Bezeichnung");
                 System.out.println("(4): Absteigend nach Nummer\n");
                 System.out.print("Listen Sortierung --> ");
-                
+
                 nr = eingabeAusgabe.einlesenInteger();
                 System.out.println("");
                 liste = shop.gibAlleArtikel(nr);

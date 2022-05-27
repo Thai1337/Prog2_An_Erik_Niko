@@ -8,9 +8,9 @@ package eshop.valueobjects;
  * @author heuschmann
  */
 //TODO Wenn Persistenz dann Mitarbeiternummer generierung ändern
-    //TODO Mitarbeiternummern sind scuffed af
-public class Mitarbeiter extends Nutzer{
-   //Counter der Mitarbeiternummern generiert
+//TODO Mitarbeiternummern sind scuffed af
+public class Mitarbeiter extends Nutzer {
+    //Counter der Mitarbeiternummern generiert
     //private static int counter;
 
     public String toString() {

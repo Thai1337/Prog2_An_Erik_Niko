@@ -19,7 +19,9 @@ import static eshop.valueobjects.Protokoll.EreignisTyp.LOESCHUNG;
 public class Protokoll {
 
     //enum EreignisTyp { NEU, KAUF, EINLAGERUNG, AUSLAGERUNG, LÖSCHUNG };
-    public enum EreignisTyp { EINFUEGEN, EINKAUFEN, AENDERUNG, LOESCHUNG };
+    public enum EreignisTyp {EINFUEGEN, EINKAUFEN, AENDERUNG, LOESCHUNG}
+
+    ;
 
     private Warenkorb warenkorb;
 
@@ -30,7 +32,7 @@ public class Protokoll {
 
     //private List<Artikel> artikelListe;
 
-    public Protokoll(Nutzer nutzer, Artikel artikel, EreignisTyp aktion){
+    public Protokoll(Nutzer nutzer, Artikel artikel, EreignisTyp aktion) {
         this.nutzer = nutzer;
         this.artikel = artikel;
         //aktion = EreignisTyp.KAUF;
@@ -41,7 +43,7 @@ public class Protokoll {
         this.datum = myObj.format(myFormatObj);
     }
 
-    public Protokoll(Nutzer nutzer, EreignisTyp aktion){
+    public Protokoll(Nutzer nutzer, EreignisTyp aktion) {
         LocalDateTime myObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
@@ -59,26 +61,26 @@ public class Protokoll {
     public String toString() {
         // TODO exceptions überprüfen
         // TODO vllt das Protokoll in Mitarbeiter und Nutzer aufteilen
-        String protokoll = "\n"+ this.datum + " | " + (nutzer instanceof Kunde ? "K" : "M") + " | Nummer: " + nutzer.getNummer() +" | Name: " + nutzer.getName() + "\n\t | Typ: " + aktion;
+        String protokoll = "\n" + this.datum + " | " + (nutzer instanceof Kunde ? "K" : "M") + " | Nummer: " + nutzer.getNummer() + " | Name: " + nutzer.getName() + "\n\t | Typ: " + aktion;
         //mitarbeiterProtokoll += " | Artikelnummer: " +protokoll.getArtikel().getNummer()+ " | Bezeichnung: "+protokoll.getArtikel().getBezeichnung()+ " | Bestand: "+ protokoll.getArtikel().getBestand();//
-        switch (aktion){
+        switch (aktion) {
             case EINFUEGEN, LOESCHUNG:
                 protokoll += " | Artikelnummer: " + artikel.getNummer() + " | Bezeichnung: " + artikel.getBezeichnung() + " | Bestand: " + artikel.getBestand();
                 break;
             case AENDERUNG:
-                if(!artikel.getBezeichnung().isEmpty()){ //Bezeichnung
+                if (!artikel.getBezeichnung().isEmpty()) { //Bezeichnung
                     protokoll += " | Bezeichnungseanderung zu: " + artikel.getBezeichnung();
                 }
-                if(artikel.getPreis() != -1.01){ //Preis
+                if (artikel.getPreis() != -1.01) { //Preis
                     protokoll += " | Preisaenderung zu: " + artikel.getPreis();
                 }
-                if(artikel.getBestand() != -1){ //Bestand
+                if (artikel.getBestand() != -1) { //Bestand
                     protokoll += " | Bestandsaenderung zu: " + artikel.getBestand();
                 }
                 break;
             case EINKAUFEN:
-                for(Map.Entry<Artikel, Integer> entry : warenkorb.getWarenkorbListe().entrySet()){
-                    protokoll += "\n\t | Artikelnummer: " + entry.getKey().getNummer() + " | Bezeichnung: " + entry.getKey().getBezeichnung() + " | Bestandsaenderung: -" +entry.getValue();
+                for (Map.Entry<Artikel, Integer> entry : warenkorb.getWarenkorbListe().entrySet()) {
+                    protokoll += "\n\t | Artikelnummer: " + entry.getKey().getNummer() + " | Bezeichnung: " + entry.getKey().getBezeichnung() + " | Bestandsaenderung: -" + entry.getValue();
                 }
                 break;
 

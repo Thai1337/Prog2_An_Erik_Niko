@@ -26,10 +26,10 @@ public class Artikelverwaltung {
         Artikel a1 = new Artikel("Holz", 100, 2.01);
         Artikel a12 = new Artikel("Holzbrett", 6, 4.01);
         Artikel a2 = new Artikel("Metall", 50, 6.01);
-        Artikel a3 = new Artikel( "Ball", 50, 8.01);
+        Artikel a3 = new Artikel("Ball", 50, 8.01);
         Artikel a4 = new Artikel("Cola", 50, 10.01);
         Artikel a5 = new Artikel("Ananas", 50, 11.01);
-        Artikel a6 = new Artikel( "Buch", 1, 12.01);
+        Artikel a6 = new Artikel("Buch", 1, 12.01);
         artikelBestand.add(a1);
         artikelBestand.add(a2);
         artikelBestand.add(a3);
@@ -41,8 +41,8 @@ public class Artikelverwaltung {
     }
 
     public Artikel gibArtikelNachNummer(int artikelNummer) throws ArtikelNichtVorhandenException {
-        for(Artikel gesuchterArtikel : artikelBestand){
-            if(gesuchterArtikel.getNummer() == artikelNummer){
+        for (Artikel gesuchterArtikel : artikelBestand) {
+            if (gesuchterArtikel.getNummer() == artikelNummer) {
                 return gesuchterArtikel;
             }
         }
@@ -88,7 +88,7 @@ public class Artikelverwaltung {
                 break;
             case 2:
                 Collections.sort(kopie,
-                        (a1, a2) -> a1.getNummer()-a2.getNummer());
+                        (a1, a2) -> a1.getNummer() - a2.getNummer());
                 break;
             case 3:
                 Collections.sort(kopie,
@@ -96,7 +96,7 @@ public class Artikelverwaltung {
                 break;
             case 4:
                 Collections.sort(kopie,
-                        (a1, a2) -> a2.getNummer()-a1.getNummer());
+                        (a1, a2) -> a2.getNummer() - a1.getNummer());
                 break;
             default:
                 kopie = new Vector<Artikel>(artikelBestand);
@@ -107,13 +107,12 @@ public class Artikelverwaltung {
     }
 
 
-
     /**
      * Methode, die ein Artikel an das Ende des artikelBestandes einfügt.
      *
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelExistiertBereitsException wenn ein Artikel bereits existiert
-     * @throws EingabeNichtLeerException wenn eines der eingegebenen Daten leer ist
+     * @throws EingabeNichtLeerException        wenn eines der eingegebenen Daten leer ist
      * @throws ArtikelbestandUnterNullException wenn der artikelbestand unter -1 ist
      */
     public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException {
@@ -123,7 +122,7 @@ public class Artikelverwaltung {
         if (einArtikel.getBestand() < -1) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
         }
-        if(einArtikel.getNummer() <= -1 || einArtikel.getPreis() <0 || einArtikel.getBestand() == -1 ||einArtikel.getBezeichnung().isEmpty()){
+        if (einArtikel.getNummer() <= -1 || einArtikel.getPreis() < 0 || einArtikel.getBestand() == -1 || einArtikel.getBezeichnung().isEmpty()) {
             // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
             throw new EingabeNichtLeerException();
         }
@@ -138,38 +137,39 @@ public class Artikelverwaltung {
      *
      * @param einArtikel der einzufügende Artikel
      * @throws ArtikelbestandUnterNullException wenn der eingegebene Artikelbestand unter -1 ist
-     * @throws EingabeNichtLeerException wenn alle eingegebenen Werte leer sind
-     * @throws ArtikelNichtVorhandenException wenn der Artikel nicht in unserem Lager ist
+     * @throws EingabeNichtLeerException        wenn alle eingegebenen Werte leer sind
+     * @throws ArtikelNichtVorhandenException   wenn der Artikel nicht in unserem Lager ist
      */
     public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelNichtVorhandenException {
         // das übernimmt der Vector:
         // TODO exception damit keine negativen Preise eingegeben werden können und die java-doc ändern!!!! dafuq?
-        if(!artikelBestand.contains(einArtikel)){
+        if (!artikelBestand.contains(einArtikel)) {
             throw new ArtikelNichtVorhandenException();
         }
         if (einArtikel.getBestand() < -1) {
             throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
         }
-        if(einArtikel.getNummer() <= -1 && einArtikel.getPreis() <0 && einArtikel.getBestand() == -1 && einArtikel.getBezeichnung().isEmpty()) {
+        if (einArtikel.getNummer() <= -1 && einArtikel.getPreis() < 0 && einArtikel.getBestand() == -1 && einArtikel.getBezeichnung().isEmpty()) {
             // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
             throw new EingabeNichtLeerException();
         }
         for (Artikel artikel : artikelBestand) {
             if (artikel.getNummer() == einArtikel.getNummer()) {
-                if(!einArtikel.getBezeichnung().isEmpty()){
+                if (!einArtikel.getBezeichnung().isEmpty()) {
                     artikel.setBezeichnung(einArtikel.getBezeichnung());
                 }
-                if(einArtikel.getPreis() != -1.01){
+                if (einArtikel.getPreis() != -1.01) {
                     artikel.setPreis(einArtikel.getPreis());
                 }
-                if(einArtikel.getBestand() != -1){
+                if (einArtikel.getBestand() != -1) {
                     artikel.setBestand(einArtikel.getBestand());
                 }
             }
 
         }
-        
+
     }
+
     /**
      * Methode zum Löschen eines Artikels aus dem Bestand.
      *
@@ -191,7 +191,7 @@ public class Artikelverwaltung {
     public List<Artikel> sucheArtikel(String bezeichung) {
         List<Artikel> ergebnis = new Vector();
 
-        for (Artikel artikel: artikelBestand) {
+        for (Artikel artikel : artikelBestand) {
             if (artikel.getBezeichnung().toLowerCase().contains(bezeichung.toLowerCase())) {
                 ergebnis.add(artikel);
             }

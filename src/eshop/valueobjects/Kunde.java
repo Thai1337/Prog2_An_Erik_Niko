@@ -14,13 +14,14 @@ public class Kunde extends Nutzer {
     private Adresse adresse;
 
     private Warenkorb meinWarenkorb;
+
     public Kunde(String name, Adresse adresse, String passwort) {
         super(name, passwort);
         this.adresse = adresse;
         this.meinWarenkorb = new Warenkorb();
     }
 
-    public Kunde(String name, int nummer,Adresse adresse, String passwort) {
+    public Kunde(String name, int nummer, Adresse adresse, String passwort) {
         super(name, nummer, passwort);
         this.adresse = adresse;
         this.meinWarenkorb = new Warenkorb();
@@ -32,7 +33,7 @@ public class Kunde extends Nutzer {
         meinWarenkorb.setWarenkorbListe(map);
     }*/
 
-    public Warenkorb getWarkorb(){
+    public Warenkorb getWarkorb() {
         return meinWarenkorb;
     }
 
