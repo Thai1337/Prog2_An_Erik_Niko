@@ -1,10 +1,8 @@
 package eshop.ui.cui;
 
 import eshop.domain.Eshop;
-import eshop.domain.exceptions.ArtikelExistiertBereitsException;
-import eshop.domain.exceptions.ArtikelNichtVorhandenException;
-import eshop.domain.exceptions.ArtikelbestandUnterNullException;
-import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.domain.exceptions.*;
+import eshop.valueobjects.Massengutartikel;
 import eshop.valueobjects.Mitarbeiter;
 import eshop.valueobjects.Protokoll;
 
@@ -56,7 +54,7 @@ public class MitarbeiterMenue {
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
             } catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException |
-                     ArtikelExistiertBereitsException | ArtikelNichtVorhandenException e) {
+                     ArtikelExistiertBereitsException | ArtikelNichtVorhandenException | MassengutartikelBestandsException e) {
                 System.out.println("\n" + e.getMessage());
                 //e.printStackTrace();
             }
@@ -69,9 +67,9 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException, ArtikelNichtVorhandenException {
+    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
         String nummer, bezeichnung, bestand, name, passwort;
-        int nr, neueNr, bst;
+        int nr, neueNr, bst, packungsgroesse = -1;
         double preis;
         List liste;
         //TODO eigenes Menü für Artikel erstellen
@@ -109,10 +107,12 @@ public class MitarbeiterMenue {
                 bst = eingabeAusgabe.einlesenInteger();
                 System.out.print("Artikelpreis  --> ");
                 preis = eingabeAusgabe.einlesenDouble();
+                System.out.print("Packungsgroesse (bei keiner Eingabe ist es ein Einzelartikel) --> ");
+                packungsgroesse = eingabeAusgabe.einlesenInteger();
 
-                System.out.print("\nDie Artikelnummer von ihrem erstellten Artikel lautet --> " + shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter).getNummer() + "\n");
+                System.out.print("\nDie Artikelnummer von ihrem erstellten Artikel lautet --> " + shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter, packungsgroesse).getNummer() + "\n");
                 break;
-            case 4:
+            case 4://todo einzelartikel zu massenartikel umwandeln und umgekehrt
                 System.out.print("\nArtikelnummer --> ");
                 nr = eingabeAusgabe.einlesenInteger();
                 System.out.print("Neue Bezeichnung (bei keiner Eingabe bleibt die Bezeichnung gleich)  --> ");
@@ -121,8 +121,12 @@ public class MitarbeiterMenue {
                 bst = eingabeAusgabe.einlesenInteger();
                 System.out.print("Neuer Artikelpreis (bei keiner Eingabe bleibt der Artikelpreis gleich) --> ");
                 preis = eingabeAusgabe.einlesenDouble();
+                if(shop.gibArtikelNachNummer(nr) instanceof Massengutartikel){
+                    System.out.print("Neue Packungsgroesse (bei keiner Eingabe bleibt die Packungsgröße gleich) --> ");
+                    packungsgroesse = eingabeAusgabe.einlesenInteger();
+                }
 
-                shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter);
+                shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter, packungsgroesse, shop.gibArtikelNachNummer(nr));
                 System.out.println("Bearbeitung erfolgreich!");
                 break;
             case 5:

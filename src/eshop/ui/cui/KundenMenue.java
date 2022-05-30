@@ -3,6 +3,7 @@ package eshop.ui.cui;
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.domain.exceptions.WarenkorbLeerException;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
@@ -65,7 +66,7 @@ public class KundenMenue {
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteKundenEingabe(input);
             } catch (IOException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException |
-                     WarenkorbLeerException e) {
+                     WarenkorbLeerException | MassengutartikelBestandsException e) {
                 // TODO Auto-generated catch block
                 System.out.println(e.getMessage());
             }
@@ -78,7 +79,7 @@ public class KundenMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, WarenkorbLeerException {
+    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, WarenkorbLeerException, MassengutartikelBestandsException {
         String nummer, bezeichnung, bestand;
         int nr, bst, artikelnummer, anzahlArtikel;
         List liste;

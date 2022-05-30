@@ -10,10 +10,10 @@ package eshop.valueobjects;
  */
 public class Artikel {
 
-    private int nummer;
-    private String bezeichnung;
-    private int bestand;
-    private double preis;
+    protected int nummer;
+    protected String bezeichnung;
+    protected int bestand;
+    protected double preis;
 
     private static int counter;
 

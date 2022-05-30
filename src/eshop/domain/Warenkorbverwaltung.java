@@ -2,11 +2,9 @@ package eshop.domain;
 
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.domain.exceptions.WarenkorbLeerException;
-import eshop.valueobjects.Artikel;
-import eshop.valueobjects.Kunde;
-import eshop.valueobjects.Rechnung;
-import eshop.valueobjects.Warenkorb;
+import eshop.valueobjects.*;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -34,7 +32,7 @@ public class Warenkorbverwaltung {
      * @param kunde                  Kunde, dem der Warenkorb zugewiesen wurde
      * @throws ArtikelbestandUnterNullException wenn der hinzugefügte Artikelbestand kleiner 0 sein sollte
      */
-    public void artikelZuWarenkorbHinzufuegen(Artikel artikel, int warenkorbArtikelAnzahl, Kunde kunde) throws ArtikelbestandUnterNullException {
+    public void artikelZuWarenkorbHinzufuegen(Artikel artikel, int warenkorbArtikelAnzahl, Kunde kunde) throws ArtikelbestandUnterNullException, MassengutartikelBestandsException {
         warenkorb = kunde.getWarkorb();
 
         if (warenkorbArtikelAnzahl <= 0) { // eingabe darf nicht kleiner gleich 0 sein
@@ -42,6 +40,10 @@ public class Warenkorbverwaltung {
         }
         if (warenkorbArtikelAnzahl > artikel.getBestand()) {
             throw new ArtikelbestandUnterNullException(artikel, " Die Menge dieses Artikels in Ihrem Warenkorb ist höher als der Bestand im Shop!");
+        }
+
+        if(artikel instanceof Massengutartikel && warenkorbArtikelAnzahl % ((Massengutartikel) artikel).getPackungsgrosse() != 0 ){
+            throw new MassengutartikelBestandsException();
         }
 
         if (!warenkorb.getWarenkorbListe().containsKey(artikel)) {
@@ -65,7 +67,7 @@ public class Warenkorbverwaltung {
      * @param kunde                       Kunde, dem der Warenkorb zugewiesen wurde
      * @throws ArtikelbestandUnterNullException wenn der zu entfernende Artikelbestand kleiner 0 sein sollte
      */
-    public void artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+    public void artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
         warenkorb = kunde.getWarkorb();
         if (anzahlZuEntfernenderArtikel < 0) { // eingabe darf nicht kleiner als 0 sein | mit 0 wird der ganze artikel gelöscht
             throw new ArtikelbestandUnterNullException(artikel, " Bitte geben Sie ein Entfernmenge groesser als 0 ein!");
@@ -73,6 +75,10 @@ public class Warenkorbverwaltung {
 
         if (!warenkorb.getWarenkorbListe().containsKey(artikel)) { // das wird benötigt, weil wenn man einen im "Lager" vorhandenen artikel entfernen will, dieser aber nicht im Warenkorb existiert gibt es eine NullPointerException
             throw new ArtikelNichtVorhandenException();
+        }
+
+        if(artikel instanceof Massengutartikel && anzahlZuEntfernenderArtikel % ((Massengutartikel) artikel).getPackungsgrosse() != 0 ){
+            throw new MassengutartikelBestandsException();
         }
 
         int warenkorbArtikelAnzahl = warenkorb.getArtikelAnzahlImWarenkorb(artikel);

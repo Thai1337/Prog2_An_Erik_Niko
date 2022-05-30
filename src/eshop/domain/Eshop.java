@@ -65,8 +65,13 @@ public class Eshop {
      * @throws EingabeNichtLeerException        Wenn die Eingabe leer oder falsch ist
      * @throws ArtikelbestandUnterNullException wenn der angegebene bestand beim Einfügen unter null ist
      */
-    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException {
-        Artikel neuerArtikel = new Artikel(bezeichnung, bestand, preis);
+    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException {
+        Artikel neuerArtikel;
+        if (packungsgroesse == -1) {
+            neuerArtikel= new Artikel(bezeichnung, bestand, preis);
+        }else{
+            neuerArtikel = new Massengutartikel(bezeichnung, bestand, preis, packungsgroesse);
+        }
         artikelVW.einfuegen(neuerArtikel);
 
         protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, neuerArtikel, Protokoll.EreignisTyp.EINFUEGEN));
@@ -74,7 +79,7 @@ public class Eshop {
     }
 
     /**
-     * Methode zum ändern des Artikelbestandes.
+     * Methode zum Ändern des Artikelbestandes.
      *
      * @param nr          Nummer des Artikels
      * @param bezeichnung Bezeichnung des Artikels
@@ -84,8 +89,14 @@ public class Eshop {
      * @throws ArtikelNichtVorhandenException   Wenn der Artikel nicht in unserem Lager ist
      */
     // Todo Ändern in Bearbeite Artikel
-    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
-        Artikel artikel = new Artikel(nr, bezeichnung, bestand, preis);
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse, Artikel artikel2) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+        Artikel artikel;
+        if (artikel2 instanceof Massengutartikel) {
+            artikel = new Massengutartikel(nr, bezeichnung, bestand, preis, packungsgroesse);
+        }else{
+            artikel= new Artikel(nr ,bezeichnung, bestand, preis);
+        }
+
         artikelVW.aendereArtikel(artikel);
 
         protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
@@ -184,7 +195,7 @@ public class Eshop {
      * @throws ArtikelbestandUnterNullException wenn der Artikelbestand, den man einfügen will, unter null fällt oder fallen würde
      * @throws ArtikelNichtVorhandenException   wenn der Artikel nicht im Warenkorb ist
      */
-    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
         Artikel artikel = artikelVW.gibArtikelNachNummer(artikelnummer);
         warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
     }
@@ -217,7 +228,7 @@ public class Eshop {
      * @throws ArtikelbestandUnterNullException wenn der bestand im Warenkorb, der zu entfernen ist, unter null ist
      * @throws ArtikelNichtVorhandenException   wenn der Artikel nicht im Warenkorb ist
      */
-    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
+    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
         Artikel zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
         warenkoerbeVW.artikelAusWarenkorbEntfernen(zuEntfernenderArtikel, anzahlZuEntfernenderArtikel, kunde);
     }
@@ -247,6 +258,10 @@ public class Eshop {
      */
     public List<Protokoll> getProtokollListe() {
         return protokollVW.getProtokollListe();
+    }
+
+    public Artikel gibArtikelNachNummer(int nummer) throws ArtikelNichtVorhandenException {
+        return artikelVW.gibArtikelNachNummer(nummer);
     }
 
 
