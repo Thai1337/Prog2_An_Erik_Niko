@@ -10,35 +10,25 @@ package eshop.valueobjects;
  */
 public class Artikel {
 
-    private int nummer;
-    private String bezeichnung;
-    private int bestand;
-    private double preis;
+    protected int nummer;
+    protected String bezeichnung;
+    protected int bestand;
+    protected double preis;
 
     private static int counter;
 
-    public Artikel(int nummer, String bezeichnung, int bestand, double preis){
+    public Artikel(int nummer, String bezeichnung, int bestand, double preis) {
         this.nummer = nummer;
         this.bezeichnung = bezeichnung;
         this.bestand = bestand;
         this.preis = preis;
     }
 
-    public Artikel(String bezeichnung, int bestand, double preis){
+    public Artikel(String bezeichnung, int bestand, double preis) {
         this.nummer = counter++;
         this.bezeichnung = bezeichnung;
         this.bestand = bestand;
         this.preis = preis;
-    }
-
-    @Override
-    public String toString() {
-        return "Artikel{" +
-                "nummer=" + nummer +
-                ", bezeichnung='" + bezeichnung + '\'' +
-                ", bestand=" + bestand +
-                ", preis=" + preis +
-                '}';
     }
 
     /**
@@ -48,10 +38,15 @@ public class Artikel {
      *
      * @see java.lang.Object#toString()
      */
-
-
-
-
+    @Override
+    public String toString() {
+        return "Artikel{" +
+                "nummer=" + nummer +
+                ", bezeichnung='" + bezeichnung + '\'' +
+                ", bestand=" + bestand +
+                ", preis=" + preis +
+                '}';
+    }
 
     // Methoden zum Setzen und Lesen der Artikel-Eigenschaften,
 

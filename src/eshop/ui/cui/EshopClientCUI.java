@@ -14,8 +14,6 @@ import java.util.List;
  * E-Shop. Die Benutzungsschnittstelle basiert auf Ein-
  * und Ausgaben auf der Kommandozeile, daher der Name CUI
  * (Command line User Interface).
- *
- *
  */
 public class EshopClientCUI {
 
@@ -35,7 +33,6 @@ public class EshopClientCUI {
         }
 
     }
-
 
 
 }

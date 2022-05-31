@@ -12,24 +12,44 @@ import java.util.Map;
  * @author heuschmann
  */
 public class Warenkorb {
-    private double gesamtpreis;
+    //private double gesamtpreis;
 
 
     private Map<Artikel, Integer> warenkorbListe;
 
-    public Warenkorb(){
+    public Warenkorb() {
         warenkorbListe = new Hashtable<>();
+    }
+
+    public Warenkorb(Warenkorb warenkorb) {
+        this.warenkorbListe = new Hashtable<>(warenkorb.getWarenkorbListe());
     }
 
     /**
      * Methode zum hinzufuegen von Artikeln in eine Hash-table mit ihrer Menge
-     * @param artikel fuegt dem Warenkorb einen bestimmten Artikel ein
+     *
+     * @param artikel       fuegt dem Warenkorb einen bestimmten Artikel ein
      * @param anzahlArtikel Menge des jeweiligen Artikels im Warenkorb
      */
-    public void setWarenkorbListe(Artikel artikel, int anzahlArtikel){
+    public void addArtikelZuWarenkorbListe(Artikel artikel, int anzahlArtikel) {
         warenkorbListe.put(artikel, anzahlArtikel);
     }
 
+    public void removeArtikelVonWarenkorbListe(Artikel artikel) {
+        warenkorbListe.remove(artikel);
+    }
+
+    public void warenkorbLeeren() {
+        warenkorbListe.clear();
+    }
+
+    public int getArtikelAnzahlImWarenkorb(Artikel artikel) {
+        return warenkorbListe.get(artikel);
+    }
+
+    // leeren
+
+    // bestand ändern
 
 
     public Map<Artikel, Integer> getWarenkorbListe() {
@@ -37,12 +57,25 @@ public class Warenkorb {
     }
 
     public double getGesamtpreis() {
+        double gesamtpreis = 0;
+        for (Map.Entry<Artikel, Integer> entry : warenkorbListe.entrySet()) {
+            gesamtpreis += entry.getKey().getPreis() * entry.getValue();
+        }
         return gesamtpreis;
     }
-
-    public void setGesamtpreis(double gesamtpreis) {
+    // getter: gesamtpreis hier errechnen
+    // setter: weg
+    /*public void setGesamtpreis(double gesamtpreis){
         this.gesamtpreis = gesamtpreis;
     }
+
+    public void gesamtpreisErhoehen(double gesamtpreis) {
+        this.gesamtpreis += gesamtpreis;
+    }
+
+    public void gesamtpreisVerringern(double gesamtpreis) {
+        this.gesamtpreis -= gesamtpreis;
+    }*/
 
 
 }

@@ -2,7 +2,7 @@ package eshop.domain.exceptions;
 
 import eshop.valueobjects.Artikel;
 
-public class ArtikelbestandUnterNullException extends Exception{
+public class ArtikelbestandUnterNullException extends Exception {
 
     private Artikel artikel;
 

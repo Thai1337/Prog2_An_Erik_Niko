@@ -3,9 +3,11 @@ package eshop.ui.cui;
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
+import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.domain.exceptions.WarenkorbLeerException;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
+import eshop.valueobjects.Rechnung;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -14,8 +16,6 @@ import java.util.Map;
 
 /**
  * Klasse für das Anmelden der Kunden in einem CUI, welche zum Verarbeiten der Eingaben und Ausgaben genutzt wird.
- *
- *
  */
 public class KundenMenue {
 
@@ -25,11 +25,12 @@ public class KundenMenue {
 
     private Kunde kunde;
 
-    public KundenMenue(Eshop shop){
+    public KundenMenue(Eshop shop) {
         eingabeAusgabe = new EA();
 
         this.shop = shop;
     }
+
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Ausgabe des Kunden-Menüs.
@@ -48,6 +49,7 @@ public class KundenMenue {
         System.out.println("(0) = Ausloggen");
         System.out.print("\nEingabe --> ");
     }
+
     /**
      * Methode zur Ausführung der Hauptschleife:
      * - Kunden-Menü ausgeben
@@ -55,27 +57,29 @@ public class KundenMenue {
      * - Eingabe verarbeiten und Ergebnis ausgeben
      * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
      */
-    public void run(){
+    public void run() {
         int input = -1;
 
-        do{
+        do {
             gibKundenMenueAus();
-            try{
+            try {
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteKundenEingabe(input);
-            }catch (IOException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | WarenkorbLeerException e){
+            } catch (IOException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException |
+                     WarenkorbLeerException | MassengutartikelBestandsException e) {
                 // TODO Auto-generated catch block
                 System.out.println(e.getMessage());
             }
 
-        }while(input != 0);
+        } while (input != 0);
     }
+
     /* (non-Javadoc)
      *
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, WarenkorbLeerException {
+    private void verarbeiteKundenEingabe(int line) throws IOException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, WarenkorbLeerException, MassengutartikelBestandsException {
         String nummer, bezeichnung, bestand;
         int nr, bst, artikelnummer, anzahlArtikel;
         List liste;
@@ -103,7 +107,7 @@ public class KundenMenue {
                 System.out.print("Artikelbezeichnung  --> ");
                 bezeichnung = eingabeAusgabe.einlesenString();
 
-                liste = shop.sucheNachbezeichnung(bezeichnung);
+                liste = shop.sucheNachBezeichnung(bezeichnung);
                 eingabeAusgabe.gibListeAus(liste);
                 break;
             case 3:
@@ -113,21 +117,20 @@ public class KundenMenue {
 
                 System.out.println("\nWarenkorb:");
                 for (Map.Entry<Artikel, Integer> entry : test.entrySet()) {
-                    System.out.println("Artikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR");
+                    System.out.println("Artikelnummer: " + entry.getKey().getNummer() + " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue() * entry.getKey().getPreis()) + "EUR");
                 }
 
                 System.out.println("Gesamtpreis: " + df.format(shop.getWarenkorb(kunde).getGesamtpreis()) + "EUR");
 
                 break;
             case 4:
-                // TODO negative zahlen
                 System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie hinzufuegen moechten --> ");
                 artikelnummer = eingabeAusgabe.einlesenInteger();
                 System.out.print("Geben Sie die gewuenschte Bestellmenge an --> ");
                 anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
                 shop.artikelZuWarenkorb(artikelnummer, anzahlArtikel, kunde);
-                System.out.println("\nEinfuegen des Artikels in den Warenkorb war erfolgreich!");
+                System.out.println("\nEinfuegen war erfolgreich!");
                 break;
             case 5:
                 System.out.print("Geben Sie die Artikelnummer ein, von dem Artikel den Sie entfernen moechten --> ");
@@ -137,7 +140,7 @@ public class KundenMenue {
 
 
                 shop.artikelAusWarenkorbEntfernen(artikelnummer, anzahlArtikel, kunde);
-                System.out.println("\nEntfernen des Artikels aus dem Warenkorb erfolgreich!");
+                System.out.println("\nEntfernen war erfolgreich!");
 
                 break;
             case 6:
@@ -148,19 +151,18 @@ public class KundenMenue {
                 break;
             case 7:
                 System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
-                if(eingabeAusgabe.einlesenString().equalsIgnoreCase("j")){
-
-
-                    String rechnung = shop.einkaufAbschliessen(kunde);
+                if (eingabeAusgabe.einlesenString().equalsIgnoreCase("j")) {
+                    Rechnung rechnung = shop.einkaufAbschliessen(kunde);
 
                     System.out.println(rechnung);
 
-                }else{
+                } else {
                     System.out.println("\nViel Spaß beim Einkaufen!");
                 }
                 break;
         }
     }
+
     public void setKunde(Kunde kunde) {
         this.kunde = kunde;
     }

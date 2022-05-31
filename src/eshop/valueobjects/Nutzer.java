@@ -8,7 +8,6 @@ package eshop.valueobjects;
  * @author seliger
  * @author nguyen
  * @author heuschmann
- * @version 1
  */
 public abstract class Nutzer { //abstrakt damit kein Objekt der Klasse Nutzer erstellt werden kann, man aber trotzdem die Implementierung in dieser Klasse durchführen kann
     // TODO Nutzer einen abstract counter geben
@@ -17,13 +16,13 @@ public abstract class Nutzer { //abstrakt damit kein Objekt der Klasse Nutzer er
     protected String passwort;
     protected static int counter;
 
-    public Nutzer(String name, String passwort){
+    public Nutzer(String name, String passwort) {
         this.name = name;
         this.nummer = counter++;
         this.passwort = passwort;
     }
 
-    public Nutzer(String name, int nummer, String passwort){
+    public Nutzer(String name, int nummer, String passwort) {
         this.name = name;
         this.nummer = nummer;
         this.passwort = passwort;

@@ -1,12 +1,19 @@
 package eshop.valueobjects;
 
+/**
+ * Klasse zur Repräsentation einzelner Adressen.
+ *
+ * @author seliger
+ * @author nguyen
+ * @author heuschmann
+ */
 public class Adresse {
     private String strasse;
     private int hausnummer;
     private int plz;
     private String ort;
 
-    public Adresse(String strasse, int hausnummer, int plz, String ort){
+    public Adresse(String strasse, int hausnummer, int plz, String ort) {
         this.strasse = strasse;
         this.hausnummer = hausnummer;
         this.plz = plz;
