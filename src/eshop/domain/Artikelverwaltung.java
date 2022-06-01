@@ -75,13 +75,7 @@ public class Artikelverwaltung {
     public List<Artikel> getArtikelBestand(int sortierung) {
         List<Artikel> kopie = new Vector<Artikel>(artikelBestand);
 
-        /*Comparator<Artikel> com = new Comparator<Artikel>(){
-            public int compare(Artikel a1, Artikel a2){
-                return a1.getNummer()- a2.getNummer();
-            }
-        };*/
-
-        Collections.sort(kopie,
+        /*Collections.sort(kopie,
                 (a1, a2) -> {
                     switch (sortierung){
                         case 1:
@@ -96,6 +90,25 @@ public class Artikelverwaltung {
                             return 0;
                     }
                 });
+         */
+
+        Collections.sort(kopie, new Comparator<Artikel>(){
+            public int compare(Artikel a1, Artikel a2){
+                switch (sortierung){
+                    case 1:
+                        return a1.getBezeichnung().compareToIgnoreCase(a2.getBezeichnung());
+                    case 2:
+                        return a1.getNummer() - a2.getNummer();
+                    case 3:
+                        return a2.getBezeichnung().compareToIgnoreCase(a1.getBezeichnung());
+                    case 4:
+                        return a2.getNummer() - a1.getNummer();
+                    default:
+                        return 0;
+                }
+            }
+        });
+
         return kopie;
     }
 
