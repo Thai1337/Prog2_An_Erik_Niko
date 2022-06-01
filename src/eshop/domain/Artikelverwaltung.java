@@ -81,29 +81,22 @@ public class Artikelverwaltung {
             }
         };*/
 
-        switch (sortierung) {
-            case 1:
-                Collections.sort(kopie,
-                        (a1, a2) -> a1.getBezeichnung().compareToIgnoreCase(a2.getBezeichnung()));
-                break;
-            case 2:
-                Collections.sort(kopie,
-                        (a1, a2) -> a1.getNummer() - a2.getNummer());
-                break;
-            case 3:
-                Collections.sort(kopie,
-                        (a1, a2) -> a2.getBezeichnung().compareToIgnoreCase(a1.getBezeichnung()));
-                break;
-            case 4:
-                Collections.sort(kopie,
-                        (a1, a2) -> a2.getNummer() - a1.getNummer());
-                break;
-            default:
-                kopie = new Vector<Artikel>(artikelBestand);
-                break;
-        }
+        Collections.sort(kopie,
+                (a1, a2) -> {
+                    switch (sortierung){
+                        case 1:
+                            return a1.getBezeichnung().compareToIgnoreCase(a2.getBezeichnung());
+                        case 2:
+                            return a1.getNummer() - a2.getNummer();
+                        case 3:
+                            return a2.getBezeichnung().compareToIgnoreCase(a1.getBezeichnung());
+                        case 4:
+                            return a2.getNummer() - a1.getNummer();
+                        default:
+                            return 0;
+                    }
+                });
         return kopie;
-
     }
 
 
