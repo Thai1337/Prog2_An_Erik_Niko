@@ -17,7 +17,7 @@ public class LoginMenue {
     private Eshop shop;
     private EA eingabeAusgabe;
 
-    public LoginMenue() {
+    public LoginMenue() throws IOException, ClassNotFoundException {
         shop = new Eshop();
         kundenMenue = new KundenMenue(shop);
         mitarbeiterMenue = new MitarbeiterMenue(shop);

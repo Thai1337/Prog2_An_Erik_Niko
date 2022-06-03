@@ -54,7 +54,8 @@ public class MitarbeiterMenue {
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
             } catch (IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException |
-                     ArtikelExistiertBereitsException | ArtikelNichtVorhandenException | MassengutartikelBestandsException e) {
+                     ArtikelExistiertBereitsException | ArtikelNichtVorhandenException |
+                     MassengutartikelBestandsException | ClassNotFoundException e) {
                 System.out.println("\n" + e.getMessage());
                 //e.printStackTrace();
             }
@@ -67,7 +68,7 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelExistiertBereitsException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, ClassNotFoundException {
         String nummer, bezeichnung, bestand, name, passwort;
         int nr, neueNr, bst, packungsgroesse = -1;
         double preis;

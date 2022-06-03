@@ -1,11 +1,12 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.*;
+import eshop.persistence.Persistence;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Massengutartikel;
 
+import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Klasse zur Verwaltung der Artikel.
@@ -15,13 +16,15 @@ import java.util.stream.Collectors;
  * @author heuschmann
  */
 public class Artikelverwaltung {
-    private List<Artikel> artikelBestand = new Vector();
+    private List<Artikel> artikelBestand = new Vector<>();
+
+    private Persistence<List<Artikel>> persistence;
 
     /**
      * Konstruktor welcher Artikel erstellt und der Vector des Bestandes hinzufügt
      */
     public Artikelverwaltung() {
-        Artikel a1 = new Artikel("Holz", 100, 2.01);
+        /*Artikel a1 = new Artikel("Holz", 100, 2.01);
         Artikel a12 = new Artikel("Holzbrett", 6, 4.01);
         Artikel a2 = new Artikel("Metall", 50, 6.01);
         Artikel a3 = new Artikel("Ball", 50, 8.01);
@@ -30,14 +33,22 @@ public class Artikelverwaltung {
         Artikel a6 = new Artikel("Buch", 1, 12.01);
         Massengutartikel am1 = new Massengutartikel("Bier", 60, 5, 6);
         artikelBestand.add(a1);
+        artikelBestand.add(a12);
         artikelBestand.add(a2);
         artikelBestand.add(a3);
         artikelBestand.add(a4);
         artikelBestand.add(a5);
         artikelBestand.add(a6);
-        artikelBestand.add(a12);
-        artikelBestand.add(am1);
+        artikelBestand.add(am1);*/
+        persistence = new Persistence<List<Artikel>>("artikel");
+    }
 
+    public void liesDaten() throws IOException, ClassNotFoundException {
+        artikelBestand = persistence.laden();
+    }
+
+    public void schreibDaten() throws IOException {
+        persistence.speichern(artikelBestand);
     }
 
     public Artikel gibArtikelNachNummer(int artikelNummer) throws ArtikelNichtVorhandenException {
@@ -121,7 +132,7 @@ public class Artikelverwaltung {
      * @throws EingabeNichtLeerException        wenn eines der eingegebenen Daten leer ist
      * @throws ArtikelbestandUnterNullException wenn der artikelbestand unter -1 ist
      */
-    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException {
+    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException {
         if (artikelBestand.contains(einArtikel)) { //.contains() benutzt equals Methode von Artikel, welche in der Artikelklasse überschrieben wurde.
             throw new ArtikelExistiertBereitsException(einArtikel, " im Lager!");
         }
@@ -139,7 +150,7 @@ public class Artikelverwaltung {
 
         // das übernimmt der Vector:
         artikelBestand.add(einArtikel);
-
+        schreibDaten();
     }
 
     /**
@@ -150,7 +161,7 @@ public class Artikelverwaltung {
      * @throws EingabeNichtLeerException        wenn alle eingegebenen Werte leer sind
      * @throws ArtikelNichtVorhandenException   wenn der Artikel nicht in unserem Lager ist
      */
-    public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+    public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
         // das übernimmt der Vector:
         // TODO exception damit keine negativen Preise eingegeben werden können und die java-doc ändern!!!! dafuq?
         if (!artikelBestand.contains(einArtikel)) {
@@ -188,7 +199,7 @@ public class Artikelverwaltung {
                 if(einArtikel instanceof Massengutartikel){
                     ((Massengutartikel) artikel).setPackungsgrosse(((Massengutartikel) einArtikel).getPackungsgrosse());
                 }
-
+                schreibDaten();
             }
 
         }
@@ -201,9 +212,10 @@ public class Artikelverwaltung {
      * @param einArtikel der löschende Artikel
      * @throws ArtikelNichtVorhandenException wenn sich der zu löschende Artikel nicht in unserem Lager befindet
      */
-    public void loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException {
+    public void loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException, IOException {
         // das übernimmt der Vector:
         artikelBestand.remove(einArtikel);
+        schreibDaten();
     }
 
     /**

@@ -1,8 +1,10 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.*;
+import eshop.persistence.Persistence;
 import eshop.valueobjects.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -27,12 +29,14 @@ public class Eshop {
      * Konstruktor, der eine Artikelverwaltung, eine Mitarbeiterverwaltung und eine Kundenverwaltung erstellt.
      * (Initialisierung des E-Shops).
      */
-    public Eshop() {
+    public Eshop() throws IOException, ClassNotFoundException {
         artikelVW = new Artikelverwaltung();
         mitarbeiterVW = new Mitarbeiterverwaltung();
         kundenVW = new Kundenverwaltung();
         warenkoerbeVW = new Warenkorbverwaltung();
         protokollVW = new Protokollverwaltung();
+
+        artikelVW.liesDaten();
     }
 
     /**
@@ -65,14 +69,18 @@ public class Eshop {
      * @throws EingabeNichtLeerException        Wenn die Eingabe leer oder falsch ist
      * @throws ArtikelbestandUnterNullException wenn der angegebene bestand beim Einfügen unter null ist
      */
-    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException {
+    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException, ClassNotFoundException {
         Artikel neuerArtikel;
+        // TODO fragen ob das erneute laden notwendig ist
+        artikelVW.liesDaten();
+        int nummerVomLetztenArtikel = artikelVW.getArtikelBestand().get(artikelVW.getArtikelBestand().size() - 1).getNummer();
         if (packungsgroesse == -1) {
-            neuerArtikel= new Artikel(bezeichnung, bestand, preis);
+            neuerArtikel= new Artikel(nummerVomLetztenArtikel + 1,bezeichnung, bestand, preis);
         }else{
-            neuerArtikel = new Massengutartikel(bezeichnung, bestand, preis, packungsgroesse);
+            neuerArtikel = new Massengutartikel(nummerVomLetztenArtikel + 1,bezeichnung, bestand, preis, packungsgroesse);
         }
         artikelVW.einfuegen(neuerArtikel);
+
 
         protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, neuerArtikel, Protokoll.EreignisTyp.EINFUEGEN));
         return neuerArtikel;
@@ -89,7 +97,7 @@ public class Eshop {
      * @throws ArtikelNichtVorhandenException   Wenn der Artikel nicht in unserem Lager ist
      */
     // Todo Ändern in Bearbeite Artikel
-    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse, Artikel artikel2) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse, Artikel artikel2) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
         Artikel artikel;
         if (artikel2 instanceof Massengutartikel) {
             artikel = new Massengutartikel(nr, bezeichnung, bestand, preis, packungsgroesse);
@@ -110,7 +118,7 @@ public class Eshop {
      * @param artikelnummer Nummer des Artikels
      * @throws ArtikelNichtVorhandenException wenn die eingegebenden Daten zu keinem Artikel übereinstimmen
      */
-    public void loescheArtikel(int artikelnummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
+    public void loescheArtikel(int artikelnummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException, IOException {
         Artikel zuEntfernenderArtikel; // new Artikel(artikelnummer, "", 0, 0);
 
         zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
@@ -263,6 +271,11 @@ public class Eshop {
     public Artikel gibArtikelNachNummer(int nummer) throws ArtikelNichtVorhandenException {
         return artikelVW.gibArtikelNachNummer(nummer);
     }
+
+//    public void datenSichern() throws IOException {
+//        // TODO wird noch entfernt, ist nur zum testen
+//        artikelVW.schreibDaten();
+//    }
 
 
 }
