@@ -4,8 +4,10 @@ import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.domain.exceptions.WarenkorbLeerException;
+import eshop.persistence.ListenPersistence;
 import eshop.valueobjects.*;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -16,6 +18,8 @@ import java.util.zip.DataFormatException;
 public class Warenkorbverwaltung {
 
     private Warenkorb warenkorb;
+
+    private ListenPersistence<Artikel> persistence = new ListenPersistence<>("artikel");
 
     public Warenkorbverwaltung() {
 
@@ -124,7 +128,7 @@ public class Warenkorbverwaltung {
      * @throws ArtikelbestandUnterNullException wenn eines der gekauften Artikel nicht mehr zu kaufen ist, da die Menge im Warenkorb größer als die im Lager ist
      * @throws WarenkorbLeerException           wenn sich keine Artikel im Warenkorb befinden
      */
-    public Rechnung einkaufAbschliessen(Kunde kunde, List<Artikel> artikelBestand) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException {
+    public Rechnung einkaufAbschliessen(Kunde kunde, List<Artikel> artikelBestand) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException, IOException {
         warenkorb = kunde.getWarkorb();
 
         if (warenkorb.getWarenkorbListe().isEmpty()) {
@@ -142,34 +146,9 @@ public class Warenkorbverwaltung {
                 throw new ArtikelNichtVorhandenException(entry.getKey(), " Überprüfen sie ihren Warenkorb, da ein Artikel aus ihrem Warenkorb nicht mehr in unserem Shop vorhanden ist ");
             }
             entry.getKey().setBestand(entry.getKey().getBestand() - entry.getValue()); // wenn einkauf erfolgreich: entferne Bestellung aus Bestand
+            persistence.speichernListe(artikelBestand);
         }
         return new Rechnung(kunde);
     }
-
-
-    /*private String erstelleRechnung(Kunde kunde){
-        String rechnungKunde, rechnungArtikel, rechnung, rechnungGesamtpreis;
-        DecimalFormat df = new DecimalFormat("0.00");
-
-        LocalDateTime myObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        String formattedDate = myObj.format(myFormatObj);
-
-        rechnungKunde = "\nRechnung an:\t\t\t\t\t\t\t\t\t\t"+ "Datum: "  + formattedDate + " Uhr" +"\n\n\t" + kunde.getName() +"\n\t" + kunde.getAdresse().getStrasse() + " " + kunde.getAdresse().getHomeNumber() +"\n\t" + kunde. getAdresse().getPlz()+ " " + kunde.getAdresse().getOrt() + "\n";
-
-        rechnungArtikel = "\nBestellung:\n";
-
-        for (Map.Entry<Artikel, Integer> entry: kunde.getWarkorb().getWarenkorbListe().entrySet()){
-            rechnungArtikel += "\n\tArtikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR";
-        }
-
-        rechnungGesamtpreis = "\n\n\tGesamtpreis: " + df.format(kunde.getWarkorb().getGesamtpreis()) + "EUR";
-
-        rechnung = rechnungKunde + rechnungArtikel + rechnungGesamtpreis;
-
-        warenkorbLoeschen(kunde);
-
-        return rechnung;
-    }*/
 
 }

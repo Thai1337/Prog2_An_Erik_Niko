@@ -1,7 +1,11 @@
 package eshop.valueobjects;
 
+import java.io.Serial;
+
 public class Massengutartikel extends Artikel{
 
+    @Serial
+    private static final long serialVersionUID = 54654354;
     private int packungsgroesse;
 
     public Massengutartikel(int nummer, String bezeichnung, int bestand, double preis, int packungsgroesse) {

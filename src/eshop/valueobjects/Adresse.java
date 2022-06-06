@@ -1,5 +1,8 @@
 package eshop.valueobjects;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Klasse zur Repräsentation einzelner Adressen.
  *
@@ -7,7 +10,9 @@ package eshop.valueobjects;
  * @author nguyen
  * @author heuschmann
  */
-public class Adresse {
+public class Adresse implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 4856484;
     private String strasse;
     private int hausnummer;
     private int plz;

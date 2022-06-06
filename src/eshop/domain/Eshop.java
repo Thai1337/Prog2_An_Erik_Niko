@@ -3,9 +3,8 @@ package eshop.domain;
 import eshop.domain.exceptions.*;
 import eshop.valueobjects.*;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  * Klasse zur Verwaltung eines E-Shops.
@@ -27,12 +26,18 @@ public class Eshop {
      * Konstruktor, der eine Artikelverwaltung, eine Mitarbeiterverwaltung und eine Kundenverwaltung erstellt.
      * (Initialisierung des E-Shops).
      */
-    public Eshop() {
+    public Eshop() throws IOException {
         artikelVW = new Artikelverwaltung();
         mitarbeiterVW = new Mitarbeiterverwaltung();
         kundenVW = new Kundenverwaltung();
         warenkoerbeVW = new Warenkorbverwaltung();
         protokollVW = new Protokollverwaltung();
+
+        artikelVW.liesArtikel();
+        mitarbeiterVW.liesMitarbeiter();
+        kundenVW.liesKunden();
+        protokollVW.liesProtokoll();
+        protokollVW.protokollLoeschungNachZeiten();
     }
 
     /**
@@ -65,16 +70,18 @@ public class Eshop {
      * @throws EingabeNichtLeerException        Wenn die Eingabe leer oder falsch ist
      * @throws ArtikelbestandUnterNullException wenn der angegebene bestand beim Einfügen unter null ist
      */
-    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException {
+    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException, ClassNotFoundException {
         Artikel neuerArtikel;
+        int nummerVomLetztenArtikel = artikelVW.getNummerVomLetztenArtikel();
         if (packungsgroesse == -1) {
-            neuerArtikel= new Artikel(bezeichnung, bestand, preis);
+            neuerArtikel= new Artikel(nummerVomLetztenArtikel + 1,bezeichnung, bestand, preis);
         }else{
-            neuerArtikel = new Massengutartikel(bezeichnung, bestand, preis, packungsgroesse);
+            neuerArtikel = new Massengutartikel(nummerVomLetztenArtikel + 1,bezeichnung, bestand, preis, packungsgroesse);
         }
         artikelVW.einfuegen(neuerArtikel);
 
-        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, neuerArtikel, Protokoll.EreignisTyp.EINFUEGEN));
+
+        protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, neuerArtikel, Protokoll.EreignisTyp.EINFUEGEN));
         return neuerArtikel;
     }
 
@@ -89,7 +96,7 @@ public class Eshop {
      * @throws ArtikelNichtVorhandenException   Wenn der Artikel nicht in unserem Lager ist
      */
     // Todo Ändern in Bearbeite Artikel
-    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse, Artikel artikel2) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse, Artikel artikel2) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
         Artikel artikel;
         if (artikel2 instanceof Massengutartikel) {
             artikel = new Massengutartikel(nr, bezeichnung, bestand, preis, packungsgroesse);
@@ -99,7 +106,7 @@ public class Eshop {
 
         artikelVW.aendereArtikel(artikel);
 
-        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
+        protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
 
     }
 
@@ -110,13 +117,13 @@ public class Eshop {
      * @param artikelnummer Nummer des Artikels
      * @throws ArtikelNichtVorhandenException wenn die eingegebenden Daten zu keinem Artikel übereinstimmen
      */
-    public void loescheArtikel(int artikelnummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException {
+    public void loescheArtikel(int artikelnummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException, IOException {
         Artikel zuEntfernenderArtikel; // new Artikel(artikelnummer, "", 0, 0);
 
         zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
         artikelVW.loeschen(zuEntfernenderArtikel);
 
-        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, zuEntfernenderArtikel, Protokoll.EreignisTyp.LOESCHUNG));
+        protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, zuEntfernenderArtikel, Protokoll.EreignisTyp.LOESCHUNG));
     }
 
     /**
@@ -139,8 +146,14 @@ public class Eshop {
      * @return Gibt die Mitarbeiternummer des neuen Mitarbeiters zurück
      * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
-    public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException {
-        Mitarbeiter mitarbeiter = new Mitarbeiter(name, passwort);
+    public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException, IOException {
+        int nummerVomLetztenMitarbeiter = mitarbeiterVW.getNummerVomLetztenMitarbeiter();
+        int nummerVomLetztenKunden = kundenVW.getNummerVomLetztenKunden();
+        if(nummerVomLetztenMitarbeiter <= nummerVomLetztenKunden){
+            nummerVomLetztenMitarbeiter = nummerVomLetztenKunden;
+        }
+
+        Mitarbeiter mitarbeiter = new Mitarbeiter(nummerVomLetztenMitarbeiter + 1, name, passwort);
         return mitarbeiterVW.erstelleMitarbeiter(mitarbeiter);
     }
 
@@ -180,9 +193,16 @@ public class Eshop {
      * @return Gibt die Kundennummer des neuen Kunden zurück
      * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
-    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException {
+    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException, IOException {
         Adresse adresse = new Adresse(strasse, hausnummer, plz, ort);
-        Kunde neuerKunde = new Kunde(name, adresse, passwort);
+
+        int nummerVomLetztenKunden = kundenVW.getNummerVomLetztenKunden();
+        int nummerVomLetztenMitarbeiter = mitarbeiterVW.getNummerVomLetztenMitarbeiter();
+        if(nummerVomLetztenKunden <= nummerVomLetztenMitarbeiter){
+            nummerVomLetztenKunden = nummerVomLetztenMitarbeiter;
+        }
+
+        Kunde neuerKunde = new Kunde(nummerVomLetztenKunden + 1,name, adresse, passwort);
         return kundenVW.erstelleKunde(neuerKunde);
     }
 
@@ -243,8 +263,8 @@ public class Eshop {
      * @throws ArtikelbestandUnterNullException wird geworfen, wenn der Bestand im Lager kleiner ist als der Bestand im Warenkorb den man kaufen will
      * @throws WarenkorbLeerException           wenn keine Artikel im Warenkorb sind
      */
-    public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException {
-        Protokoll protokoll = new Protokoll(kunde, Protokoll.EreignisTyp.EINKAUFEN);
+    public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException, IOException {
+        Protokoll protokoll = new KundenProtokoll(kunde, Protokoll.EreignisTyp.EINKAUFEN);
         protokollVW.logZuProtokollListe(protokoll);
 
         return warenkoerbeVW.einkaufAbschliessen(kunde, artikelVW.getArtikelBestand());
@@ -256,13 +276,24 @@ public class Eshop {
      *
      * @return Protkolllisten Vektor
      */
-    public List<Protokoll> getProtokollListe() {
+    public List<Protokoll> getProtokollListe() throws IOException {
         return protokollVW.getProtokollListe();
     }
 
+    /**
+     * Gibt den Artikel anhand der Artikelnummer zurück
+     * @param nummer Nummer des Artikels
+     * @return der Artikel der gegebenen Artikelnummer
+     * @throws ArtikelNichtVorhandenException Wenn die Nummer zu keinem Artikel passt.
+     */
     public Artikel gibArtikelNachNummer(int nummer) throws ArtikelNichtVorhandenException {
         return artikelVW.gibArtikelNachNummer(nummer);
     }
+
+//    public void datenSichern() throws IOException {
+//        // TODO wird noch entfernt, ist nur zum testen
+//        artikelVW.schreibDaten();
+//    }
 
 
 }

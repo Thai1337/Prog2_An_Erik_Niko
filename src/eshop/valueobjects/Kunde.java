@@ -1,5 +1,6 @@
 package eshop.valueobjects;
 
+import java.io.Serial;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -11,9 +12,11 @@ import java.util.Map;
  * @author heuschmann
  */
 public class Kunde extends Nutzer {
+    @Serial
+    private static final long serialVersionUID = 7635563;
     private Adresse adresse;
 
-    private Warenkorb meinWarenkorb;
+    private transient Warenkorb meinWarenkorb;
 
     public Kunde(String name, Adresse adresse, String passwort) {
         super(name, passwort);
@@ -21,7 +24,7 @@ public class Kunde extends Nutzer {
         this.meinWarenkorb = new Warenkorb();
     }
 
-    public Kunde(String name, int nummer, Adresse adresse, String passwort) {
+    public Kunde(int nummer, String name, Adresse adresse, String passwort) {
         super(name, nummer, passwort);
         this.adresse = adresse;
         this.meinWarenkorb = new Warenkorb();

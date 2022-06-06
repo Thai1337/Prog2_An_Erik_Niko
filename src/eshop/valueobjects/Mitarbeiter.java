@@ -1,5 +1,8 @@
 package eshop.valueobjects;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Klasse zur Repräsentation einzelner Mitarbeiter.
  *
@@ -12,7 +15,8 @@ package eshop.valueobjects;
 public class Mitarbeiter extends Nutzer {
     //Counter der Mitarbeiternummern generiert
     //private static int counter;
-
+    @Serial
+    private static final long serialVersionUID = 345634;
     public String toString() {
         return "Mitarbeiter{" +
                 "name='" + name + '\'' +
@@ -24,7 +28,7 @@ public class Mitarbeiter extends Nutzer {
         super(name, passwort);
     }
 
-    public Mitarbeiter(String name, int nummer, String passwort) {
+    public Mitarbeiter(int nummer, String name, String passwort) {
         super(name, nummer, passwort);
     }
 

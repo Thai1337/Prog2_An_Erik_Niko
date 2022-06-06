@@ -1,6 +1,9 @@
 package eshop.valueobjects;
 
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Klasse zur Repräsentation einzelner Artikel.
  *
@@ -8,7 +11,10 @@ package eshop.valueobjects;
  * @author nguyen
  * @author heuschmann
  */
-public class Artikel {
+public class Artikel implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2534534;
 
     protected int nummer;
     protected String bezeichnung;

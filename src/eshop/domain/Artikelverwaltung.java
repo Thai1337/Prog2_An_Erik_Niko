@@ -1,11 +1,12 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.*;
+import eshop.persistence.ListenPersistence;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Massengutartikel;
 
+import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Klasse zur Verwaltung der Artikel.
@@ -15,13 +16,15 @@ import java.util.stream.Collectors;
  * @author heuschmann
  */
 public class Artikelverwaltung {
-    private List<Artikel> artikelBestand = new Vector();
+    private List<Artikel> artikelBestand = new Vector<>();
+
+    private ListenPersistence<Artikel> persistence;
 
     /**
      * Konstruktor welcher Artikel erstellt und der Vector des Bestandes hinzufügt
      */
     public Artikelverwaltung() {
-        Artikel a1 = new Artikel("Holz", 100, 2.01);
+        /*Artikel a1 = new Artikel("Holz", 100, 2.01);
         Artikel a12 = new Artikel("Holzbrett", 6, 4.01);
         Artikel a2 = new Artikel("Metall", 50, 6.01);
         Artikel a3 = new Artikel("Ball", 50, 8.01);
@@ -30,16 +33,48 @@ public class Artikelverwaltung {
         Artikel a6 = new Artikel("Buch", 1, 12.01);
         Massengutartikel am1 = new Massengutartikel("Bier", 60, 5, 6);
         artikelBestand.add(a1);
+        artikelBestand.add(a12);
         artikelBestand.add(a2);
         artikelBestand.add(a3);
         artikelBestand.add(a4);
         artikelBestand.add(a5);
         artikelBestand.add(a6);
-        artikelBestand.add(a12);
-        artikelBestand.add(am1);
-
+        artikelBestand.add(am1);*/
+        persistence = new ListenPersistence<>("artikel");
     }
 
+    /**
+     * Liest die Artikel aus der artikel.txt Datei ein und lädt sie in einen Vektor
+     * @throws IOException
+     */
+    public void liesArtikel() throws IOException {
+        artikelBestand = persistence.ladenListe();
+    }
+
+    /**
+     * Schreibt die Artikel aus dem Vektor in die artikel.txt Datei
+     * @throws IOException
+     */
+    public void schreibArtikel() throws IOException {
+        persistence.speichernListe(artikelBestand);
+    }
+
+    /**
+     * Gibt die höchste Artikelnummer zurück, welche gespeichert wurde bzw. vom letzten Artikel in der Liste
+     * @return Artikelnummer des letzten Artikels
+     * @throws IOException
+     */
+    public int getNummerVomLetztenArtikel() throws IOException {
+        liesArtikel();
+        return artikelBestand.get(artikelBestand.size() - 1).getNummer();
+    }
+
+    /**
+     * Gibt den Artikel anhand der Artikelnummer zurück
+     * @param artikelNummer Nummer des Artikels
+     * @return der Artikel der gegebenen Artikelnummer
+     * @throws ArtikelNichtVorhandenException Wenn die Nummer zu keinem Artikel passt.
+     */
     public Artikel gibArtikelNachNummer(int artikelNummer) throws ArtikelNichtVorhandenException {
         for (Artikel gesuchterArtikel : artikelBestand) {
             if (gesuchterArtikel.getNummer() == artikelNummer) {
@@ -75,35 +110,24 @@ public class Artikelverwaltung {
     public List<Artikel> getArtikelBestand(int sortierung) {
         List<Artikel> kopie = new Vector<Artikel>(artikelBestand);
 
-        /*Comparator<Artikel> com = new Comparator<Artikel>(){
+        Collections.sort(kopie, new Comparator<Artikel>(){
             public int compare(Artikel a1, Artikel a2){
-                return a1.getNummer()- a2.getNummer();
+                switch (sortierung){
+                    case 1:
+                        return a1.getBezeichnung().compareToIgnoreCase(a2.getBezeichnung());
+                    case 2:
+                        return a1.getNummer() - a2.getNummer();
+                    case 3:
+                        return a2.getBezeichnung().compareToIgnoreCase(a1.getBezeichnung());
+                    case 4:
+                        return a2.getNummer() - a1.getNummer();
+                    default:
+                        return 0;
+                }
             }
-        };*/
+        });
 
-        switch (sortierung) {
-            case 1:
-                Collections.sort(kopie,
-                        (a1, a2) -> a1.getBezeichnung().compareToIgnoreCase(a2.getBezeichnung()));
-                break;
-            case 2:
-                Collections.sort(kopie,
-                        (a1, a2) -> a1.getNummer() - a2.getNummer());
-                break;
-            case 3:
-                Collections.sort(kopie,
-                        (a1, a2) -> a2.getBezeichnung().compareToIgnoreCase(a1.getBezeichnung()));
-                break;
-            case 4:
-                Collections.sort(kopie,
-                        (a1, a2) -> a2.getNummer() - a1.getNummer());
-                break;
-            default:
-                kopie = new Vector<Artikel>(artikelBestand);
-                break;
-        }
         return kopie;
-
     }
 
 
@@ -115,7 +139,7 @@ public class Artikelverwaltung {
      * @throws EingabeNichtLeerException        wenn eines der eingegebenen Daten leer ist
      * @throws ArtikelbestandUnterNullException wenn der artikelbestand unter -1 ist
      */
-    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException {
+    public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException {
         if (artikelBestand.contains(einArtikel)) { //.contains() benutzt equals Methode von Artikel, welche in der Artikelklasse überschrieben wurde.
             throw new ArtikelExistiertBereitsException(einArtikel, " im Lager!");
         }
@@ -133,7 +157,7 @@ public class Artikelverwaltung {
 
         // das übernimmt der Vector:
         artikelBestand.add(einArtikel);
-
+        schreibArtikel();
     }
 
     /**
@@ -144,7 +168,7 @@ public class Artikelverwaltung {
      * @throws EingabeNichtLeerException        wenn alle eingegebenen Werte leer sind
      * @throws ArtikelNichtVorhandenException   wenn der Artikel nicht in unserem Lager ist
      */
-    public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+    public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
         // das übernimmt der Vector:
         // TODO exception damit keine negativen Preise eingegeben werden können und die java-doc ändern!!!! dafuq?
         if (!artikelBestand.contains(einArtikel)) {
@@ -182,7 +206,7 @@ public class Artikelverwaltung {
                 if(einArtikel instanceof Massengutartikel){
                     ((Massengutartikel) artikel).setPackungsgrosse(((Massengutartikel) einArtikel).getPackungsgrosse());
                 }
-
+                schreibArtikel();
             }
 
         }
@@ -195,9 +219,10 @@ public class Artikelverwaltung {
      * @param einArtikel der löschende Artikel
      * @throws ArtikelNichtVorhandenException wenn sich der zu löschende Artikel nicht in unserem Lager befindet
      */
-    public void loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException {
+    public void loeschen(Artikel einArtikel) throws IOException {
         // das übernimmt der Vector:
         artikelBestand.remove(einArtikel);
+        schreibArtikel();
     }
 
     /**
