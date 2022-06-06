@@ -36,6 +36,8 @@ public class Eshop {
         artikelVW.liesArtikel();
         mitarbeiterVW.liesMitarbeiter();
         kundenVW.liesKunden();
+        protokollVW.liesProtokoll();
+        protokollVW.protokollLoeschungNachZeiten();
     }
 
     /**
@@ -274,7 +276,7 @@ public class Eshop {
      *
      * @return Protkolllisten Vektor
      */
-    public List<Protokoll> getProtokollListe() {
+    public List<Protokoll> getProtokollListe() throws IOException {
         return protokollVW.getProtokollListe();
     }
 
