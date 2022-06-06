@@ -2,10 +2,13 @@ package eshop.domain;
 
 import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.persistence.ListenPersistence;
+import eshop.persistence.Persistence;
 import eshop.valueobjects.Adresse;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
@@ -13,21 +16,36 @@ public class Kundenverwaltung {
     /**
      * Konstruktor welcher Kunden erstellt
      */
-    List<Kunde> kundenListe = new Vector<>();
+    private List<Kunde> kundenListe = new Vector<>();
+    private ListenPersistence<Kunde> persistence;
 
     public Kundenverwaltung() {
 
-        Adresse a1 = new Adresse("Ballermann", 14, 28816, "Berne");
+        /*Adresse a1 = new Adresse("Ballermann", 14, 28816, "Berne");
         Adresse a2 = new Adresse("An den Ruschen", 21, 28817, "Bremen");
         Adresse a3 = new Adresse("Moselstraße", 28, 28818, "Bremen");
 
-        Kunde k1 = new Kunde("Bea", a1, "passwortB");
-        Kunde k2 = new Kunde("Luggas", a2, "passwortL");
-        Kunde k3 = new Kunde("Lisa", a3, "passwortL");
+        Kunde k1 = new Kunde(3,"Bea", a1, "passwortB");
+        Kunde k2 = new Kunde(4,"Luggas", a2, "passwortL");
+        Kunde k3 = new Kunde(5,"Lisa", a3, "passwortL");
 
         kundenListe.add(k1);
         kundenListe.add(k2);
-        kundenListe.add(k3);
+        kundenListe.add(k3);*/
+        persistence = new ListenPersistence<Kunde>("kunde");
+    }
+
+    public void liesKunden() throws IOException {
+        kundenListe = persistence.ladenListe();
+    }
+
+    public void schreibKunden() throws IOException {
+        persistence.speichernListe(kundenListe);
+    }
+
+    public int getNummerVomLetztenKunden() throws IOException {
+        liesKunden();
+        return kundenListe.get(kundenListe.size() - 1).getNummer();
     }
 
 
@@ -38,13 +56,14 @@ public class Kundenverwaltung {
      * @return gibt die Kundennummer des erstellten Kunden Zurück
      * @throws EingabeNichtLeerException wenn eines der Eingabefelder leer ist oder ein negativer Wert eingegeben wird
      */
-    public int erstelleKunde(Kunde einKunde) throws EingabeNichtLeerException {
+    public int erstelleKunde(Kunde einKunde) throws EingabeNichtLeerException, IOException {
         //Methode zum Erstellen von Kunden
         if (einKunde.getName().isEmpty() || einKunde.getPasswort().isEmpty() || einKunde.getAdresse().getStrasse().isEmpty()
                 || einKunde.getAdresse().getHomeNumber() <= -1 || einKunde.getAdresse().getPlz() <= -1) {
             throw new EingabeNichtLeerException();
         }
         kundenListe.add(einKunde);
+        schreibKunden();
         return einKunde.getNummer();
 
     }

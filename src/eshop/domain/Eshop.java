@@ -38,6 +38,7 @@ public class Eshop {
 
         artikelVW.liesArtikel();
         mitarbeiterVW.liesMitarbeiter();
+        kundenVW.liesKunden();
     }
 
     /**
@@ -148,6 +149,11 @@ public class Eshop {
      */
     public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException, IOException {
         int nummerVomLetztenMitarbeiter = mitarbeiterVW.getNummerVomLetztenMitarbeiter();
+        int nummerVomLetztenKunden = kundenVW.getNummerVomLetztenKunden();
+        if(nummerVomLetztenMitarbeiter <= nummerVomLetztenKunden){
+            nummerVomLetztenMitarbeiter = nummerVomLetztenKunden;
+        }
+
         Mitarbeiter mitarbeiter = new Mitarbeiter(nummerVomLetztenMitarbeiter + 1, name, passwort);
         return mitarbeiterVW.erstelleMitarbeiter(mitarbeiter);
     }
@@ -188,9 +194,16 @@ public class Eshop {
      * @return Gibt die Kundennummer des neuen Kunden zurück
      * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
-    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException {
+    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException, IOException {
         Adresse adresse = new Adresse(strasse, hausnummer, plz, ort);
-        Kunde neuerKunde = new Kunde(name, adresse, passwort);
+
+        int nummerVomLetztenKunden = kundenVW.getNummerVomLetztenKunden();
+        int nummerVomLetztenMitarbeiter = mitarbeiterVW.getNummerVomLetztenMitarbeiter();
+        if(nummerVomLetztenKunden <= nummerVomLetztenMitarbeiter){
+            nummerVomLetztenKunden = nummerVomLetztenMitarbeiter;
+        }
+
+        Kunde neuerKunde = new Kunde(nummerVomLetztenKunden + 1,name, adresse, passwort);
         return kundenVW.erstelleKunde(neuerKunde);
     }
 
