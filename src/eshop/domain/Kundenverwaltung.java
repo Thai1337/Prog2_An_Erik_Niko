@@ -7,6 +7,7 @@ import eshop.persistence.Persistence;
 import eshop.valueobjects.Adresse;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
+import eshop.valueobjects.Warenkorb;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +38,8 @@ public class Kundenverwaltung {
 
     public void liesKunden() throws IOException {
         kundenListe = persistence.ladenListe();
+        for (Kunde k : kundenListe)
+            k.setMeinWarenkorb(new Warenkorb()); // wird benötigt, da die speicherung der Kunden keine Warenkörbe enthält
     }
 
     public void schreibKunden() throws IOException {
@@ -44,6 +47,7 @@ public class Kundenverwaltung {
     }
 
     public int getNummerVomLetztenKunden() throws IOException {
+        // TODO besprechung mit Teamkollegen, weil lieskunden überschreibt die warenkörbe des Laufzeitpcs, wenn ein neuer Kunde registriert wird.
         liesKunden();
         return kundenListe.get(kundenListe.size() - 1).getNummer();
     }
