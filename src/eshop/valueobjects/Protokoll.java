@@ -21,8 +21,6 @@ public class Protokoll {
     //enum EreignisTyp { NEU, KAUF, EINLAGERUNG, AUSLAGERUNG, LÖSCHUNG };
     public enum EreignisTyp {EINFUEGEN, EINKAUFEN, AENDERUNG, LOESCHUNG}
 
-    ;
-
     private Warenkorb warenkorb;
 
     private Artikel artikel;

@@ -2,7 +2,6 @@ package eshop.domain;
 
 import eshop.domain.exceptions.*;
 import eshop.persistence.ListenPersistence;
-import eshop.persistence.Persistence;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Massengutartikel;
 

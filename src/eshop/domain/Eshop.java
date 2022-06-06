@@ -1,13 +1,10 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.*;
-import eshop.persistence.Persistence;
 import eshop.valueobjects.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  * Klasse zur Verwaltung eines E-Shops.
