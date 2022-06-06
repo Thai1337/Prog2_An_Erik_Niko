@@ -1,6 +1,7 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.*;
+import eshop.persistence.ListenPersistence;
 import eshop.persistence.Persistence;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Massengutartikel;
@@ -18,7 +19,7 @@ import java.util.*;
 public class Artikelverwaltung {
     private List<Artikel> artikelBestand = new Vector<>();
 
-    private Persistence<List<Artikel>> persistence;
+    private ListenPersistence<Artikel> persistence;
 
     /**
      * Konstruktor welcher Artikel erstellt und der Vector des Bestandes hinzufügt
@@ -40,15 +41,15 @@ public class Artikelverwaltung {
         artikelBestand.add(a5);
         artikelBestand.add(a6);
         artikelBestand.add(am1);*/
-        persistence = new Persistence<List<Artikel>>("artikel");
+        persistence = new ListenPersistence<>("artikel");
     }
 
     public void liesDaten() throws IOException, ClassNotFoundException {
-        artikelBestand = persistence.laden();
+        artikelBestand = persistence.ladenListe();
     }
 
     public void schreibDaten() throws IOException {
-        persistence.speichern(artikelBestand);
+        persistence.speichernListe(artikelBestand);
     }
 
     public Artikel gibArtikelNachNummer(int artikelNummer) throws ArtikelNichtVorhandenException {

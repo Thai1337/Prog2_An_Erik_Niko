@@ -251,7 +251,7 @@ public class Eshop {
      * @throws ArtikelbestandUnterNullException wird geworfen, wenn der Bestand im Lager kleiner ist als der Bestand im Warenkorb den man kaufen will
      * @throws WarenkorbLeerException           wenn keine Artikel im Warenkorb sind
      */
-    public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException {
+    public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException, IOException {
         Protokoll protokoll = new Protokoll(kunde, Protokoll.EreignisTyp.EINKAUFEN);
         protokollVW.logZuProtokollListe(protokoll);
 
