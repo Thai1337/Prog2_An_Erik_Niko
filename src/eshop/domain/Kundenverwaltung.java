@@ -33,16 +33,29 @@ public class Kundenverwaltung {
         persistence = new ListenPersistence<Kunde>("kunde");
     }
 
+    /**
+     * Schreibt die Kunden aus dem Vektor in die kunde.txt Datei
+     * @throws IOException
+     */
     public void liesKunden() throws IOException {
         kundenListe = persistence.ladenListe();
         for (Kunde k : kundenListe)
             k.setMeinWarenkorb(new Warenkorb()); // wird benötigt, da die speicherung der Kunden keine Warenkörbe enthält
     }
 
+    /**
+     * Schreibt die Kunden aus dem Vektor in die kunde.txt Datei
+     * @throws IOException
+     */
     public void schreibKunden() throws IOException {
         persistence.speichernListe(kundenListe);
     }
 
+    /**
+     * Gibt die höchste Kundennummer zurück, welche gespeichert wurde bzw. vom letzten Kunden in der Liste
+     * @return Kundennummer vom letzten Kunden
+     * @throws IOException
+     */
     public int getNummerVomLetztenKunden() throws IOException {
         // TODO besprechung mit Teamkollegen, weil lieskunden überschreibt die warenkörbe des Laufzeitpcs, wenn ein neuer Kunde registriert wird.
         //liesKunden();

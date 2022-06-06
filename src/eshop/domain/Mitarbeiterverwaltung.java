@@ -30,14 +30,27 @@ public class Mitarbeiterverwaltung {
         persistence = new ListenPersistence<Mitarbeiter>("mitarbeiter");
     }
 
+    /**
+     * Liest die Mitarbeiter aus der mitarbeiter.txt Datei ein und lädt sie in einen Vektor
+     * @throws IOException
+     */
     public void liesMitarbeiter() throws IOException {
         mitarbeiterListe = persistence.ladenListe();
     }
 
+    /**
+     * Schreibt den Mitarbeiter aus dem Vektor in die mitarbeiter.txt Datei
+     * @throws IOException
+     */
     public void schreibMitarbeiter() throws IOException {
         persistence.speichernListe(mitarbeiterListe);
     }
 
+    /**
+     * Gibt die höchste Mitarbeiternummer zurück, welche gespeichert wurde bzw. vom letzten Mitarbeiter in der Liste
+     * @return Mitarbeiternummer des letzten Mitarbeiters
+     * @throws IOException
+     */
     public int getNummerVomLetztenMitarbeiter() throws IOException {
         liesMitarbeiter();
         return mitarbeiterListe.get(mitarbeiterListe.size() - 1).getNummer();

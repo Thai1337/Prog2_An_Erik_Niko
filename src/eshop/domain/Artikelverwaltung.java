@@ -43,19 +43,38 @@ public class Artikelverwaltung {
         persistence = new ListenPersistence<>("artikel");
     }
 
+    /**
+     * Liest die Artikel aus der artikel.txt Datei ein und lädt sie in einen Vektor
+     * @throws IOException
+     */
     public void liesArtikel() throws IOException {
         artikelBestand = persistence.ladenListe();
     }
 
+    /**
+     * Schreibt die Artikel aus dem Vektor in die artikel.txt Datei
+     * @throws IOException
+     */
     public void schreibArtikel() throws IOException {
         persistence.speichernListe(artikelBestand);
     }
 
+    /**
+     * Gibt die höchste Artikelnummer zurück, welche gespeichert wurde bzw. vom letzten Artikel in der Liste
+     * @return Artikelnummer des letzten Artikels
+     * @throws IOException
+     */
     public int getNummerVomLetztenArtikel() throws IOException {
         liesArtikel();
         return artikelBestand.get(artikelBestand.size() - 1).getNummer();
     }
 
+    /**
+     * Gibt den Artikel anhand der Artikelnummer zurück
+     * @param artikelNummer Nummer des Artikels
+     * @return der Artikel der gegebenen Artikelnummer
+     * @throws ArtikelNichtVorhandenException Wenn die Nummer zu keinem Artikel passt.
+     */
     public Artikel gibArtikelNachNummer(int artikelNummer) throws ArtikelNichtVorhandenException {
         for (Artikel gesuchterArtikel : artikelBestand) {
             if (gesuchterArtikel.getNummer() == artikelNummer) {
@@ -90,23 +109,6 @@ public class Artikelverwaltung {
      */
     public List<Artikel> getArtikelBestand(int sortierung) {
         List<Artikel> kopie = new Vector<Artikel>(artikelBestand);
-
-        /*Collections.sort(kopie,
-                (a1, a2) -> {
-                    switch (sortierung){
-                        case 1:
-                            return a1.getBezeichnung().compareToIgnoreCase(a2.getBezeichnung());
-                        case 2:
-                            return a1.getNummer() - a2.getNummer();
-                        case 3:
-                            return a2.getBezeichnung().compareToIgnoreCase(a1.getBezeichnung());
-                        case 4:
-                            return a2.getNummer() - a1.getNummer();
-                        default:
-                            return 0;
-                    }
-                });
-         */
 
         Collections.sort(kopie, new Comparator<Artikel>(){
             public int compare(Artikel a1, Artikel a2){
@@ -217,7 +219,7 @@ public class Artikelverwaltung {
      * @param einArtikel der löschende Artikel
      * @throws ArtikelNichtVorhandenException wenn sich der zu löschende Artikel nicht in unserem Lager befindet
      */
-    public void loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException, IOException {
+    public void loeschen(Artikel einArtikel) throws IOException {
         // das übernimmt der Vector:
         artikelBestand.remove(einArtikel);
         schreibArtikel();

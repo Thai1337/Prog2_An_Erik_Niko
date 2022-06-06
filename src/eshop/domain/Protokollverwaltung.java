@@ -24,10 +24,18 @@ public class Protokollverwaltung {
         persistence = new ListenPersistence<>("protokoll");
     }
 
+    /**
+     * Liest die Protokolle aus der protokoll.txt Datei ein und lädt sie in einen Vektor
+     * @throws IOException
+     */
     public void liesProtokoll() throws IOException {
         protokollListe = persistence.ladenListe();
     }
 
+    /**
+     * Schreibt die Protokolle aus dem Vektor in die protokoll.txt Datei
+     * @throws IOException
+     */
     public void schreibProtokoll() throws IOException {
         persistence.speichernListe(protokollListe);
     }
@@ -42,7 +50,12 @@ public class Protokollverwaltung {
         schreibProtokoll();
     }
 
+    /**
+     * Löscht Protokolle, welche eine gegebene Zeitdifferenz überschreiten (30 Tage)
+     * @throws IOException
+     */
     public void protokollLoeschungNachZeiten() throws IOException {
+        // TODO überprüfen ob alle if Bedingungen nötig sind
         if(!protokollListe.isEmpty()){
             for(int i = 0; i < protokollListe.size(); i++){
                 LocalDateTime jetzt = LocalDateTime.now();
@@ -55,6 +68,11 @@ public class Protokollverwaltung {
         schreibProtokoll();
     }
 
+    /**
+     * gibt die Protokollliste zurück
+     * @return protokollListe, liste von Protokollen
+     * @throws IOException
+     */
     public List<Protokoll> getProtokollListe() throws IOException {
         protokollLoeschungNachZeiten();
         return protokollListe;

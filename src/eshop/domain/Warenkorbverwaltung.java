@@ -151,30 +151,4 @@ public class Warenkorbverwaltung {
         return new Rechnung(kunde);
     }
 
-
-    /*private String erstelleRechnung(Kunde kunde){
-        String rechnungKunde, rechnungArtikel, rechnung, rechnungGesamtpreis;
-        DecimalFormat df = new DecimalFormat("0.00");
-
-        LocalDateTime myObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        String formattedDate = myObj.format(myFormatObj);
-
-        rechnungKunde = "\nRechnung an:\t\t\t\t\t\t\t\t\t\t"+ "Datum: "  + formattedDate + " Uhr" +"\n\n\t" + kunde.getName() +"\n\t" + kunde.getAdresse().getStrasse() + " " + kunde.getAdresse().getHomeNumber() +"\n\t" + kunde. getAdresse().getPlz()+ " " + kunde.getAdresse().getOrt() + "\n";
-
-        rechnungArtikel = "\nBestellung:\n";
-
-        for (Map.Entry<Artikel, Integer> entry: kunde.getWarkorb().getWarenkorbListe().entrySet()){
-            rechnungArtikel += "\n\tArtikelnummer: " + entry.getKey().getNummer()+ " | Name: " + entry.getKey().getBezeichnung() + " | Stueckpreis: " + df.format(entry.getKey().getPreis()) + "EUR | Menge: " + entry.getValue() + " | Preis: " + df.format(entry.getValue()*entry.getKey().getPreis()) + "EUR";
-        }
-
-        rechnungGesamtpreis = "\n\n\tGesamtpreis: " + df.format(kunde.getWarkorb().getGesamtpreis()) + "EUR";
-
-        rechnung = rechnungKunde + rechnungArtikel + rechnungGesamtpreis;
-
-        warenkorbLoeschen(kunde);
-
-        return rechnung;
-    }*/
-
 }

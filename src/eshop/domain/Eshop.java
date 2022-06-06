@@ -280,6 +280,12 @@ public class Eshop {
         return protokollVW.getProtokollListe();
     }
 
+    /**
+     * Gibt den Artikel anhand der Artikelnummer zurück
+     * @param nummer Nummer des Artikels
+     * @return der Artikel der gegebenen Artikelnummer
+     * @throws ArtikelNichtVorhandenException Wenn die Nummer zu keinem Artikel passt.
+     */
     public Artikel gibArtikelNachNummer(int nummer) throws ArtikelNichtVorhandenException {
         return artikelVW.gibArtikelNachNummer(nummer);
     }
