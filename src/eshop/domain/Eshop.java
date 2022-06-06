@@ -29,14 +29,15 @@ public class Eshop {
      * Konstruktor, der eine Artikelverwaltung, eine Mitarbeiterverwaltung und eine Kundenverwaltung erstellt.
      * (Initialisierung des E-Shops).
      */
-    public Eshop() throws IOException, ClassNotFoundException {
+    public Eshop() throws IOException {
         artikelVW = new Artikelverwaltung();
         mitarbeiterVW = new Mitarbeiterverwaltung();
         kundenVW = new Kundenverwaltung();
         warenkoerbeVW = new Warenkorbverwaltung();
         protokollVW = new Protokollverwaltung();
 
-        artikelVW.liesDaten();
+        artikelVW.liesArtikel();
+        mitarbeiterVW.liesMitarbeiter();
     }
 
     /**
@@ -71,9 +72,7 @@ public class Eshop {
      */
     public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException, ClassNotFoundException {
         Artikel neuerArtikel;
-        // TODO fragen ob das erneute laden notwendig ist
-        artikelVW.liesDaten();
-        int nummerVomLetztenArtikel = artikelVW.getArtikelBestand().get(artikelVW.getArtikelBestand().size() - 1).getNummer();
+        int nummerVomLetztenArtikel = artikelVW.getNummerVomLetztenArtikel();
         if (packungsgroesse == -1) {
             neuerArtikel= new Artikel(nummerVomLetztenArtikel + 1,bezeichnung, bestand, preis);
         }else{
@@ -147,8 +146,9 @@ public class Eshop {
      * @return Gibt die Mitarbeiternummer des neuen Mitarbeiters zurück
      * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
-    public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException {
-        Mitarbeiter mitarbeiter = new Mitarbeiter(name, passwort);
+    public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException, IOException {
+        int nummerVomLetztenMitarbeiter = mitarbeiterVW.getNummerVomLetztenMitarbeiter();
+        Mitarbeiter mitarbeiter = new Mitarbeiter(nummerVomLetztenMitarbeiter + 1, name, passwort);
         return mitarbeiterVW.erstelleMitarbeiter(mitarbeiter);
     }
 

@@ -1,6 +1,9 @@
 package eshop.valueobjects;
 
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Abstrakte Klasse welche als Vorlage für Kunde und Mitarbeiter dient.
  * Gibt Methodenköpfe vor für Getter und Setter.
@@ -9,8 +12,9 @@ package eshop.valueobjects;
  * @author nguyen
  * @author heuschmann
  */
-public abstract class Nutzer { //abstrakt damit kein Objekt der Klasse Nutzer erstellt werden kann, man aber trotzdem die Implementierung in dieser Klasse durchführen kann
+public abstract class Nutzer implements Serializable { //abstrakt damit kein Objekt der Klasse Nutzer erstellt werden kann, man aber trotzdem die Implementierung in dieser Klasse durchführen kann
     // TODO Nutzer einen abstract counter geben
+
     protected String name;
     protected int nummer;
     protected String passwort;

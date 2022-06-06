@@ -44,12 +44,17 @@ public class Artikelverwaltung {
         persistence = new ListenPersistence<>("artikel");
     }
 
-    public void liesDaten() throws IOException, ClassNotFoundException {
+    public void liesArtikel() throws IOException {
         artikelBestand = persistence.ladenListe();
     }
 
-    public void schreibDaten() throws IOException {
+    public void schreibArtikel() throws IOException {
         persistence.speichernListe(artikelBestand);
+    }
+
+    public int getNummerVomLetztenArtikel() throws IOException {
+        liesArtikel();
+        return artikelBestand.get(artikelBestand.size() - 1).getNummer();
     }
 
     public Artikel gibArtikelNachNummer(int artikelNummer) throws ArtikelNichtVorhandenException {
@@ -151,7 +156,7 @@ public class Artikelverwaltung {
 
         // das übernimmt der Vector:
         artikelBestand.add(einArtikel);
-        schreibDaten();
+        schreibArtikel();
     }
 
     /**
@@ -200,7 +205,7 @@ public class Artikelverwaltung {
                 if(einArtikel instanceof Massengutartikel){
                     ((Massengutartikel) artikel).setPackungsgrosse(((Massengutartikel) einArtikel).getPackungsgrosse());
                 }
-                schreibDaten();
+                schreibArtikel();
             }
 
         }
@@ -216,7 +221,7 @@ public class Artikelverwaltung {
     public void loeschen(Artikel einArtikel) throws ArtikelNichtVorhandenException, IOException {
         // das übernimmt der Vector:
         artikelBestand.remove(einArtikel);
-        schreibDaten();
+        schreibArtikel();
     }
 
     /**
