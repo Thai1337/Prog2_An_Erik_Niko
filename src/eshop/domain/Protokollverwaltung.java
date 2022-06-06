@@ -2,6 +2,8 @@ package eshop.domain;
 
 import eshop.valueobjects.*;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -27,6 +29,14 @@ public class Protokollverwaltung {
     }
 
     public List<Protokoll> getProtokollListe() {
+        if(!protokollListe.isEmpty()){
+            for(int i = 0; i < protokollListe.size(); i++){
+                LocalDateTime jetzt = LocalDateTime.now();
+                if(protokollListe.get(i) != null && ChronoUnit.DAYS.between(protokollListe.get(i).getDatum(), jetzt) > 30) {
+                    protokollListe.remove(protokollListe.get(i));
+                }
+            }
+        }
         return protokollListe;
     }
 }

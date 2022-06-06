@@ -79,7 +79,7 @@ public class Eshop {
         artikelVW.einfuegen(neuerArtikel);
 
 
-        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, neuerArtikel, Protokoll.EreignisTyp.EINFUEGEN));
+        protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, neuerArtikel, Protokoll.EreignisTyp.EINFUEGEN));
         return neuerArtikel;
     }
 
@@ -104,7 +104,7 @@ public class Eshop {
 
         artikelVW.aendereArtikel(artikel);
 
-        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
+        protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
 
     }
 
@@ -121,7 +121,7 @@ public class Eshop {
         zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
         artikelVW.loeschen(zuEntfernenderArtikel);
 
-        protokollVW.logZuProtokollListe(new Protokoll(mitarbeiter, zuEntfernenderArtikel, Protokoll.EreignisTyp.LOESCHUNG));
+        protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, zuEntfernenderArtikel, Protokoll.EreignisTyp.LOESCHUNG));
     }
 
     /**
@@ -262,7 +262,7 @@ public class Eshop {
      * @throws WarenkorbLeerException           wenn keine Artikel im Warenkorb sind
      */
     public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException, IOException {
-        Protokoll protokoll = new Protokoll(kunde, Protokoll.EreignisTyp.EINKAUFEN);
+        Protokoll protokoll = new KundenProtokoll(kunde, Protokoll.EreignisTyp.EINKAUFEN);
         protokollVW.logZuProtokollListe(protokoll);
 
         return warenkoerbeVW.einkaufAbschliessen(kunde, artikelVW.getArtikelBestand());

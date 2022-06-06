@@ -13,9 +13,10 @@ import java.util.Map;
  * @author nguyen
  * @author heuschmann
  */
-public class Warenkorb {
+public class Warenkorb implements Serializable{
     //private double gesamtpreis;
-
+    @Serial
+    private static final long serialVersionUID = 1231246;
     private Map<Artikel, Integer> warenkorbListe;
 
     public Warenkorb() {
