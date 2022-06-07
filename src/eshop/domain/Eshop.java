@@ -290,6 +290,10 @@ public class Eshop {
         return artikelVW.gibArtikelNachNummer(nummer);
     }
 
+    public List<Protokoll> getProtokollNachArtikel(int artikelnummer) throws ArtikelNichtVorhandenException {
+        return protokollVW.getProtokollNachArtikel(artikelVW.gibArtikelNachNummer(artikelnummer));
+    }
+
 //    public void datenSichern() throws IOException {
 //        // TODO wird noch entfernt, ist nur zum testen
 //        artikelVW.schreibDaten();

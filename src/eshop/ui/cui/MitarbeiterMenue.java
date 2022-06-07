@@ -34,7 +34,8 @@ public class MitarbeiterMenue {
         System.out.println("(4) = Artikel: bearbeiten");
         System.out.println("(5) = Artikel: loeschen");
         System.out.println("(6) = Mitarbeiter: hinzufuegen");
-        System.out.println("(7) = Aenderungsprotokoll: anzeigen");
+        System.out.println("(7) = Protokoll: Alle Aenderungen anzeigen");
+        System.out.println("(8) = Protokoll: Aenderungen für einen Artikel anzeigen");
         System.out.println("(0) = Ausloggen");
         System.out.print("\nEingabe --> ");
     }
@@ -142,7 +143,7 @@ public class MitarbeiterMenue {
                 break;
             case 6:
                 //TODO Password kann geändert werden, da es zuerst von einem anderen Mitarbeiter definiert wird
-                System.out.print("\nGeben sie den Namen des Mitarbeiters ein --> ");
+                System.out.print("\nGeben Sie den Namen des Mitarbeiters ein --> ");
                 name = eingabeAusgabe.einlesenString();
                 System.out.print("Geben sie das temporaere Passwort des Mitarbeiters an --> ");
                 passwort = eingabeAusgabe.einlesenString();
@@ -152,6 +153,12 @@ public class MitarbeiterMenue {
             case 7:
                 List<Protokoll> logListe = shop.getProtokollListe();
                 eingabeAusgabe.gibListeAus(logListe);
+                break;
+            case 8:
+                System.out.print("Geben Sie die Nummer des gesuchten Artikels ein --> ");
+                nr = eingabeAusgabe.einlesenInteger();
+                List<Protokoll> artikelProtokollListe = shop.getProtokollNachArtikel(nr);
+                eingabeAusgabe.gibListeAus(artikelProtokollListe);
                 break;
         }
     }

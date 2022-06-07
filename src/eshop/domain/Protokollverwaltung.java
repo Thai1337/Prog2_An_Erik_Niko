@@ -77,4 +77,20 @@ public class Protokollverwaltung {
         protokollLoeschungNachZeiten();
         return protokollListe;
     }
+
+    public List<Protokoll> getProtokollNachArtikel(Artikel artikel) {
+        // TODO vllt noch eine liste ausgeben in der wirklich nur die bestandsänderungen ausgegeben werden
+        List<Protokoll> artikelProtokollListe = new Vector<>();
+
+        for (Protokoll p: this.protokollListe) {
+            if(p instanceof MitarbeiterProtokoll && ((MitarbeiterProtokoll)p).getArtikel().equals(artikel)) {
+                artikelProtokollListe.add(p);
+            }
+            if(p instanceof KundenProtokoll && ((KundenProtokoll)p).getWarenkorb().getWarenkorbListe().containsKey(artikel)) {
+                artikelProtokollListe.add(p);
+            }
+        }
+
+        return artikelProtokollListe;
+    }
 }
