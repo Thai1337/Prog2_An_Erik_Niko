@@ -37,6 +37,13 @@ public class Artikel implements Serializable {
         this.preis = preis;
     }
 
+    public Artikel(Artikel artikel) {
+        this.nummer = artikel.getNummer();
+        this.bezeichnung = artikel.getBezeichnung();
+        this.bestand = artikel.getBestand();
+        this.preis = artikel.getPreis();
+    }
+
     /**
      * Standard-Methode von Object überschrieben.
      * Methode wird immer automatisch aufgerufen, wenn ein Artikel-Objekt als String
