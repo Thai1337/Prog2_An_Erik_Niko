@@ -24,7 +24,12 @@ public class Warenkorb implements Serializable{
     }
 
     public Warenkorb(Warenkorb warenkorb) {
-        this.warenkorbListe = new Hashtable<>(warenkorb.getWarenkorbListe());
+        // TODO verweise in der Hashtable sind keine kopien, ist quasi fertig nur noch testen
+        Map<Artikel, Integer> kopie = new Hashtable<>();
+        for (Map.Entry<Artikel, Integer> entry : warenkorb.getWarenkorbListe().entrySet())
+            kopie.put(new Artikel(entry.getKey()), entry.getValue());
+
+        this.warenkorbListe = kopie;
     }
 
     /**

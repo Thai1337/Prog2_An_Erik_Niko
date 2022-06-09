@@ -29,6 +29,12 @@ public class Kunde extends Nutzer {
         this.adresse = adresse;
         this.meinWarenkorb = new Warenkorb();
     }
+
+    public Kunde(Kunde kunde) {
+        super(kunde.getName(), kunde.getNummer(), kunde.getPasswort());
+        this.adresse = new Adresse(kunde.getAdresse());
+        this.meinWarenkorb = new Warenkorb(kunde.getWarkorb());
+    }
     /*
     public void artikelZuWarenkorb(Artikel artikel, int anzahlArtikel){
         Map<Artikel, Integer> map = new Hashtable<>();

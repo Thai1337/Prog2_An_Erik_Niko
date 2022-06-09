@@ -25,6 +25,13 @@ public class Adresse implements Serializable {
         this.ort = ort;
     }
 
+    public Adresse(Adresse adresse) {
+        this.strasse = adresse.getStrasse();
+        this.hausnummer = adresse.getHomeNumber();
+        this.plz = adresse.getPlz();
+        this.ort = adresse.getOrt();
+    }
+
     @Override
     public String toString() {
         return "Adresse{" +

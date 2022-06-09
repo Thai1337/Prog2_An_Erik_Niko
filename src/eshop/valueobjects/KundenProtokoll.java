@@ -14,7 +14,7 @@ public class KundenProtokoll extends Protokoll{
     public KundenProtokoll(Kunde kunde, EreignisTyp aktion) {
         super(aktion);
         // TODO wenn kunden gelöscht werden können müssen kopien der Kunden und Adressen erstellt werden
-        this.kunde = kunde;
+        this.kunde = new Kunde(kunde);
         //this.warenkorb = new Warenkorb(warenkorb);
         this.warenkorb = new Warenkorb(kunde.getWarkorb());
     }

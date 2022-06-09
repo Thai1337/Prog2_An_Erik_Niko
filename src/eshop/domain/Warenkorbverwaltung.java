@@ -45,11 +45,18 @@ public class Warenkorbverwaltung {
         if (warenkorbArtikelAnzahl > artikel.getBestand()) {
             throw new ArtikelbestandUnterNullException(artikel, " Die Menge dieses Artikels in Ihrem Warenkorb ist höher als der Bestand im Shop!");
         }
-
+        // TODO packungsgrosse in die Exeption einbauen
         if(artikel instanceof Massengutartikel && warenkorbArtikelAnzahl % ((Massengutartikel) artikel).getPackungsgrosse() != 0 ){
             throw new MassengutartikelBestandsException();
         }
 
+ /*        int alteWarenkorbArtikelAnzahl = warenkorb.getArtikelAnzahlImWarenkorb(artikel);    // gibt eine NullPointerException, wenn außerhalb des if, weil versucht wird auf einen leeren artikel zuzugreifen, falls diese nichts existiert(deswegen containsKey)
+        if ((warenkorbArtikelAnzahl + alteWarenkorbArtikelAnzahl) > artikel.getBestand()) {
+            warenkorb.addArtikelZuWarenkorbListe(artikel, warenkorbArtikelAnzahl);
+        } else {
+            throw new ArtikelbestandUnterNullException(artikel, " Die Menge dieses Artikels in Ihrem Warenkorb ist höher als der Bestand im Shop!");
+        }
+*/      // TODO die Logik ob neu hinzufügen oder artikelbestandImWarenkorb erhöhen in die CUI
         if (!warenkorb.getWarenkorbListe().containsKey(artikel)) {
             warenkorb.addArtikelZuWarenkorbListe(artikel, warenkorbArtikelAnzahl); //artikel wird zum Warenkorb hinzugefügt
         } else {
