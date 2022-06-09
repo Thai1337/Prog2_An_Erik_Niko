@@ -264,10 +264,11 @@ public class Eshop {
      * @throws WarenkorbLeerException           wenn keine Artikel im Warenkorb sind
      */
     public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException, IOException {
-        Protokoll protokoll = new KundenProtokoll(kunde, Protokoll.EreignisTyp.EINKAUFEN);
-        protokollVW.logZuProtokollListe(protokoll);
+        Rechnung rechnung = warenkoerbeVW.einkaufAbschliessen(kunde, artikelVW.getArtikelBestand());
 
-        return warenkoerbeVW.einkaufAbschliessen(kunde, artikelVW.getArtikelBestand());
+        protokollVW.logZuProtokollListe(new KundenProtokoll(rechnung.getKunde(), Protokoll.EreignisTyp.EINKAUFEN)); // es muss die kunde Kopie[rechnung.getKunde()] aus der Rechnung sein, weil der warenkorb in einkaufAbschliessen geleert wird
+
+        return rechnung;
 
     }
 

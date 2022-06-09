@@ -155,7 +155,9 @@ public class Warenkorbverwaltung {
             entry.getKey().setBestand(entry.getKey().getBestand() - entry.getValue()); // wenn einkauf erfolgreich: entferne Bestellung aus Bestand
             persistence.speichernListe(artikelBestand);
         }
-        return new Rechnung(kunde);
+        Rechnung rechnung = new Rechnung(kunde);
+        warenkorb.warenkorbLeeren();
+        return rechnung;
     }
 
 }
