@@ -264,10 +264,12 @@ public class Eshop {
      * @throws WarenkorbLeerException           wenn keine Artikel im Warenkorb sind
      */
     public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException, IOException {
+        Rechnung rechnung = warenkoerbeVW.einkaufAbschliessen(kunde, artikelVW.getArtikelBestand());
+
         Protokoll protokoll = new KundenProtokoll(kunde, Protokoll.EreignisTyp.EINKAUFEN);
         protokollVW.logZuProtokollListe(protokoll);
 
-        return warenkoerbeVW.einkaufAbschliessen(kunde, artikelVW.getArtikelBestand());
+        return rechnung;
 
     }
 
