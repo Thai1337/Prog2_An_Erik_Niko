@@ -11,7 +11,7 @@ public class MitarbeiterProtokoll extends Protokoll {
     public MitarbeiterProtokoll(Mitarbeiter mitarbeiter , Artikel artikel, EreignisTyp aktion) {
         super(aktion);
         // TODO wenn Mitarbeiter gelöscht werden können müssen kopien der Mitarbeiter werden
-        this.mitarbeiter = mitarbeiter;
+        this.mitarbeiter = new Mitarbeiter(mitarbeiter);
         this.artikel = new Artikel(artikel);
     }
 

@@ -32,5 +32,9 @@ public class Mitarbeiter extends Nutzer {
         super(name, nummer, passwort);
     }
 
+    public Mitarbeiter(Mitarbeiter mitarbeiter) {
+        super(mitarbeiter.getName(), mitarbeiter.getNummer(), mitarbeiter.getPasswort());
+    }
+
 
 }

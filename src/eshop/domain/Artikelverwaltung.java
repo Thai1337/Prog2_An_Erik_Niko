@@ -140,20 +140,17 @@ public class Artikelverwaltung {
      * @throws ArtikelbestandUnterNullException wenn der artikelbestand unter -1 ist
      */
     public void einfuegen(Artikel einArtikel) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException {
-        if (artikelBestand.contains(einArtikel)) { //.contains() benutzt equals Methode von Artikel, welche in der Artikelklasse überschrieben wurde.
+        if (artikelBestand.contains(einArtikel)) //.contains() benutzt equals Methode von Artikel, welche in der Artikelklasse überschrieben wurde.
             throw new ArtikelExistiertBereitsException(einArtikel, " im Lager!");
-        }
-        if (einArtikel.getBestand() < -1) {
-            throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
-        }
-        if (einArtikel.getNummer() <= -1 || einArtikel.getPreis() < 0 || einArtikel.getBestand() == -1 || einArtikel.getBezeichnung().isEmpty()) {
-            // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
-            throw new EingabeNichtLeerException();
-        }
 
-        if(einArtikel instanceof Massengutartikel && einArtikel.getBestand() % ((Massengutartikel) einArtikel).getPackungsgrosse() != 0){
-            throw new MassengutartikelBestandsException();
-        }
+        if (einArtikel.getBestand() < -1)
+            throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
+
+        if (einArtikel.getNummer() <= -1 || einArtikel.getPreis() < 0 || einArtikel.getBestand() == -1 || einArtikel.getBezeichnung().isEmpty())
+            throw new EingabeNichtLeerException(); // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
+
+        if(einArtikel instanceof Massengutartikel && einArtikel.getBestand() % ((Massengutartikel) einArtikel).getPackungsgrosse() != 0)
+            throw new MassengutartikelBestandsException((Massengutartikel)einArtikel);
 
         // das übernimmt der Vector:
         artikelBestand.add(einArtikel);
@@ -171,20 +168,17 @@ public class Artikelverwaltung {
     public void aendereArtikel(Artikel einArtikel) throws ArtikelbestandUnterNullException, EingabeNichtLeerException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
         // das übernimmt der Vector:
         // TODO exception damit keine negativen Preise eingegeben werden können und die java-doc ändern!!!! dafuq?
-        if (!artikelBestand.contains(einArtikel)) {
+        if (!artikelBestand.contains(einArtikel))
             throw new ArtikelNichtVorhandenException();
-        }
-        if (einArtikel.getBestand() < -1) {
-            throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
-        }
-        if (einArtikel.getNummer() <= -1 && einArtikel.getPreis() < 0 && einArtikel.getBestand() == -1 && einArtikel.getBezeichnung().isEmpty()) {
-            // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
-            throw new EingabeNichtLeerException();
-        }
 
-        if(einArtikel instanceof Massengutartikel && einArtikel.getBestand() != -1 && einArtikel.getBestand() % ((Massengutartikel) einArtikel).getPackungsgrosse() != 0){
-            throw new MassengutartikelBestandsException(); // wenn Bestand und Packgröße gleichzeitig geändert werden
-        }
+        if (einArtikel.getBestand() < -1)
+            throw new ArtikelbestandUnterNullException(einArtikel, " AMIGO");
+
+        if (einArtikel.getNummer() <= -1 && einArtikel.getPreis() < 0 && einArtikel.getBestand() == -1 && einArtikel.getBezeichnung().isEmpty())
+            throw new EingabeNichtLeerException(); // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
+
+        if(einArtikel instanceof Massengutartikel && einArtikel.getBestand() != -1 && einArtikel.getBestand() % ((Massengutartikel) einArtikel).getPackungsgrosse() != 0)
+            throw new MassengutartikelBestandsException((Massengutartikel)einArtikel); // wenn Bestand und Packgröße gleichzeitig geändert werden
 
         for (Artikel artikel : artikelBestand) {
             if (artikel.getNummer() == einArtikel.getNummer()) {
@@ -195,13 +189,13 @@ public class Artikelverwaltung {
                     artikel.setPreis(einArtikel.getPreis());
                 }
                 if(einArtikel instanceof Massengutartikel && einArtikel.getBestand() != -1 && einArtikel.getBestand() % ((Massengutartikel) artikel).getPackungsgrosse() != 0){
-                    throw new MassengutartikelBestandsException(); // wenn nur Bestand geändert wird
+                    throw new MassengutartikelBestandsException((Massengutartikel)einArtikel); // wenn nur Bestand geändert wird
                 }
                 if (einArtikel.getBestand() != -1) {
                     artikel.setBestand(einArtikel.getBestand());
                 }
                 if(einArtikel instanceof Massengutartikel && artikel.getBestand() % ((Massengutartikel) einArtikel).getPackungsgrosse() != 0){
-                    throw new MassengutartikelBestandsException(); // wenn nur Packgröße geändert wird
+                    throw new MassengutartikelBestandsException((Massengutartikel)einArtikel); // wenn nur Packgröße geändert wird
                 }
                 if(einArtikel instanceof Massengutartikel){
                     ((Massengutartikel) artikel).setPackungsgrosse(((Massengutartikel) einArtikel).getPackungsgrosse());

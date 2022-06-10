@@ -3,6 +3,7 @@ package eshop.valueobjects;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Klasse zur Repräsentation einzelner Artikel.
@@ -59,6 +60,11 @@ public class Artikel implements Serializable {
                 ", bestand=" + bestand +
                 ", preis=" + preis +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nummer);
     }
 
     // Methoden zum Setzen und Lesen der Artikel-Eigenschaften,

@@ -10,8 +10,8 @@ public class Rechnung {
     private Warenkorb warenkorb;
 
     public Rechnung(Kunde kunde) {
-        this.kunde = kunde;
-        this.warenkorb = kunde.getWarkorb();
+        this.kunde = new Kunde(kunde);
+        this.warenkorb = this.kunde.getWarkorb();
     }
 
     /**
@@ -39,8 +39,6 @@ public class Rechnung {
         rechnungGesamtpreis = "\n\n\tGesamtpreis: " + df.format(warenkorb.getGesamtpreis()) + "EUR";
 
         rechnung = rechnungKunde + rechnungArtikel + rechnungGesamtpreis;
-
-        warenkorb.warenkorbLeeren();
 
         return rechnung;
     }
