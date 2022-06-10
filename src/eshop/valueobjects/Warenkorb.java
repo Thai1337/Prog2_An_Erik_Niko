@@ -39,18 +39,38 @@ public class Warenkorb implements Serializable{
      * @param anzahlArtikel Menge des jeweiligen Artikels im Warenkorb
      */
     public void addArtikelZuWarenkorbListe(Artikel artikel, int anzahlArtikel) {
-        warenkorbListe.put(artikel, anzahlArtikel);
+        if(!warenkorbListe.containsKey(artikel)){
+            warenkorbListe.put(artikel, anzahlArtikel);
+        }else{
+            int alteWarenkorbArtikelAnzahl = getArtikelAnzahlImWarenkorb(artikel);
+            warenkorbListe.put(artikel, anzahlArtikel + alteWarenkorbArtikelAnzahl);
+        }
     }
 
     public void removeArtikelVonWarenkorbListe(Artikel artikel) {
         warenkorbListe.remove(artikel);
+    }
+    public void removeArtikelVonWarenkorbListe(Artikel artikel, int anzahlZuEntfernenderArtikel) {
+        if(anzahlZuEntfernenderArtikel == 0 || (getArtikelAnzahlImWarenkorb(artikel) - anzahlZuEntfernenderArtikel) == 0) { // wenn die eingegebene Menge im warenkorb 0 ist oder das ergebnis z.B. 92-92 0 wird, wird der Artikel entfernt
+            removeArtikelVonWarenkorbListe(artikel);
+        }else{
+            int alteWarenkorbArtikelAnzahl = getArtikelAnzahlImWarenkorb(artikel);
+            warenkorbListe.put(artikel, alteWarenkorbArtikelAnzahl - anzahlZuEntfernenderArtikel);
+        }
     }
 
     public void warenkorbLeeren() {
         warenkorbListe.clear();
     }
 
+    public boolean warenkorbEnthaeltArtikel(Artikel artikel) {
+        return warenkorbListe.containsKey(artikel);
+    }
+
     public int getArtikelAnzahlImWarenkorb(Artikel artikel) {
+        if(!warenkorbListe.containsKey(artikel)){ // wird benötigt falls der artikel im Bestand existiert, aber nicht im warenkorb ist(Nullpointerexception) weil der artikel im warenkorb nicht gefunden werden kann
+            return 0;
+        }
         return warenkorbListe.get(artikel);
     }
 
