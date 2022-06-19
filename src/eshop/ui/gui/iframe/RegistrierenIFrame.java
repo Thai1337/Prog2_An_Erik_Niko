@@ -1,6 +1,7 @@
 package eshop.ui.gui.iframe;
 
 import eshop.domain.Eshop;
+import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 
 import javax.swing.*;
@@ -126,7 +127,6 @@ public class RegistrierenIFrame extends JInternalFrame {
                         hausnummer = Integer.parseInt(hausnummerField.getText());
                         plz = Integer.parseInt(plzField.getText());
                     }catch(NumberFormatException e1){
-                        JOptionPane.showMessageDialog(RegistrierenIFrame.this,"Hausnummer und Postleitzahl muessen Ganzzahlen sein!");
                         hausnummer = -1;
                         plz = -1;
                     }

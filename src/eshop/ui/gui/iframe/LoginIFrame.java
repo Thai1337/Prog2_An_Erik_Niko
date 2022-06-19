@@ -19,10 +19,6 @@ public class LoginIFrame extends JInternalFrame {
 
     private LoginListener loginListener;
 
-    private JLabel nummerLabel;
-
-    private JLabel passwortLabel;
-
     private JTextField nutzerIDField;
 
     private JTextField passwortField;
@@ -32,7 +28,7 @@ public class LoginIFrame extends JInternalFrame {
     private Nutzer nutzer;
 
     public LoginIFrame(Eshop shop, LoginListener loginListener) {
-        super("Login", false, true, false, false);
+        super("Anmelden", false, true, false, false);
         this.shop = shop;
         this.loginListener = loginListener;
         initUI();
@@ -49,36 +45,37 @@ public class LoginIFrame extends JInternalFrame {
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        //nummerLabel
-        nummerLabel = new JLabel("Nummer");
+        //label options
         gbc.gridx = 0;
-        gbc.gridy = 0;
         gbc.weightx = 0.2;
+
+        //nummerLabel
+        JLabel nummerLabel = new JLabel("Nummer");
+        gbc.gridy = 0;
         add(nummerLabel, gbc);
+
+        //passwortLabel
+        JLabel passwortLabel = new JLabel("Passwort");
+        gbc.gridy = 1;
+        add(passwortLabel, gbc);
+
+
+        //field options
+        gbc.gridx = 1;
+        gbc.weightx = 0.6;
 
         //nummerField
         nutzerIDField = new JTextField();
-        gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.weightx = 0.6;
         add(nutzerIDField, gbc);
-
-        //passwortLabel
-        passwortLabel = new JLabel("Passwort");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 0.2;
-        add(passwortLabel, gbc);
 
         //passwortField
         passwortField = new JPasswordField();
-        gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.weightx = 0.6;
         add(passwortField, gbc);
 
         //loginButton
-        loginButton = new JButton("Login");
+        loginButton = new JButton("Anmelden");
         gbc.gridx = 1;
         gbc.gridy = 3;
         add(loginButton, gbc);
@@ -86,7 +83,6 @@ public class LoginIFrame extends JInternalFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         setSize(300, 100);
-        //setVisible(true);
 
     }
 
@@ -96,9 +92,14 @@ public class LoginIFrame extends JInternalFrame {
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(loginButton)){
                     String pw = passwortField.getText();
+                    int id;
                     try{
-                        int id = Integer.parseInt(nutzerIDField.getText());
+                        id = Integer.parseInt(nutzerIDField.getText());
+                    }catch (NumberFormatException e1){
+                        id = -1;
+                    }
 
+                    try{
                         nutzer = shop.mitarbeiterAnmelden(id, pw);
                         if (nutzer == null) {
                             nutzer = shop.kundenAnmelden(id, pw);
@@ -110,8 +111,6 @@ public class LoginIFrame extends JInternalFrame {
                             loginListener.onLogin(nutzer);
                         }
 
-                    }catch(NumberFormatException e1){
-                        JOptionPane.showMessageDialog(LoginIFrame.this, "Bitte Ganzzahlen im Nummernfeld eintagen!");
                     }catch (AnmeldungFehlgeschlagenException e2){
                         JOptionPane.showMessageDialog(LoginIFrame.this, e2.getMessage());
                     }
