@@ -27,6 +27,7 @@ public class MenuBarPanel extends JMenuBar {
     private JMenuItem logoutItem;
     public MenuBarPanel(LoginButtonClickListener loginButtonClickListener, RegistrierenButtonClickListener registrierenButtonClickListener) {
         this.loginButtonClickListener = loginButtonClickListener;
+        this.registrierenButtonClickListener = registrierenButtonClickListener;
         setupMenu();
     }
 

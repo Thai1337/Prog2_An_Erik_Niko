@@ -4,6 +4,7 @@ import eshop.domain.Eshop;
 import eshop.ui.gui.panel.ArtikelTablePanel;
 import eshop.ui.gui.panel.LoginPanel;
 import eshop.ui.gui.menu.MenuBarPanel;
+import eshop.ui.gui.iframe.RegistrierenFrame;
 import eshop.ui.gui.panel.SearchArtikelPanel;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
@@ -16,11 +17,12 @@ import java.util.List;
 
 public class EshopClientGUI extends JFrame
         implements SearchArtikelPanel.SearchResultListener, LoginPanel.LoginListener, MenuBarPanel.LoginButtonClickListener, MenuBarPanel.RegistrierenButtonClickListener {
-    Eshop shop;
+    private Eshop shop;
 
     private ArtikelTablePanel artikelPanel;
 
-    private JInternalFrame loginPanel;
+    private JInternalFrame loginFrame;
+    private JInternalFrame registrierenFrame;
 
     private JMenuBar menuBar;
 
@@ -44,11 +46,12 @@ public class EshopClientGUI extends JFrame
         setLayout(new BorderLayout());
 
         // loginPanel
-        loginPanel = new LoginPanel(shop, this);
-        add(loginPanel);
+        loginFrame = new LoginPanel(shop, this);
+        add(loginFrame);
 
         // registrierenPanel
-
+        registrierenFrame = new RegistrierenFrame(shop);
+        add(registrierenFrame);
 
         // MenuBar
         menuBar = new MenuBarPanel(this, this);
@@ -107,12 +110,13 @@ public class EshopClientGUI extends JFrame
 
     @Override
     public void onLoginButtonClick() {
-        System.out.println("LoginPanel Erscheint");
-        loginPanel.setVisible(true);
+        System.out.println("LoginFrame erscheint");
+        loginFrame.setVisible(true);
     }
 
     @Override
     public void onRegistrierenButtonClick() {
-
+        System.out.println("RegFrame erscheint");
+        registrierenFrame.setVisible(true);
     }
 }
