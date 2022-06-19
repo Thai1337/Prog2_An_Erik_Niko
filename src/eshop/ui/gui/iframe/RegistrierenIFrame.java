@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class RegistrierenFrame extends JInternalFrame {
+public class RegistrierenIFrame extends JInternalFrame {
 
     private JTextField nameField;
     private JTextField passwortField;
@@ -22,7 +22,7 @@ public class RegistrierenFrame extends JInternalFrame {
 
     private Eshop shop;
 
-    public RegistrierenFrame(Eshop shop) {
+    public RegistrierenIFrame(Eshop shop) {
         super("Registrieren", false, true, false, false);
         this.shop = shop;
         initUI();
@@ -126,7 +126,7 @@ public class RegistrierenFrame extends JInternalFrame {
                         hausnummer = Integer.parseInt(hausnummerField.getText());
                         plz = Integer.parseInt(plzField.getText());
                     }catch(NumberFormatException e1){
-                        JOptionPane.showMessageDialog(RegistrierenFrame.this,"Hausnummer und Postleitzahl muessen Ganzzahlen sein!");
+                        JOptionPane.showMessageDialog(RegistrierenIFrame.this,"Hausnummer und Postleitzahl muessen Ganzzahlen sein!");
                         hausnummer = -1;
                         plz = -1;
                     }
@@ -135,13 +135,23 @@ public class RegistrierenFrame extends JInternalFrame {
 
                     try {
                         int kundenNummer = shop.registriereKunden(name, passwort, strasse, hausnummer, plz, ort);
-                        JOptionPane.showMessageDialog(RegistrierenFrame.this, "Ihre Nummer für den Login lautet: " + kundenNummer);
-                        RegistrierenFrame.this.setVisible(false);
+                        JOptionPane.showMessageDialog(RegistrierenIFrame.this, "Ihre Nummer für den Login lautet: " + kundenNummer);
+                        RegistrierenIFrame.this.setVisible(false);
+                        setRegistrierenFieldsToEmpty();
                     } catch (EingabeNichtLeerException | IOException ex) {
-                        JOptionPane.showMessageDialog(RegistrierenFrame.this,"Bitte alle Felder ausfuellen!");
+                        JOptionPane.showMessageDialog(RegistrierenIFrame.this,"Bitte alle Felder ausfuellen!");
                     }
                 }
             }
         });
+    }
+
+    private void setRegistrierenFieldsToEmpty() {
+        nameField.setText("");
+        passwortField.setText("");
+        strasseField.setText("");
+        hausnummerField.setText("");
+        plzField.setText("");
+        ortField.setText("");
     }
 }

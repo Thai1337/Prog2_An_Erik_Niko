@@ -1,19 +1,15 @@
-package eshop.ui.gui.panel;
+package eshop.ui.gui.iframe;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
-import eshop.domain.exceptions.EingabeNichtLeerException;
-import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Nutzer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.List;
 
-public class LoginPanel extends JInternalFrame {
+public class LoginIFrame extends JInternalFrame {
 
     public interface LoginListener {
         public void onLogin(Nutzer nutzer);
@@ -35,7 +31,7 @@ public class LoginPanel extends JInternalFrame {
 
     private Nutzer nutzer;
 
-    public LoginPanel(Eshop shop, LoginListener loginListener) {
+    public LoginIFrame(Eshop shop, LoginListener loginListener) {
         super("Login", false, true, false, false);
         this.shop = shop;
         this.loginListener = loginListener;
@@ -108,19 +104,26 @@ public class LoginPanel extends JInternalFrame {
                             nutzer = shop.kundenAnmelden(id, pw);
                         }
                         if(nutzer != null) {
-                            LoginPanel.this.setVisible(false); // anmeldung erfolgreich login schließen
+                            JOptionPane.showMessageDialog(LoginIFrame.this, "Anmeldung erfolgreich");
+                            LoginIFrame.this.setVisible(false); // anmeldung erfolgreich login schließen
+                            setLoginFieldsToEmpty();
                             loginListener.onLogin(nutzer);
                         }
 
                     }catch(NumberFormatException e1){
-                        JOptionPane.showMessageDialog(LoginPanel.this, "Bitte Ganzzahlen im Nummernfeld eintagen!");
+                        JOptionPane.showMessageDialog(LoginIFrame.this, "Bitte Ganzzahlen im Nummernfeld eintagen!");
                     }catch (AnmeldungFehlgeschlagenException e2){
-                        JOptionPane.showMessageDialog(LoginPanel.this, e2.getMessage());
+                        JOptionPane.showMessageDialog(LoginIFrame.this, e2.getMessage());
                     }
 
                 }
             }
         });
+    }
+
+    private void setLoginFieldsToEmpty() {
+        nutzerIDField.setText("");
+        passwortField.setText("");
     }
 
 }

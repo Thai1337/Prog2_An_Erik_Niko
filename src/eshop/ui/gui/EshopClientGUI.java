@@ -2,9 +2,9 @@ package eshop.ui.gui;
 
 import eshop.domain.Eshop;
 import eshop.ui.gui.panel.ArtikelTablePanel;
-import eshop.ui.gui.panel.LoginPanel;
+import eshop.ui.gui.iframe.LoginIFrame;
 import eshop.ui.gui.menu.MenuBarPanel;
-import eshop.ui.gui.iframe.RegistrierenFrame;
+import eshop.ui.gui.iframe.RegistrierenIFrame;
 import eshop.ui.gui.panel.SearchArtikelPanel;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.List;
 
 public class EshopClientGUI extends JFrame
-        implements SearchArtikelPanel.SearchResultListener, LoginPanel.LoginListener, MenuBarPanel.LoginButtonClickListener, MenuBarPanel.RegistrierenButtonClickListener {
+        implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener, MenuBarPanel.LoginButtonClickListener, MenuBarPanel.RegistrierenButtonClickListener {
     private Eshop shop;
 
     private ArtikelTablePanel artikelPanel;
@@ -46,11 +46,11 @@ public class EshopClientGUI extends JFrame
         setLayout(new BorderLayout());
 
         // loginPanel
-        loginFrame = new LoginPanel(shop, this);
+        loginFrame = new LoginIFrame(shop, this);
         add(loginFrame);
 
         // registrierenPanel
-        registrierenFrame = new RegistrierenFrame(shop);
+        registrierenFrame = new RegistrierenIFrame(shop);
         add(registrierenFrame);
 
         // MenuBar

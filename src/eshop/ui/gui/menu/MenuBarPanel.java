@@ -1,13 +1,8 @@
 package eshop.ui.gui.menu;
 
-import eshop.ui.gui.panel.LoginPanel;
-import eshop.valueobjects.Artikel;
-import eshop.valueobjects.Nutzer;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class MenuBarPanel extends JMenuBar {
 
