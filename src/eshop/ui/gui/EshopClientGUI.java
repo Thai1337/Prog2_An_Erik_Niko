@@ -3,6 +3,7 @@ package eshop.ui.gui;
 import eshop.domain.Eshop;
 import eshop.ui.gui.panel.ArtikelTablePanel;
 import eshop.ui.gui.panel.LoginPanel;
+import eshop.ui.gui.menu.MenuBarPanel;
 import eshop.ui.gui.panel.SearchArtikelPanel;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
@@ -13,12 +14,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class EshopClientGUI extends JFrame implements SearchArtikelPanel.SearchResultListener, LoginPanel.LoginListener {
+public class EshopClientGUI extends JFrame
+        implements SearchArtikelPanel.SearchResultListener, LoginPanel.LoginListener, MenuBarPanel.LoginButtonClickListener, MenuBarPanel.RegistrierenButtonClickListener {
     Eshop shop;
 
     private ArtikelTablePanel artikelPanel;
 
     private JInternalFrame loginPanel;
+
+    private JMenuBar menuBar;
 
     public EshopClientGUI(String title) {
             super(title);
@@ -39,11 +43,16 @@ public class EshopClientGUI extends JFrame implements SearchArtikelPanel.SearchR
        //Layout des JFrames
         setLayout(new BorderLayout());
 
+        // loginPanel
         loginPanel = new LoginPanel(shop, this);
         add(loginPanel);
 
+        // registrierenPanel
+
+
         // MenuBar
-        //setJMenuBar(new MenuBarPanel());
+        menuBar = new MenuBarPanel(this, this);
+        setJMenuBar(menuBar);
 
         // Tabelle
         artikelPanel = new ArtikelTablePanel(shop.gibAlleArtikel());
@@ -75,15 +84,35 @@ public class EshopClientGUI extends JFrame implements SearchArtikelPanel.SearchR
     @Override
     public void onLogin(Nutzer nutzer) {
         // TODO ab hier kann man mit der nutzernummer weiterarbeiten oder vllt zwei interfaces für Mitarbeiter und kundentrennung implementieren
-        // TOFO JMenuBar als nächstes
+        // TODO JMenuBar als nächstes
+        if(nutzer != null) {
+            System.out.println("Nutzer ungleich nulll");
+
+            // TODO in methode packen
+            menuBar.getMenu(0).getMenuComponent(0).setVisible(false);   //loginItem invisable
+            menuBar.getMenu(0).getMenuComponent(1).setVisible(false);   // seperator invisable
+            menuBar.getMenu(0).getMenuComponent(2).setVisible(false);   //registrierenItem invisable
+
+            menuBar.getMenu(0).getMenuComponent(3).setVisible(true);   //logoutItem visable
+        }
+
         if(nutzer instanceof Mitarbeiter){
-            System.out.println("Mitarbeiter");
+            System.out.println("Mitarbeiter ist eingeloggt");
         }
 
         if(nutzer instanceof Kunde){
-//            JFrame a = new JFrame("YALLA");
-//            a.setVisible(true);
-//            a.setSize(400, 400);
+            System.out.println("Kunde ist eingeloggt");
         }
+    }
+
+    @Override
+    public void onLoginButtonClick() {
+        System.out.println("LoginPanel Erscheint");
+        loginPanel.setVisible(true);
+    }
+
+    @Override
+    public void onRegistrierenButtonClick() {
+
     }
 }

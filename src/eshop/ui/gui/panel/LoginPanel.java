@@ -90,7 +90,7 @@ public class LoginPanel extends JInternalFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         setSize(300, 100);
-        setVisible(true);
+        //setVisible(true);
 
     }
 
