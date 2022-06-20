@@ -4,6 +4,7 @@ import eshop.domain.Eshop;
 import eshop.ui.gui.menu.ArtikelMenu;
 import eshop.ui.gui.menu.KontoMenu;
 import eshop.ui.gui.panel.ArtikelEinfuegenPanel;
+import eshop.ui.gui.panel.ArtikelLoeschenPanel;
 import eshop.ui.gui.panel.ArtikelTablePanel;
 import eshop.ui.gui.iframe.LoginIFrame;
 import eshop.ui.gui.iframe.RegistrierenIFrame;
@@ -20,7 +21,7 @@ import java.util.List;
 public class EshopClientGUI extends JFrame
         implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener,
         KontoMenu.LoginMenuItemClickListener, KontoMenu.RegistrierenMenuItemClickListener, KontoMenu.LogoutMenuItemClickListener,
-        ArtikelMenu.ArtikelEinfuegenItemClickListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener {
+        ArtikelMenu.ArtikelEinfuegenItemClickListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener, ArtikelLoeschenPanel.ArtikelLoeschenListener, ArtikelMenu.ArtikelLoeschenItemClickListener{
     private Eshop shop;
 
     private ArtikelTablePanel artikelPanel;
@@ -33,6 +34,8 @@ public class EshopClientGUI extends JFrame
     private KontoMenu kontoMenu;
 
     private ArtikelEinfuegenPanel artikelEinfuegenPanel;
+
+    private ArtikelLoeschenPanel artikelLoeschenPanel;
 
     public EshopClientGUI(String title) {
             super(title);
@@ -58,7 +61,7 @@ public class EshopClientGUI extends JFrame
         // MenuBar
         JMenuBar menuBar = new JMenuBar();
         kontoMenu = new KontoMenu("Konto", this, this, this);
-        artikelMenu = new ArtikelMenu("Artikel", this);
+        artikelMenu = new ArtikelMenu("Artikel", this, this);
         menuBar.add(kontoMenu);
         menuBar.add(artikelMenu);
         setJMenuBar(menuBar);
@@ -76,10 +79,23 @@ public class EshopClientGUI extends JFrame
 
         //Einfuegen Panel
         artikelEinfuegenPanel = new ArtikelEinfuegenPanel(shop, this);
-        add(artikelEinfuegenPanel, BorderLayout.WEST);
+
+        //Loeschen Panel
+        artikelLoeschenPanel = new ArtikelLoeschenPanel(shop, this);
+
+        //Loeschen und Einfuegen Panel
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.Y_AXIS));
+        layeredPane.add(artikelLoeschenPanel, JLayeredPane.POPUP_LAYER);
+        layeredPane.add(artikelEinfuegenPanel, JLayeredPane.POPUP_LAYER);
+        add(layeredPane, BorderLayout.WEST);
+        layeredPane.setSize(300, 480);
+        layeredPane.setVisible(true);
+
+
 
         //JFrame optionen
-        setSize(840, 480);
+        setSize(840, 580);
         setVisible(true);
 
     }
@@ -109,6 +125,7 @@ public class EshopClientGUI extends JFrame
         if(nutzer instanceof Mitarbeiter){
             System.out.println("Mitarbeiter ist eingeloggt");
             artikelEinfuegenPanel.setMitarbeiter(nutzer);
+            artikelLoeschenPanel.setMitarbeiter(nutzer);
         }
 
         if(nutzer instanceof Kunde){
@@ -132,6 +149,7 @@ public class EshopClientGUI extends JFrame
     public void onLogoutMenuItemClick() {
         System.out.println("Kunden und Mitarbeiter Panels und Co. verschwinden");
         artikelEinfuegenPanel.setVisible(false);
+        artikelLoeschenPanel.setVisible(false);
         artikelMenu.setVisible(false);
     }
 
@@ -141,8 +159,18 @@ public class EshopClientGUI extends JFrame
         artikelEinfuegenPanel.setVisible(sichtbar);
     }
 
+   public void onArtikelLoeschenMenuItemClick(boolean sichtbar) {
+        System.out.println("Löschen Panel erscheint");
+        artikelLoeschenPanel.setVisible(sichtbar);
+   }
+
     @Override
     public void onArtikelEinfuegen(List<Artikel> artikelList) {
+        artikelPanel.updateArtikel(artikelList);
+    }
+
+    @Override
+    public void onArtikelLoeschen(List<Artikel> artikelList) {
         artikelPanel.updateArtikel(artikelList);
     }
 }
