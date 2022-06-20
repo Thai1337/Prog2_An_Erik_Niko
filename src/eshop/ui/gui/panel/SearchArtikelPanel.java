@@ -48,14 +48,14 @@ public class SearchArtikelPanel extends JPanel {
         searchTextField = new JTextField();
         searchTextField.setToolTipText("Suchbegriff eingeben.");
         c.gridx = 1;	// Spalte 1
-        c.weightx = 0.7;	// 60% der gesamten Breite
+        c.weightx = 0.8;	// 60% der gesamten Breite
         gridBagLayout.setConstraints(searchTextField, c);
         add(searchTextField);
 
         searchButton = new JButton("Suchen");
 
         c.gridx = 2;	// Spalte 2
-        c.weightx = 0.2;	// 20% der gesamten Breite
+        c.weightx = 0.1;	// 20% der gesamten Breite
         gridBagLayout.setConstraints(searchButton, c);
         add(searchButton);
 

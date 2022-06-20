@@ -20,6 +20,7 @@ public class LoginIFrame extends JInternalFrame {
     private LoginListener loginListener;
 
     private LoginListener loginMenuBarListener;
+    private LoginListener loginArtikelMenuBarListener;
 
     private JTextField nutzerIDField;
 
@@ -29,11 +30,12 @@ public class LoginIFrame extends JInternalFrame {
 
     private Nutzer nutzer;
 
-    public LoginIFrame(Eshop shop, LoginListener loginListener, LoginListener loginMenuBarListener) {
+    public LoginIFrame(Eshop shop, LoginListener loginListener, LoginListener loginMenuBarListener, LoginListener loginArtikelMenuBarListener) {
         super("Anmelden", false, true, false, false);
         this.shop = shop;
         this.loginListener = loginListener;
         this.loginMenuBarListener = loginMenuBarListener;
+        this.loginArtikelMenuBarListener = loginArtikelMenuBarListener;
         initUI();
 
         setupEvents();
@@ -113,6 +115,7 @@ public class LoginIFrame extends JInternalFrame {
                             setLoginFieldsToEmpty();
                             loginListener.onLogin(nutzer);
                             loginMenuBarListener.onLogin(nutzer);
+                            loginArtikelMenuBarListener.onLogin(nutzer);
                         }
 
                     }catch (AnmeldungFehlgeschlagenException e2){
