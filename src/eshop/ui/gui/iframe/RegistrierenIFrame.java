@@ -1,7 +1,6 @@
 package eshop.ui.gui.iframe;
 
 import eshop.domain.Eshop;
-import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 
 import javax.swing.*;

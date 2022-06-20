@@ -1,9 +1,9 @@
 package eshop.ui.gui;
 
 import eshop.domain.Eshop;
+import eshop.ui.gui.menu.KontoMenu;
 import eshop.ui.gui.panel.ArtikelTablePanel;
 import eshop.ui.gui.iframe.LoginIFrame;
-import eshop.ui.gui.menu.MenuBarPanel;
 import eshop.ui.gui.iframe.RegistrierenIFrame;
 import eshop.ui.gui.panel.SearchArtikelPanel;
 import eshop.valueobjects.Artikel;
@@ -17,15 +17,13 @@ import java.util.List;
 
 public class EshopClientGUI extends JFrame
         implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener,
-        MenuBarPanel.LoginMenuItemClickListener, MenuBarPanel.RegistrierenMenuItemClickListener, MenuBarPanel.LogoutMenuItemClickListener {
+        KontoMenu.LoginMenuItemClickListener, KontoMenu.RegistrierenMenuItemClickListener, KontoMenu.LogoutMenuItemClickListener {
     private Eshop shop;
 
     private ArtikelTablePanel artikelPanel;
 
     private JInternalFrame loginFrame;
     private JInternalFrame registrierenFrame;
-
-    private JMenuBar menuBar;
 
     public EshopClientGUI(String title) {
             super(title);
@@ -44,17 +42,19 @@ public class EshopClientGUI extends JFrame
        //Layout des JFrames
         setLayout(new BorderLayout());
 
-        // loginIFrame
-        loginFrame = new LoginIFrame(shop, this);
-        add(loginFrame);
-
         // registrierenIFrame
         registrierenFrame = new RegistrierenIFrame(shop);
         add(registrierenFrame);
 
         // MenuBar
-        menuBar = new MenuBarPanel(this, this, this);
+        JMenuBar menuBar = new JMenuBar();
+        KontoMenu kontoMenu = new KontoMenu("Konto", this, this, this);
+        menuBar.add(kontoMenu);
         setJMenuBar(menuBar);
+
+        // loginIFrame
+        loginFrame = new LoginIFrame(shop, this, kontoMenu); // konto menu ist auch ein loginListener
+        add(loginFrame);
 
         // Tabelle
         artikelPanel = new ArtikelTablePanel(shop.gibAlleArtikel());
@@ -88,14 +88,7 @@ public class EshopClientGUI extends JFrame
         // TODO ab hier kann man mit der nutzernummer weiterarbeiten oder vllt zwei interfaces für Mitarbeiter und kundentrennung implementieren
         // TODO JMenuBar als nächstes
         if(nutzer != null) {
-            System.out.println("Nutzer ungleich nulll");
-
-            // TODO in methode packen
-            menuBar.getMenu(0).getMenuComponent(0).setVisible(false);   //loginItem invisable
-            menuBar.getMenu(0).getMenuComponent(1).setVisible(false);   // seperator invisable
-            menuBar.getMenu(0).getMenuComponent(2).setVisible(false);   //registrierenItem invisable
-
-            menuBar.getMenu(0).getMenuComponent(3).setVisible(true);   //logoutItem visable
+            System.out.println("Kunde oder Mitarbeiter eingeloggt");
         }
 
         if(nutzer instanceof Mitarbeiter){
