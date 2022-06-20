@@ -73,7 +73,7 @@ public class Eshop {
     public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException, ClassNotFoundException {
         Artikel neuerArtikel;
         int nummerVomLetztenArtikel = artikelVW.getNummerVomLetztenArtikel();
-        if (packungsgroesse == -1) {
+        if (packungsgroesse == -1 || packungsgroesse == 1) {
             neuerArtikel= new Artikel(nummerVomLetztenArtikel + 1,bezeichnung, bestand, preis);
         }else{
             neuerArtikel = new Massengutartikel(nummerVomLetztenArtikel + 1,bezeichnung, bestand, preis, packungsgroesse);
