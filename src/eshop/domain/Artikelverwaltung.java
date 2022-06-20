@@ -149,7 +149,7 @@ public class Artikelverwaltung {
         if (einArtikel.getNummer() <= -1 || einArtikel.getPreis() < 0 || einArtikel.getBestand() == -1 || einArtikel.getBezeichnung().isEmpty())
             throw new EingabeNichtLeerException(); // TODO optional: werte an die exception übergeben und dort logik einbauen um zu überprüfen was falsch ist
 
-        if(einArtikel instanceof Massengutartikel && ((Massengutartikel) einArtikel).getPackungsgrosse() == 0)
+        if(einArtikel instanceof Massengutartikel && (((Massengutartikel) einArtikel).getPackungsgrosse() == 0 || ((Massengutartikel) einArtikel).getPackungsgrosse() <= -2))
             throw new MassengutartikelBestandsException(((Massengutartikel) einArtikel));
 
         if(einArtikel instanceof Massengutartikel && einArtikel.getBestand() % ((Massengutartikel) einArtikel).getPackungsgrosse() != 0)
