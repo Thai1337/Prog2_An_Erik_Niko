@@ -16,7 +16,8 @@ import java.awt.*;
 import java.util.List;
 
 public class EshopClientGUI extends JFrame
-        implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener, MenuBarPanel.LoginButtonClickListener, MenuBarPanel.RegistrierenButtonClickListener {
+        implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener,
+        MenuBarPanel.LoginMenuItemClickListener, MenuBarPanel.RegistrierenMenuItemClickListener, MenuBarPanel.LogoutMenuItemClickListener {
     private Eshop shop;
 
     private ArtikelTablePanel artikelPanel;
@@ -40,31 +41,29 @@ public class EshopClientGUI extends JFrame
 
     private void initGUI() {
 
-
-
        //Layout des JFrames
         setLayout(new BorderLayout());
 
-        // loginPanel
+        // loginIFrame
         loginFrame = new LoginIFrame(shop, this);
         add(loginFrame);
 
-        // registrierenPanel
+        // registrierenIFrame
         registrierenFrame = new RegistrierenIFrame(shop);
         add(registrierenFrame);
 
         // MenuBar
-        menuBar = new MenuBarPanel(this, this);
+        menuBar = new MenuBarPanel(this, this, this);
         setJMenuBar(menuBar);
 
         // Tabelle
         artikelPanel = new ArtikelTablePanel(shop.gibAlleArtikel());
-        JScrollPane scrollPane = new JScrollPane(artikelPanel);
-        add(scrollPane, BorderLayout.CENTER);
+        add(new JScrollPane(artikelPanel), BorderLayout.CENTER);
 
         // Suche
         add(new SearchArtikelPanel(this.shop, this), BorderLayout.NORTH);
 
+        //JFrame optionen
         setSize(640, 480);
         setVisible(true);
 
@@ -109,14 +108,19 @@ public class EshopClientGUI extends JFrame
     }
 
     @Override
-    public void onLoginButtonClick() {
+    public void onLoginMenuItemClick() {
         System.out.println("LoginFrame erscheint");
         loginFrame.setVisible(true);
     }
 
     @Override
-    public void onRegistrierenButtonClick() {
+    public void onRegistrierenMenuItemClick() {
         System.out.println("RegFrame erscheint");
         registrierenFrame.setVisible(true);
+    }
+
+    @Override
+    public void onLogoutMenuItemClick() {
+        System.out.println("Kunden und Mitarbeiter Panels und Co. verschwinden");
     }
 }

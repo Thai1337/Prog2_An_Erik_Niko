@@ -38,20 +38,21 @@ public class SearchArtikelPanel extends JPanel {
         c.gridy = 0;	// Zeile 0
 
         JLabel suchLabel = new JLabel("Suchbegriff:");
-//        c.insets = new Insets(0, 5, 0, 0);
+        c.insets = new Insets(2, 5, 2, 2);
+
         c.gridx = 0;	// Spalte 0
-        c.weightx = 0.2;	// 20% der gesamten Breite
+        c.weightx = 0.1;	// 20% der gesamten Breite
         gridBagLayout.setConstraints(suchLabel, c);
         add(suchLabel);
 
         searchTextField = new JTextField();
         searchTextField.setToolTipText("Suchbegriff eingeben.");
         c.gridx = 1;	// Spalte 1
-        c.weightx = 0.6;	// 60% der gesamten Breite
+        c.weightx = 0.7;	// 60% der gesamten Breite
         gridBagLayout.setConstraints(searchTextField, c);
         add(searchTextField);
 
-        searchButton = new JButton("Such!");
+        searchButton = new JButton("Suchen");
 
         c.gridx = 2;	// Spalte 2
         c.weightx = 0.2;	// 20% der gesamten Breite

@@ -6,23 +6,26 @@ import java.awt.event.ActionListener;
 
 public class MenuBarPanel extends JMenuBar {
 
-    public interface LoginButtonClickListener {
-        public void onLoginButtonClick();
+    public interface LoginMenuItemClickListener {
+        public void onLoginMenuItemClick();
     }
 
-    public interface RegistrierenButtonClickListener {
-        public void onRegistrierenButtonClick();
+    public interface RegistrierenMenuItemClickListener {
+        public void onRegistrierenMenuItemClick();
     }
 
-    private LoginButtonClickListener loginButtonClickListener;
-    private RegistrierenButtonClickListener registrierenButtonClickListener;
+    public interface LogoutMenuItemClickListener {
+        public void onLogoutMenuItemClick();
+    }
+
+    private LoginMenuItemClickListener loginMenuItemClickListener;
+    private RegistrierenMenuItemClickListener registrierenMenuItemClickListener;
+    private LogoutMenuItemClickListener logoutMenuItemClickListener;
     private JMenu kontoMenu;
-    private JMenuItem loginItem;
-    private JMenuItem registrierenItem;
-    private JMenuItem logoutItem;
-    public MenuBarPanel(LoginButtonClickListener loginButtonClickListener, RegistrierenButtonClickListener registrierenButtonClickListener) {
-        this.loginButtonClickListener = loginButtonClickListener;
-        this.registrierenButtonClickListener = registrierenButtonClickListener;
+    public MenuBarPanel(LoginMenuItemClickListener loginMenuItemClickListener, RegistrierenMenuItemClickListener registrierenMenuItemClickListener, LogoutMenuItemClickListener logoutMenuItemClickListener) {
+        this.loginMenuItemClickListener = loginMenuItemClickListener;
+        this.registrierenMenuItemClickListener = registrierenMenuItemClickListener;
+        this.logoutMenuItemClickListener = logoutMenuItemClickListener;
         setupMenu();
     }
 
@@ -32,6 +35,9 @@ public class MenuBarPanel extends JMenuBar {
     }
 
     class KontoMenu extends JMenu implements ActionListener{
+        private JMenuItem loginItem;
+        private JMenuItem registrierenItem;
+        private JMenuItem logoutItem;
        public KontoMenu(String title) {
             super(title);
             // nur oberfläche action logik ist in der oberklasse
@@ -59,16 +65,17 @@ public class MenuBarPanel extends JMenuBar {
            switch (actionCommand){
                case "Anmelden":
                    System.out.println("Anmelden wurde geklickt");
-                   loginButtonClickListener.onLoginButtonClick();
+                   loginMenuItemClickListener.onLoginMenuItemClick();
                    break;
                case "Registrieren":
                    System.out.println("Registrieren wurde geklickt");
-                   registrierenButtonClickListener.onRegistrierenButtonClick();
+                   registrierenMenuItemClickListener.onRegistrierenMenuItemClick();
                    break;
                case "Abmelden":
                    loginItem.setVisible(true); // vllt die 3 wo anders plazieren
                    registrierenItem.setVisible(true);
                    logoutItem.setVisible(false);
+                   logoutMenuItemClickListener.onLogoutMenuItemClick();
                    break;
            }
 
