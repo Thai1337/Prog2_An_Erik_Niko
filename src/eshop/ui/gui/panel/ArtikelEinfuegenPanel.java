@@ -5,6 +5,7 @@ import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.domain.exceptions.MassengutartikelBestandsException;
+import eshop.ui.gui.StringConverter;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Mitarbeiter;
 import eshop.valueobjects.Nutzer;
@@ -89,24 +90,11 @@ public class ArtikelEinfuegenPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(addButton)){
+
                     String bezeichnung = bezeichnungTextField.getText();
-                    int bestand;
-                    double preis;
-                    int packungsgrosse;
-                    try {
-                        bestand = Integer.parseInt(bestandTextField.getText());
-                        preis = Double.parseDouble(preisTextField.getText());
-                    }catch(NumberFormatException e1){
-                        bestand = -1;
-                        preis = -1.01;
-
-                    }
-
-                    try{
-                        packungsgrosse = Integer.parseInt(packungsgroesseTextField.getText());
-                    }catch (NumberFormatException e1){
-                        packungsgrosse = -1;
-                    }
+                    int bestand = StringConverter.toInteger(bestandTextField.getText());
+                    double preis = StringConverter.toDouble(preisTextField.getText());
+                    int packungsgrosse = StringConverter.toInteger(packungsgroesseTextField.getText());
 
                     try {
                         shop.fuegeArtikelEin(bezeichnung, bestand, preis, mitarbeiter ,packungsgrosse);

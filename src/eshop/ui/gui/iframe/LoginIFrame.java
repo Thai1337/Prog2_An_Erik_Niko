@@ -2,6 +2,7 @@ package eshop.ui.gui.iframe;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
+import eshop.ui.gui.StringConverter;
 import eshop.valueobjects.Nutzer;
 
 import javax.swing.*;
@@ -97,12 +98,8 @@ public class LoginIFrame extends JInternalFrame {
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(loginButton)){
                     String pw = passwortField.getText();
-                    int id;
-                    try{
-                        id = Integer.parseInt(nutzerIDField.getText());
-                    }catch (NumberFormatException e1){
-                        id = -1;
-                    }
+
+                    int id = StringConverter.toInteger(nutzerIDField.getText());
 
                     try{
                         nutzer = shop.mitarbeiterAnmelden(id, pw);

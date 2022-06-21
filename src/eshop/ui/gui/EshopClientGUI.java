@@ -71,7 +71,7 @@ public class EshopClientGUI extends JFrame
         add(loginFrame);
 
         // Tabelle
-        artikelPanel = new ArtikelTablePanel(shop.gibAlleArtikel());
+        artikelPanel = new ArtikelTablePanel(shop);
         add(new JScrollPane(artikelPanel), BorderLayout.CENTER);
 
         // Suche
@@ -126,6 +126,7 @@ public class EshopClientGUI extends JFrame
             System.out.println("Mitarbeiter ist eingeloggt");
             artikelEinfuegenPanel.setMitarbeiter(nutzer);
             artikelLoeschenPanel.setMitarbeiter(nutzer);
+            artikelPanel.setMitarbeiter(nutzer);
         }
 
         if(nutzer instanceof Kunde){

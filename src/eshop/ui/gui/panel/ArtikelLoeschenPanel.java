@@ -2,6 +2,7 @@ package eshop.ui.gui.panel;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
+import eshop.ui.gui.StringConverter;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Mitarbeiter;
 import eshop.valueobjects.Nutzer;
@@ -74,12 +75,9 @@ public class ArtikelLoeschenPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(deleteButton)){
-                    int artikelNummer;
-                    try {
-                        artikelNummer = Integer.parseInt(nummerTextField.getText());
-                    }catch (NumberFormatException e1){
-                        artikelNummer = -1;
-                    }
+
+                    int artikelNummer = StringConverter.toInteger(nummerTextField.getText());
+
                     try {
                         shop.loescheArtikel(artikelNummer, mitarbeiter);
                         artikelLoeschenListener.onArtikelLoeschen(shop.gibAlleArtikel());

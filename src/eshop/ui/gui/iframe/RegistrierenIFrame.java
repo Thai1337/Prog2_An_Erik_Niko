@@ -2,6 +2,7 @@ package eshop.ui.gui.iframe;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.EingabeNichtLeerException;
+import eshop.ui.gui.StringConverter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -120,15 +121,9 @@ public class RegistrierenIFrame extends JInternalFrame {
                     String name = nameField.getText();
                     String passwort = passwortField.getText();
                     String strasse = strasseField.getText();
-                    int hausnummer;
-                    int plz;
-                    try {
-                        hausnummer = Integer.parseInt(hausnummerField.getText());
-                        plz = Integer.parseInt(plzField.getText());
-                    }catch(NumberFormatException e1){
-                        hausnummer = -1;
-                        plz = -1;
-                    }
+                    int hausnummer = StringConverter.toInteger(hausnummerField.getText());
+                    int plz = StringConverter.toInteger(plzField.getText());
+
 
                     String ort = ortField.getText();
 

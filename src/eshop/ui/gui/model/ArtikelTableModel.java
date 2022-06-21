@@ -3,6 +3,10 @@ package eshop.ui.gui.model;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Massengutartikel;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 import java.util.Vector;
@@ -10,7 +14,8 @@ import java.util.Vector;
 public class ArtikelTableModel extends AbstractTableModel {
     private List<Artikel> artikel;
 
-    private String[] spaltenNamen = { "Nummer", "Bezeichnung", "Bestand", "Preis" ,"Packungsgrosse" };
+    private boolean istMitarbeiterAngemeldet;
+    private String[] spaltenNamen = { "Nummer", "Bezeichnung", "Bestand", "Preis" ,"Packungsgrosse" }; //col
 
     public ArtikelTableModel(List<Artikel> aktuelleartikel) {
         artikel = new Vector<>(aktuelleartikel);
@@ -57,5 +62,22 @@ public class ArtikelTableModel extends AbstractTableModel {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+            if(!istMitarbeiterAngemeldet){
+                return false;
+            }
+
+            if(artikel.get(rowIndex) instanceof Massengutartikel) {
+                return columnIndex == 1 || columnIndex == 2 || columnIndex == 3 || columnIndex == 4;
+            }
+            return columnIndex == 1 || columnIndex == 2 || columnIndex == 3;
+
+    }
+
+    public void setIstMitarbeiterAngemeldet(boolean istMitarbeiterAngemeldet){
+        this.istMitarbeiterAngemeldet = istMitarbeiterAngemeldet;
     }
 }
