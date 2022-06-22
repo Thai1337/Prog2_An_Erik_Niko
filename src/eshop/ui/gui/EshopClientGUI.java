@@ -152,6 +152,7 @@ public class EshopClientGUI extends JFrame
         artikelEinfuegenPanel.setVisible(false);
         artikelLoeschenPanel.setVisible(false);
         artikelMenu.setVisible(false);
+        artikelPanel.setIstMitarbeiterAngemeldet(false);
     }
 
     @Override

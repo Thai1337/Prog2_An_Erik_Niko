@@ -102,6 +102,10 @@ public class ArtikelTablePanel extends JTable {
 
     public void setMitarbeiter(Nutzer nutzer) {
         this.mitarbeiter = (Mitarbeiter) nutzer;
-        tableModel.setIstMitarbeiterAngemeldet(true);
+        setIstMitarbeiterAngemeldet(true);
+    }
+
+    public void setIstMitarbeiterAngemeldet(boolean angemeldet){
+        tableModel.setIstMitarbeiterAngemeldet(angemeldet);
     }
 }
