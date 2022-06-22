@@ -59,7 +59,7 @@ public class ArtikelTablePanel extends JTable {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         Artikel row = artikel.get(rowIndex);
         String bezeichnung = "";
-        int bestand = -1;
+        int bestand = row.getBestand();
         double preis = -1.01;
         int packgroesse = -1;
         if(row instanceof Massengutartikel) {
@@ -92,7 +92,7 @@ public class ArtikelTablePanel extends JTable {
 //
 //            }
 
-            shop.aendereArtikel(bezeichnung, row.getNummer(), bestand, preis, mitarbeiter, packgroesse, row);
+            shop.aendereArtikel(bezeichnung, row.getNummer(), bestand, preis, mitarbeiter, packgroesse);
 
             updateArtikel(shop.gibAlleArtikel());
         } catch (EingabeNichtLeerException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | MassengutartikelBestandsException | IOException e) {

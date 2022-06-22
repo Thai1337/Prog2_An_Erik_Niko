@@ -128,7 +128,7 @@ public class MitarbeiterMenue {
                     packungsgroesse = eingabeAusgabe.einlesenInteger();
                 }
 
-                shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter, packungsgroesse, shop.gibArtikelNachNummer(nr));
+                shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter, packungsgroesse);
                 System.out.println("Bearbeitung erfolgreich!");
                 break;
             case 5:

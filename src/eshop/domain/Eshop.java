@@ -96,9 +96,9 @@ public class Eshop {
      * @throws ArtikelNichtVorhandenException   Wenn der Artikel nicht in unserem Lager ist
      */
     // Todo Ändern in Bearbeite Artikel
-    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse, Artikel artikel2) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
-        Artikel artikel;
-        if (artikel2 instanceof Massengutartikel) {
+    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
+        Artikel artikel = gibArtikelNachNummer(nr), artikelOld = new Artikel(gibArtikelNachNummer(nr));
+        if (artikel instanceof Massengutartikel) {
             artikel = new Massengutartikel(nr, bezeichnung, bestand, preis, packungsgroesse);
         }else{
             artikel= new Artikel(nr ,bezeichnung, bestand, preis);
@@ -106,7 +106,9 @@ public class Eshop {
 
         artikelVW.aendereArtikel(artikel);
 
-        protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
+        if(bestand != artikelOld.getBestand() && bestand > -1) { // TODO abfrage irgendwie in die protokollVW verschieben
+            protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
+        }
 
     }
 
