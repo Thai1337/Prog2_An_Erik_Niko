@@ -80,4 +80,8 @@ public class ArtikelTableModel extends AbstractTableModel {
     public void setIstMitarbeiterAngemeldet(boolean istMitarbeiterAngemeldet){
         this.istMitarbeiterAngemeldet = istMitarbeiterAngemeldet;
     }
+
+    public List<Artikel> getArtikel() {
+        return artikel;
+    }
 }

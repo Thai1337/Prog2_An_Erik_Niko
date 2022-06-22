@@ -26,8 +26,9 @@ public class ArtikelTablePanel extends JTable {
     public ArtikelTablePanel(Eshop shop) {
         super();
         this.shop = shop;
-        artikel = new Vector<Artikel>(shop.gibAlleArtikel());
+
         this.tableModel = new ArtikelTableModel(shop.gibAlleArtikel());
+        artikel = tableModel.getArtikel(); // keine ahnung warum aber wenn ich das nicht hier hab gib es bei allen neue eingefügten artikeln in zeile 60 einen index out of bounds error wenn man den bestand ändert
         setModel(tableModel);
 
         updateArtikel(shop.gibAlleArtikel());
@@ -93,7 +94,7 @@ public class ArtikelTablePanel extends JTable {
 
             shop.aendereArtikel(bezeichnung, row.getNummer(), bestand, preis, mitarbeiter, packgroesse, row);
 
-            updateArtikel(artikel);
+            updateArtikel(shop.gibAlleArtikel());
         } catch (EingabeNichtLeerException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | MassengutartikelBestandsException | IOException e) {
             JOptionPane.showMessageDialog(ArtikelTablePanel.this, e.getMessage());
         }
