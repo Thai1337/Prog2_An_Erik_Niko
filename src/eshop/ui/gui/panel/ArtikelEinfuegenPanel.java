@@ -74,7 +74,7 @@ public class ArtikelEinfuegenPanel extends JPanel {
         Dimension fillerMaxSize = new Dimension(5,Short.MAX_VALUE);
         add(new Box.Filler(fillerMinSize, fillerPreferredSize, fillerMaxSize));
 
-        addButton = new JButton("Einfügen");
+        addButton = new JButton("Einfuegen");
         add(addButton);
 
         // Abstandhalter ("Filler") zwischen letztem Element und Rand

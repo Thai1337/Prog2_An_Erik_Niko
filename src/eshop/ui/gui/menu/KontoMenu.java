@@ -27,7 +27,7 @@ public class KontoMenu extends JMenu implements ActionListener, LoginIFrame.Logi
     private RegistrierenMenuItemClickListener registrierenMenuItemClickListener;
     private LogoutMenuItemClickListener logoutMenuItemClickListener;
 
-    private LogoutMenuItemClickListener logoutArtikelMenuItemClickListener;
+    //private LogoutMenuItemClickListener logoutArtikelMenuItemClickListener;
 
     public KontoMenu(String title, LoginMenuItemClickListener loginMenuItemClickListener, RegistrierenMenuItemClickListener registrierenMenuItemClickListener,
                      LogoutMenuItemClickListener logoutMenuItemClickListener) {

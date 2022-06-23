@@ -3,12 +3,10 @@ package eshop.ui.gui;
 import eshop.domain.Eshop;
 import eshop.ui.gui.menu.ArtikelMenu;
 import eshop.ui.gui.menu.KontoMenu;
-import eshop.ui.gui.panel.ArtikelEinfuegenPanel;
-import eshop.ui.gui.panel.ArtikelLoeschenPanel;
-import eshop.ui.gui.panel.ArtikelTablePanel;
+import eshop.ui.gui.menu.MitarbeiterMenu;
+import eshop.ui.gui.panel.*;
 import eshop.ui.gui.iframe.LoginIFrame;
 import eshop.ui.gui.iframe.RegistrierenIFrame;
-import eshop.ui.gui.panel.SearchArtikelPanel;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
@@ -21,7 +19,8 @@ import java.util.List;
 public class EshopClientGUI extends JFrame
         implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener,
         KontoMenu.LoginMenuItemClickListener, KontoMenu.RegistrierenMenuItemClickListener, KontoMenu.LogoutMenuItemClickListener,
-        ArtikelMenu.ArtikelEinfuegenItemClickListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener, ArtikelLoeschenPanel.ArtikelLoeschenListener, ArtikelMenu.ArtikelLoeschenItemClickListener{
+        ArtikelMenu.ArtikelEinfuegenItemClickListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener, ArtikelLoeschenPanel.ArtikelLoeschenListener, ArtikelMenu.ArtikelLoeschenItemClickListener,
+        MitarbeiterMenu.MitarbeiterHinzufuegenItemClickListener {
     private Eshop shop;
 
     private ArtikelTablePanel artikelPanel;
@@ -32,10 +31,12 @@ public class EshopClientGUI extends JFrame
     private ArtikelMenu artikelMenu;
 
     private KontoMenu kontoMenu;
+    private MitarbeiterMenu mitarbeiterMenu;
 
     private ArtikelEinfuegenPanel artikelEinfuegenPanel;
 
     private ArtikelLoeschenPanel artikelLoeschenPanel;
+    private MitarbeiterHinzufuegenPanel mitarbeiterHinzufuegenPanel;
 
     public EshopClientGUI(String title) {
             super(title);
@@ -62,12 +63,14 @@ public class EshopClientGUI extends JFrame
         JMenuBar menuBar = new JMenuBar();
         kontoMenu = new KontoMenu("Konto", this, this, this);
         artikelMenu = new ArtikelMenu("Artikel", this, this);
+        mitarbeiterMenu = new MitarbeiterMenu("Mitarbeiter", this);
         menuBar.add(kontoMenu);
         menuBar.add(artikelMenu);
+        menuBar.add(mitarbeiterMenu);
         setJMenuBar(menuBar);
 
         // loginIFrame
-        loginFrame = new LoginIFrame(shop, this, kontoMenu, artikelMenu); // konto menu ist auch ein loginListener
+        loginFrame = new LoginIFrame(shop, this, kontoMenu, artikelMenu, mitarbeiterMenu); // konto menu ist auch ein loginListener
         add(loginFrame);
 
         // Tabelle
@@ -83,11 +86,16 @@ public class EshopClientGUI extends JFrame
         //Loeschen Panel
         artikelLoeschenPanel = new ArtikelLoeschenPanel(shop, this);
 
+        //Mitarbeiter Hinzufuegen Panel
+        mitarbeiterHinzufuegenPanel = new MitarbeiterHinzufuegenPanel(shop);
+        add(mitarbeiterHinzufuegenPanel, BorderLayout.EAST);
+
+
         //Loeschen und Einfuegen Panel
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.Y_AXIS));
-        layeredPane.add(artikelLoeschenPanel, JLayeredPane.POPUP_LAYER);
         layeredPane.add(artikelEinfuegenPanel, JLayeredPane.POPUP_LAYER);
+        layeredPane.add(artikelLoeschenPanel, JLayeredPane.POPUP_LAYER);
         add(layeredPane, BorderLayout.WEST);
         layeredPane.setSize(300, 480);
         layeredPane.setVisible(true);
@@ -127,6 +135,7 @@ public class EshopClientGUI extends JFrame
             artikelEinfuegenPanel.setMitarbeiter(nutzer);
             artikelLoeschenPanel.setMitarbeiter(nutzer);
             artikelPanel.setMitarbeiter(nutzer);
+
         }
 
         if(nutzer instanceof Kunde){
@@ -153,6 +162,8 @@ public class EshopClientGUI extends JFrame
         artikelLoeschenPanel.setVisible(false);
         artikelMenu.setVisible(false);
         artikelPanel.setIstMitarbeiterAngemeldet(false);
+        mitarbeiterMenu.setVisible(false);
+        mitarbeiterHinzufuegenPanel.setVisible(false);
     }
 
     @Override
@@ -174,5 +185,11 @@ public class EshopClientGUI extends JFrame
     @Override
     public void onArtikelLoeschen(List<Artikel> artikelList) {
         artikelPanel.updateArtikel(artikelList);
+    }
+
+    @Override
+    public void onMitarbeiterHinzufuegenMenuItemClick(boolean sichtbar) {
+        System.out.println("Mitarbeiter Einstellen Panel erscheint");
+        mitarbeiterHinzufuegenPanel.setVisible(sichtbar);
     }
 }
