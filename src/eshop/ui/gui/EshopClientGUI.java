@@ -7,6 +7,8 @@ import eshop.ui.gui.menu.MitarbeiterMenu;
 import eshop.ui.gui.panel.*;
 import eshop.ui.gui.iframe.LoginIFrame;
 import eshop.ui.gui.iframe.RegistrierenIFrame;
+import eshop.ui.gui.table.ArtikelTable;
+import eshop.ui.gui.table.WarenkorbTable;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
@@ -23,8 +25,9 @@ public class EshopClientGUI extends JFrame
         MitarbeiterMenu.MitarbeiterHinzufuegenItemClickListener {
     private Eshop shop;
 
-    private ArtikelTablePanel artikelPanel;
-
+    private ArtikelTable artikelTable;
+    private WarenkorbTable warenkorbTable;
+    private WarenkorbPanel warenkorbPanel;
     private JInternalFrame loginFrame;
     private JInternalFrame registrierenFrame;
 
@@ -37,6 +40,7 @@ public class EshopClientGUI extends JFrame
 
     private ArtikelLoeschenPanel artikelLoeschenPanel;
     private MitarbeiterHinzufuegenPanel mitarbeiterHinzufuegenPanel;
+    private JDialog jdialog;
 
     public EshopClientGUI(String title) {
             super(title);
@@ -74,8 +78,28 @@ public class EshopClientGUI extends JFrame
         add(loginFrame);
 
         // Tabelle
-        artikelPanel = new ArtikelTablePanel(shop);
-        add(new JScrollPane(artikelPanel), BorderLayout.CENTER);
+        artikelTable = new ArtikelTable(shop);
+        add(new JScrollPane(artikelTable), BorderLayout.CENTER);
+
+        // warenkorbPanel und WarenkorbTable
+        jdialog = new JDialog(this);
+
+        JLayeredPane layeredPane = new JLayeredPane();
+
+        warenkorbTable = new WarenkorbTable(shop);
+        layeredPane.add(new JScrollPane(warenkorbTable), JLayeredPane.DEFAULT_LAYER);
+        warenkorbPanel = new WarenkorbPanel(shop, warenkorbTable, artikelTable);
+        layeredPane.add(warenkorbPanel, JLayeredPane.DEFAULT_LAYER);
+
+        layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.Y_AXIS));
+        layeredPane.setSize(300, 480);
+        layeredPane.setVisible(true);
+
+        jdialog.add(layeredPane);
+        jdialog.setVisible(false);
+        jdialog.setSize(new Dimension(800, 580));
+        jdialog.setLocationRelativeTo(this);
+        jdialog.setTitle("Warenkorb");
 
         // Suche
         add(new SearchArtikelPanel(this.shop, this), BorderLayout.NORTH);
@@ -92,18 +116,16 @@ public class EshopClientGUI extends JFrame
 
 
         //Loeschen und Einfuegen Panel
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.Y_AXIS));
-        layeredPane.add(artikelEinfuegenPanel, JLayeredPane.POPUP_LAYER);
-        layeredPane.add(artikelLoeschenPanel, JLayeredPane.POPUP_LAYER);
-        add(layeredPane, BorderLayout.WEST);
-        layeredPane.setSize(300, 480);
-        layeredPane.setVisible(true);
-
-
+        JLayeredPane layeredPane2 = new JLayeredPane();
+        layeredPane2.setLayout(new BoxLayout(layeredPane2, BoxLayout.Y_AXIS));
+        layeredPane2.add(artikelEinfuegenPanel, JLayeredPane.POPUP_LAYER);
+        layeredPane2.add(artikelLoeschenPanel, JLayeredPane.POPUP_LAYER);
+        add(layeredPane2, BorderLayout.WEST);
+        layeredPane2.setSize(300, 480);
+        layeredPane2.setVisible(true);
 
         //JFrame optionen
-        setSize(840, 580);
+        setSize(1040, 580);
         setVisible(true);
 
     }
@@ -119,7 +141,7 @@ public class EshopClientGUI extends JFrame
 
     @Override
     public void onSearchResult(List<Artikel> artikelList) {
-        artikelPanel.updateArtikel(artikelList);
+        artikelTable.updateArtikel(artikelList);
     }
 
     @Override
@@ -134,12 +156,16 @@ public class EshopClientGUI extends JFrame
             System.out.println("Mitarbeiter ist eingeloggt");
             artikelEinfuegenPanel.setMitarbeiter(nutzer);
             artikelLoeschenPanel.setMitarbeiter(nutzer);
-            artikelPanel.setMitarbeiter(nutzer);
+            artikelTable.setMitarbeiter(nutzer);
 
         }
 
         if(nutzer instanceof Kunde){
             System.out.println("Kunde ist eingeloggt");
+            //artikelTable.setKunde(nutzer);
+            warenkorbPanel.setKunde(nutzer);
+            warenkorbTable.setKunde(nutzer);
+            jdialog.setVisible(true);
         }
     }
 
@@ -161,7 +187,7 @@ public class EshopClientGUI extends JFrame
         artikelEinfuegenPanel.setVisible(false);
         artikelLoeschenPanel.setVisible(false);
         artikelMenu.setVisible(false);
-        artikelPanel.setIstMitarbeiterAngemeldet(false);
+        artikelTable.setIstMitarbeiterAngemeldet(false);
         mitarbeiterMenu.setVisible(false);
         mitarbeiterHinzufuegenPanel.setVisible(false);
     }
@@ -179,12 +205,12 @@ public class EshopClientGUI extends JFrame
 
     @Override
     public void onArtikelEinfuegen(List<Artikel> artikelList) {
-        artikelPanel.updateArtikel(artikelList);
+        artikelTable.updateArtikel(artikelList);
     }
 
     @Override
     public void onArtikelLoeschen(List<Artikel> artikelList) {
-        artikelPanel.updateArtikel(artikelList);
+        artikelTable.updateArtikel(artikelList);
     }
 
     @Override

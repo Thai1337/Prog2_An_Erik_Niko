@@ -15,7 +15,7 @@ public class ArtikelTableModel extends AbstractTableModel {
     private List<Artikel> artikel;
 
     private boolean istMitarbeiterAngemeldet;
-    private String[] spaltenNamen = { "Nummer", "Bezeichnung", "Bestand", "Preis" ,"Packungsgrosse" }; //col
+    private String[] spaltenNamen = { "Nummer", "Bezeichnung", "Bestand", "Preis" ,"Packungsgroesse" }; //col
 
     public ArtikelTableModel(List<Artikel> aktuelleartikel) {
         artikel = new Vector<>(aktuelleartikel);

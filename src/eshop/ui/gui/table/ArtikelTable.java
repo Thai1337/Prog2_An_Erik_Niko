@@ -1,4 +1,4 @@
-package eshop.ui.gui.panel;
+package eshop.ui.gui.table;
 
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
@@ -7,31 +7,31 @@ import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.ui.gui.StringConverter;
 import eshop.ui.gui.model.ArtikelTableModel;
-import eshop.valueobjects.Artikel;
-import eshop.valueobjects.Massengutartikel;
-import eshop.valueobjects.Mitarbeiter;
-import eshop.valueobjects.Nutzer;
+import eshop.ui.gui.panel.WarenkorbPanel;
+import eshop.valueobjects.*;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
-import java.util.Vector;
 
-public class ArtikelTablePanel extends JTable {
+public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschliessenListener {
     private Eshop shop;
     private List<Artikel> artikel;
     private Mitarbeiter mitarbeiter;
+    //private Kunde kunde;
     private  ArtikelTableModel tableModel;
-    public ArtikelTablePanel(Eshop shop) {
+    public ArtikelTable(Eshop shop) {
         super();
         this.shop = shop;
-
         this.tableModel = new ArtikelTableModel(shop.gibAlleArtikel());
         artikel = tableModel.getArtikel(); // keine ahnung warum aber wenn ich das nicht hier hab gib es bei allen neue eingefügten artikeln in zeile 60 einen index out of bounds error wenn man den bestand ändert
         setModel(tableModel);
 
         updateArtikel(shop.gibAlleArtikel());
+        //addMouseListener(this);
     }
 
     public void updateArtikel(List<Artikel> artikel){
@@ -96,7 +96,7 @@ public class ArtikelTablePanel extends JTable {
 
             updateArtikel(shop.gibAlleArtikel());
         } catch (EingabeNichtLeerException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | MassengutartikelBestandsException | IOException e) {
-            JOptionPane.showMessageDialog(ArtikelTablePanel.this, e.getMessage());
+            JOptionPane.showMessageDialog(ArtikelTable.this, e.getMessage());
         }
     }
 
@@ -105,7 +105,24 @@ public class ArtikelTablePanel extends JTable {
         setIstMitarbeiterAngemeldet(true);
     }
 
+//    public void setKunde(Nutzer nutzer) {
+//        this.kunde = (Kunde) nutzer;
+//        //setIstKundeAngemeldet(true);
+//    }
+
     public void setIstMitarbeiterAngemeldet(boolean angemeldet){
         tableModel.setIstMitarbeiterAngemeldet(angemeldet);
     }
+
+    @Override
+    public void onEinkaufAbschliessen() {
+        updateArtikel(shop.gibAlleArtikel());
+    }
+
+//    @Override
+//    public void mouseClicked(MouseEvent e) {
+//        //System.out.println(getValueAt(getSelectedRow(), getSelectedColumn()));
+//        mouseClickListener.onMouseClick(kunde, artikel.get(getSelectedRow()));
+//    }
+
 }
