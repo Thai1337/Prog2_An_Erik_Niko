@@ -8,6 +8,7 @@ import eshop.ui.gui.panel.*;
 import eshop.ui.gui.iframe.LoginIFrame;
 import eshop.ui.gui.iframe.RegistrierenIFrame;
 import eshop.ui.gui.table.ArtikelTable;
+import eshop.ui.gui.table.ProtokollTable;
 import eshop.ui.gui.table.WarenkorbTable;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
@@ -27,6 +28,7 @@ public class EshopClientGUI extends JFrame
 
     private ArtikelTable artikelTable;
     private WarenkorbTable warenkorbTable;
+    private ProtokollTable protokollTable;
     private WarenkorbPanel warenkorbPanel;
     private JInternalFrame loginFrame;
     private JInternalFrame registrierenFrame;
@@ -41,7 +43,9 @@ public class EshopClientGUI extends JFrame
     private ArtikelLoeschenPanel artikelLoeschenPanel;
     private MitarbeiterHinzufuegenPanel mitarbeiterHinzufuegenPanel;
     private JDialog jdialog;
+    private JTabbedPane tabs;
 
+    private Nutzer nutzer;
     public EshopClientGUI(String title) {
             super(title);
 
@@ -77,13 +81,14 @@ public class EshopClientGUI extends JFrame
         loginFrame = new LoginIFrame(shop, this, kontoMenu, artikelMenu, mitarbeiterMenu); // konto menu ist auch ein loginListener
         add(loginFrame);
 
-        // Tabelle
+        // Tabellen
         artikelTable = new ArtikelTable(shop);
+        protokollTable = new ProtokollTable(shop);
 
-        JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Artikel", artikelTable);
+        tabs = new JTabbedPane();
+        tabs.addTab("Artikel", new JScrollPane(artikelTable));
 
-        add(new JScrollPane(tabs), BorderLayout.CENTER);
+        add(tabs, BorderLayout.CENTER);
 
         // warenkorbPanel und WarenkorbTable
         jdialog = new JDialog(this);
@@ -150,6 +155,7 @@ public class EshopClientGUI extends JFrame
 
     @Override
     public void onLogin(Nutzer nutzer) {
+        this.nutzer = nutzer;
         // TODO ab hier kann man mit der nutzernummer weiterarbeiten oder vllt zwei interfaces für Mitarbeiter und kundentrennung implementieren
         // TODO JMenuBar als nächstes
         if(nutzer != null) {
@@ -161,7 +167,8 @@ public class EshopClientGUI extends JFrame
             artikelEinfuegenPanel.setMitarbeiter(nutzer);
             artikelLoeschenPanel.setMitarbeiter(nutzer);
             artikelTable.setMitarbeiter(nutzer);
-
+            protokollTable.setMitarbeiter(nutzer);
+            tabs.addTab("Protokoll", new JScrollPane(protokollTable));
         }
 
         if(nutzer instanceof Kunde){
@@ -195,6 +202,8 @@ public class EshopClientGUI extends JFrame
         mitarbeiterMenu.setVisible(false);
         mitarbeiterHinzufuegenPanel.setVisible(false);
         jdialog.setVisible(false);
+        if(nutzer instanceof Mitarbeiter)
+            tabs.remove(1);
     }
 
     @Override
