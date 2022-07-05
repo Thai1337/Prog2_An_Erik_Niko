@@ -8,6 +8,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,7 +16,7 @@ public class ArtikelTableModel extends AbstractTableModel {
     private List<Artikel> artikel;
 
     private boolean istMitarbeiterAngemeldet;
-    private String[] spaltenNamen = { "Nummer", "Bezeichnung", "Bestand", "Preis" ,"Packungsgroesse" }; //col
+    private String[] spaltenNamen = { "Nummer", "Bezeichnung", "Bestand", "Packungsgroesse" ,"Preis" }; //col
 
     public ArtikelTableModel(List<Artikel> aktuelleartikel) {
         artikel = new Vector<>(aktuelleartikel);
@@ -44,6 +45,7 @@ public class ArtikelTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        DecimalFormat df = new DecimalFormat("0.00");
         Artikel gewaehlterArtikel = artikel.get(rowIndex);
         switch (columnIndex) {
             case 0:
@@ -53,12 +55,12 @@ public class ArtikelTableModel extends AbstractTableModel {
             case 2:
                 return gewaehlterArtikel.getBestand();
             case 3:
-                return gewaehlterArtikel.getPreis();
-            case 4:
                 if(gewaehlterArtikel instanceof Massengutartikel)
                     return ((Massengutartikel) gewaehlterArtikel).getPackungsgrosse();
                 else
                     return 1;
+            case 4:
+                return df.format(gewaehlterArtikel.getPreis()) + "€";
             default:
                 return null;
         }

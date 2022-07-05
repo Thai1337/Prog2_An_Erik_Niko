@@ -79,7 +79,11 @@ public class EshopClientGUI extends JFrame
 
         // Tabelle
         artikelTable = new ArtikelTable(shop);
-        add(new JScrollPane(artikelTable), BorderLayout.CENTER);
+
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.addTab("Artikel", artikelTable);
+
+        add(new JScrollPane(tabs), BorderLayout.CENTER);
 
         // warenkorbPanel und WarenkorbTable
         jdialog = new JDialog(this);
@@ -190,6 +194,7 @@ public class EshopClientGUI extends JFrame
         artikelTable.setIstMitarbeiterAngemeldet(false);
         mitarbeiterMenu.setVisible(false);
         mitarbeiterHinzufuegenPanel.setVisible(false);
+        jdialog.setVisible(false);
     }
 
     @Override

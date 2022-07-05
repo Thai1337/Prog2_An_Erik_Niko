@@ -5,6 +5,7 @@ import eshop.valueobjects.Massengutartikel;
 import eshop.valueobjects.Warenkorb;
 
 import javax.swing.table.AbstractTableModel;
+import java.text.DecimalFormat;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class WarenkorbTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-
+        DecimalFormat df = new DecimalFormat("0.00");
         Object[] entries=warenkorb.getWarenkorbListe().entrySet().toArray();
         Map.Entry<Artikel, Integer> entry=(Map.Entry<Artikel, Integer>)entries[rowIndex];
         System.out.println(entry);
@@ -51,11 +52,11 @@ public class WarenkorbTableModel extends AbstractTableModel {
             case 1:
                 return entry.getKey().getBezeichnung();
             case 2:
-                return entry.getKey().getPreis();
+                return df.format(entry.getKey().getPreis());
             case 3:
                 return entry.getValue();
             case 4:
-                return entry.getValue() * entry.getKey().getPreis();
+                return df.format(entry.getValue() * entry.getKey().getPreis()) + "€";
             default:
                 return null;
         }

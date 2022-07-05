@@ -6,9 +6,6 @@ import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.domain.exceptions.WarenkorbLeerException;
 import eshop.ui.gui.StringConverter;
-import eshop.ui.gui.table.ArtikelTable;
-import eshop.ui.gui.table.WarenkorbTable;
-import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Nutzer;
 import eshop.valueobjects.Rechnung;
@@ -20,12 +17,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
-import java.util.List;
+import java.text.DecimalFormat;
 
 public class WarenkorbPanel extends JPanel {
     private JComboBox<String> einfuegenLoeschenComboBox;
     private JButton addButton;
-    private JButton rechungsButton;
+    private JButton rechnungsButton;
     private JTextField mengeTextField;
     private JTextField artikelnummerTextField;
 
@@ -33,6 +30,7 @@ public class WarenkorbPanel extends JPanel {
     private Eshop shop;
     private Kunde kunde;
     private String actionCommand;
+    private JLabel gesamtpreisLabel;
     private final String[] comboBoxOptions = { "Einfuegen", "Loeschen" }; //col
     public interface ArtikelZuWarenkorbListener {
         public void onArtikelZuWarenkorb();
@@ -62,6 +60,8 @@ public class WarenkorbPanel extends JPanel {
         gbc.weighty = 0;
 
         gbc.gridy = 0; // erste spalte
+
+        gbc.insets = new Insets(5, 7, 5,7);
 
         //comboBox
         einfuegenLoeschenComboBox = new JComboBox<>(comboBoxOptions);
@@ -133,13 +133,18 @@ public class WarenkorbPanel extends JPanel {
 
         //Rechungs Button
         gbc.weightx = 0.1;
-        rechungsButton = new JButton("Einkauf Abschliessen");
+        rechnungsButton = new JButton("Einkauf Abschliessen");
         gbc.gridx = 3;
         gbc.gridy = 2;
-        add(rechungsButton, gbc);
+        add(rechnungsButton, gbc);
         // Rahmen definieren
         //setBorder(BorderFactory.createTitledBorder("Warenkorb"));
 
+        //Gesamtpreis Lable
+        gesamtpreisLabel = new JLabel("Gesamtpreis: ");
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        add(gesamtpreisLabel, gbc);
         setVisible(false);
     }
 
@@ -157,7 +162,7 @@ public class WarenkorbPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                DecimalFormat df = new DecimalFormat("0.00");
                 if(e.getSource().equals(addButton)) {
                     int menge = StringConverter.toInteger(mengeTextField.getText());
                     int nummer = StringConverter.toInteger(artikelnummerTextField.getText());
@@ -167,6 +172,7 @@ public class WarenkorbPanel extends JPanel {
                                 try {
                                     shop.artikelZuWarenkorb(nummer, menge, kunde);
                                     artikelZuWarenkorbListener.onArtikelZuWarenkorb();
+                                    setArtikelWarenkorbFieldsToEmpty();
                                 } catch (ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | MassengutartikelBestandsException ex) {
                                     JOptionPane.showMessageDialog(WarenkorbPanel.this, ex.getMessage());
                                 }
@@ -174,26 +180,29 @@ public class WarenkorbPanel extends JPanel {
                             break;
                         case "Loeschen":
                             try {
-                                System.out.println("löschen");
+                                System.out.println("loeschen");
                                 shop.artikelAusWarenkorbEntfernen(nummer, menge, kunde);
                                 artikelZuWarenkorbListener.onArtikelZuWarenkorb();
+                                setArtikelWarenkorbFieldsToEmpty();
                             } catch (ArtikelbestandUnterNullException | MassengutartikelBestandsException | ArtikelNichtVorhandenException ex) {
                                 JOptionPane.showMessageDialog(WarenkorbPanel.this, ex.getMessage());
                             }
                             break;
                     }
+                    gesamtpreisLabel.setText("Gesamtpreis: " + df.format(shop.getWarenkorb(WarenkorbPanel.this.kunde).getGesamtpreis()) + "€");
                 }
             }
         });
 
-        rechungsButton.addActionListener(new ActionListener() {
+        rechnungsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Rechnung rechung = shop.einkaufAbschliessen(kunde);
+                    Rechnung rechnung = shop.einkaufAbschliessen(kunde);
                     artikelZuWarenkorbListener.onArtikelZuWarenkorb();
                     einkaufAbschliessenListener.onEinkaufAbschliessen();
-                    JOptionPane.showMessageDialog(WarenkorbPanel.this, rechung);
+                    JOptionPane.showMessageDialog(WarenkorbPanel.this, rechnung);
+                    gesamtpreisLabel.setText("Gesamtpreis: ");
                 } catch (ArtikelbestandUnterNullException | WarenkorbLeerException | ArtikelNichtVorhandenException | IOException ex) {
                     JOptionPane.showMessageDialog(WarenkorbPanel.this, ex.getMessage());
                 }
@@ -202,7 +211,10 @@ public class WarenkorbPanel extends JPanel {
     }
 
     private void setArtikelWarenkorbFieldsToEmpty() {
-        mengeTextField.setText("");
+        mengeTextField.setText("Menge");
+        mengeTextField.setForeground(Color.GRAY);
+        artikelnummerTextField.setText("Artikelnummer");
+        artikelnummerTextField.setForeground(Color.GRAY);
     }
 
 //    @Override
