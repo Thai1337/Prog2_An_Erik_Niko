@@ -42,7 +42,7 @@ public class EshopClientGUI extends JFrame
 
     private ArtikelLoeschenPanel artikelLoeschenPanel;
     private MitarbeiterHinzufuegenPanel mitarbeiterHinzufuegenPanel;
-    private JDialog jdialog;
+    //private JDialog jdialog;
     private JTabbedPane tabs;
 
     private Nutzer nutzer;
@@ -91,24 +91,25 @@ public class EshopClientGUI extends JFrame
         add(tabs, BorderLayout.CENTER);
 
         // warenkorbPanel und WarenkorbTable
-        jdialog = new JDialog(this);
+        //jdialog = new JDialog(this);
 
-        JLayeredPane layeredPane = new JLayeredPane();
+        //JLayeredPane layeredPane = new JLayeredPane();
 
         warenkorbTable = new WarenkorbTable(shop);
-        layeredPane.add(new JScrollPane(warenkorbTable), JLayeredPane.DEFAULT_LAYER);
+        //layeredPane.add(new JScrollPane(warenkorbTable), JLayeredPane.DEFAULT_LAYER);
         warenkorbPanel = new WarenkorbPanel(shop, warenkorbTable, artikelTable);
-        layeredPane.add(warenkorbPanel, JLayeredPane.DEFAULT_LAYER);
+        add(warenkorbPanel, BorderLayout.SOUTH);
+        //layeredPane.add(warenkorbPanel, JLayeredPane.DEFAULT_LAYER);
 
-        layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.Y_AXIS));
-        layeredPane.setSize(300, 480);
-        layeredPane.setVisible(true);
+        //layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.Y_AXIS));
+        //layeredPane.setSize(300, 480);
+        //layeredPane.setVisible(true);
 
-        jdialog.add(layeredPane);
+        /*jdialog.add(layeredPane);
         jdialog.setVisible(false);
         jdialog.setSize(new Dimension(800, 580));
         jdialog.setLocationRelativeTo(this);
-        jdialog.setTitle("Warenkorb");
+        jdialog.setTitle("Warenkorb");*/
 
         // Suche
         add(new SearchArtikelPanel(this.shop, this), BorderLayout.NORTH);
@@ -176,7 +177,10 @@ public class EshopClientGUI extends JFrame
             //artikelTable.setKunde(nutzer);
             warenkorbPanel.setKunde(nutzer);
             warenkorbTable.setKunde(nutzer);
-            jdialog.setVisible(true);
+
+            tabs.addTab("Warenkorb", new JScrollPane(warenkorbTable));
+
+            //jdialog.setVisible(true);
         }
     }
 
@@ -201,9 +205,9 @@ public class EshopClientGUI extends JFrame
         artikelTable.setIstMitarbeiterAngemeldet(false);
         mitarbeiterMenu.setVisible(false);
         mitarbeiterHinzufuegenPanel.setVisible(false);
-        jdialog.setVisible(false);
-        if(nutzer instanceof Mitarbeiter)
-            tabs.remove(1);
+        //jdialog.setVisible(false);
+        warenkorbPanel.setVisible(false);
+        tabs.remove(1);
     }
 
     @Override
