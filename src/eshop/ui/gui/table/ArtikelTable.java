@@ -15,6 +15,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschliessenListener {
@@ -46,17 +47,50 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
 
         tableModel.setArtikel(artikel);
     }
-
+    /*
+        Methode welche für alle Spalten den default Comparator: string1.compareTo(string2) mit eigenen Implementierungen überschreibt
+     */
     private void sortiereArtikel(){
         TableRowSorter<ArtikelTableModel> sorter = new TableRowSorter<ArtikelTableModel>(tableModel);
+        sorter.setComparator(0, new Comparator<Integer>(){
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1-o2;
+            }
+        });
 
-        // TODO mit einem sorter.addRowSorterListener(); die sortierung im eshop machen vllt
+        sorter.setComparator(1, new Comparator<String>(){
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareToIgnoreCase(o2);
+            }
+        });
 
+        sorter.setComparator(2, new Comparator<Integer>(){
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1-o2;
+            }
+        });
+
+        sorter.setComparator(3, new Comparator<Integer>(){
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1-o2;
+            }
+        });
+
+        sorter.setComparator(4, new Comparator<String>(){
+            @Override
+            public int compare(String o1, String o2) {
+                String preis1s = o1.replace(",", ".");
+                String preis2s = o2.replace(",", ".");
+                double preis1 = Double.parseDouble(preis1s.replace("€", ""));
+                double preis2 = Double.parseDouble(preis2s.replace("€", ""));
+                return Double.compare(preis1, preis2);
+            }
+        });
         this.setRowSorter(sorter);
-
-        sorter.setSortable(2, false);
-        sorter.setSortable(3, false);
-        sorter.setSortable(4, false);
     }
 
 
