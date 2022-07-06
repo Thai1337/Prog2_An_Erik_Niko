@@ -21,14 +21,16 @@ public class ArtikelLoeschenPanel extends JPanel {
     private Mitarbeiter mitarbeiter;
     private Eshop shop;
     private ArtikelLoeschenListener artikelLoeschenListener;
+    private ArtikelLoeschenListener protokollArtikelLoeschenListener;
 
     public interface ArtikelLoeschenListener {
         public void onArtikelLoeschen(List<Artikel> artikelList);
     }
 
-    public ArtikelLoeschenPanel(Eshop shop, ArtikelLoeschenListener artikelLoeschenListener) {
+    public ArtikelLoeschenPanel(Eshop shop, ArtikelLoeschenListener artikelLoeschenListener, ArtikelLoeschenListener protokollArtikelLoeschenListener) {
         this.shop = shop;
         this.artikelLoeschenListener = artikelLoeschenListener;
+        this.protokollArtikelLoeschenListener = protokollArtikelLoeschenListener;
         initUI();
 
         setupEvents();
@@ -81,6 +83,7 @@ public class ArtikelLoeschenPanel extends JPanel {
                     try {
                         shop.loescheArtikel(artikelNummer, mitarbeiter);
                         artikelLoeschenListener.onArtikelLoeschen(shop.gibAlleArtikel());
+                        protokollArtikelLoeschenListener.onArtikelLoeschen(shop.gibAlleArtikel());
                         nummerTextField.setText("");
                     } catch (IOException | ArtikelNichtVorhandenException ex) {
                         JOptionPane.showMessageDialog(ArtikelLoeschenPanel.this, ex.getMessage());

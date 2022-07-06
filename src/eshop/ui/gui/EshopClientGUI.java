@@ -82,8 +82,8 @@ public class EshopClientGUI extends JFrame
         add(loginFrame);
 
         // Tabellen
-        artikelTable = new ArtikelTable(shop);
         protokollTable = new ProtokollTable(shop);
+        artikelTable = new ArtikelTable(shop, protokollTable);
 
         tabs = new JTabbedPane();
         tabs.addTab("Artikel", new JScrollPane(artikelTable));
@@ -114,10 +114,10 @@ public class EshopClientGUI extends JFrame
         add(new SearchArtikelPanel(this.shop, this), BorderLayout.NORTH);
 
         //Einfuegen Panel
-        artikelEinfuegenPanel = new ArtikelEinfuegenPanel(shop, this);
+        artikelEinfuegenPanel = new ArtikelEinfuegenPanel(shop, this, protokollTable);
 
         //Loeschen Panel
-        artikelLoeschenPanel = new ArtikelLoeschenPanel(shop, this);
+        artikelLoeschenPanel = new ArtikelLoeschenPanel(shop, this, protokollTable);
 
         //Mitarbeiter Hinzufuegen Panel
         mitarbeiterHinzufuegenPanel = new MitarbeiterHinzufuegenPanel(shop);

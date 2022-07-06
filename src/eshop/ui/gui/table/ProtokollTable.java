@@ -8,6 +8,8 @@ import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.ui.gui.StringConverter;
 import eshop.ui.gui.model.ArtikelTableModel;
 import eshop.ui.gui.model.ProtokollTableModel;
+import eshop.ui.gui.panel.ArtikelEinfuegenPanel;
+import eshop.ui.gui.panel.ArtikelLoeschenPanel;
 import eshop.valueobjects.*;
 
 import javax.swing.*;
@@ -19,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-public class ProtokollTable extends JTable implements MouseListener {
+public class ProtokollTable extends JTable implements MouseListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener, ArtikelTable.ArtikelBearbeitenListener, ArtikelLoeschenPanel.ArtikelLoeschenListener {
 
     private Eshop shop;
     private List<Protokoll> protokollList;
@@ -61,6 +63,8 @@ public class ProtokollTable extends JTable implements MouseListener {
 
         this.setRowSorter(sorter);
 
+        sorter.setSortable(0, false);
+        sorter.setSortable(1, false);
         sorter.setSortable(2, false);
         sorter.setSortable(3, false);
         sorter.setSortable(4, false);
@@ -110,6 +114,33 @@ public class ProtokollTable extends JTable implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void onArtikelEinfuegen(List<Artikel> artikelList) {
+        try {
+            updateProtokoll(shop.getProtokollListe());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void onArtikelBearbeiten() {
+        try {
+            updateProtokoll(shop.getProtokollListe());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void onArtikelLoeschen(List<Artikel> artikelList) {
+        try {
+            updateProtokoll(shop.getProtokollListe());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    @Override

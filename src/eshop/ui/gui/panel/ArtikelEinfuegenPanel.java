@@ -29,14 +29,16 @@ public class ArtikelEinfuegenPanel extends JPanel {
     private Mitarbeiter mitarbeiter;
 
     private ArtikelEinfuegenListener artikelEinfuegenListener;
+    private ArtikelEinfuegenListener protokollArtikelEinfuegenListener;
 
     public interface ArtikelEinfuegenListener {
         public void onArtikelEinfuegen(List<Artikel> artikelList);
     }
 
-    public ArtikelEinfuegenPanel(Eshop shop, ArtikelEinfuegenListener artikelEinfuegenListener) {
+    public ArtikelEinfuegenPanel(Eshop shop, ArtikelEinfuegenListener artikelEinfuegenListener, ArtikelEinfuegenListener protokollArtikelEinfuegenListener) {
         this.shop = shop;
         this.artikelEinfuegenListener = artikelEinfuegenListener;
+        this.protokollArtikelEinfuegenListener = protokollArtikelEinfuegenListener;
         initUI();
 
         setupEvents();
@@ -99,6 +101,7 @@ public class ArtikelEinfuegenPanel extends JPanel {
                     try {
                         shop.fuegeArtikelEin(bezeichnung, bestand, preis, mitarbeiter ,packungsgrosse);
                         artikelEinfuegenListener.onArtikelEinfuegen(shop.gibAlleArtikel());
+                        protokollArtikelEinfuegenListener.onArtikelEinfuegen(shop.gibAlleArtikel());
                         setArtikelEinfuegenFieldsToEmpty();
                     } catch (ArtikelExistiertBereitsException | ClassNotFoundException | MassengutartikelBestandsException | IOException | ArtikelbestandUnterNullException | EingabeNichtLeerException ex) {
                         JOptionPane.showMessageDialog(ArtikelEinfuegenPanel.this, ex.getMessage());

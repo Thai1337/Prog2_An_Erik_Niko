@@ -23,10 +23,15 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
     private Mitarbeiter mitarbeiter;
     //private Kunde kunde;
     private  ArtikelTableModel tableModel;
-    public ArtikelTable(Eshop shop) {
+    public interface ArtikelBearbeitenListener {
+        public void onArtikelBearbeiten();
+    }
+    private ArtikelBearbeitenListener artikelBearbeitenListener;
+    public ArtikelTable(Eshop shop, ArtikelBearbeitenListener artikelBearbeitenListener) {
         super();
         this.shop = shop;
         this.tableModel = new ArtikelTableModel(shop.gibAlleArtikel());
+        this.artikelBearbeitenListener = artikelBearbeitenListener;
         artikel = tableModel.getArtikel(); // keine ahnung warum aber wenn ich das nicht hier hab gib es bei allen neue eingefügten artikeln in zeile 60 einen index out of bounds error wenn man den bestand ändert
         setModel(tableModel);
 
@@ -93,7 +98,7 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
 //            }
 
             shop.aendereArtikel(bezeichnung, row.getNummer(), bestand, preis, mitarbeiter, packgroesse);
-
+            artikelBearbeitenListener.onArtikelBearbeiten();
             updateArtikel(shop.gibAlleArtikel());
         } catch (EingabeNichtLeerException | ArtikelbestandUnterNullException | ArtikelNichtVorhandenException | MassengutartikelBestandsException | IOException e) {
             JOptionPane.showMessageDialog(ArtikelTable.this, e.getMessage());
