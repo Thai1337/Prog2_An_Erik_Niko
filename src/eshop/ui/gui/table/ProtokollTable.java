@@ -17,7 +17,12 @@ import javax.swing.table.TableRowSorter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -59,15 +64,21 @@ public class ProtokollTable extends JTable implements MouseListener, ArtikelEinf
     private void sortiereArtikel(){
         TableRowSorter<ProtokollTableModel> sorter = new TableRowSorter<ProtokollTableModel>(tableModel);
 
-        // TODO mit einem sorter.addRowSorterListener(); die sortierung im eshop machen vllt
-
+        sorter.setComparator(1, new Comparator<String>(){
+            @Override
+            public int compare(String o1, String o2) {
+                Date datum1 = null;
+                Date datum2 = null;
+                try {
+                    datum1 = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(o1);
+                    datum2 = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(o2);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                return datum1.compareTo(datum2);
+            }
+        });
         this.setRowSorter(sorter);
-
-        sorter.setSortable(0, false);
-        sorter.setSortable(1, false);
-        sorter.setSortable(2, false);
-        sorter.setSortable(3, false);
-        sorter.setSortable(4, false);
     }
 
     public void setMitarbeiter(Nutzer nutzer) {
@@ -92,7 +103,8 @@ public class ProtokollTable extends JTable implements MouseListener, ArtikelEinf
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        Protokoll protokoll = protokollList.get(getSelectedRow());
+        int protokollNummer = (Integer) getValueAt(getSelectedRow(), 0);
+        Protokoll protokoll = protokollList.get(protokollNummer);
         JOptionPane.showMessageDialog(this, protokoll);
     }
 
@@ -143,14 +155,4 @@ public class ProtokollTable extends JTable implements MouseListener, ArtikelEinf
         }
     }
 
-//    @Override
-//    public void onEinkaufAbschliessen() {
-//        updateProtokoll(shop.gibAlleArtikel());
-//    }
-
-//    @Override
-//    public void mouseClicked(MouseEvent e) {
-//        //System.out.println(getValueAt(getSelectedRow(), getSelectedColumn()));
-//        mouseClickListener.onMouseClick(kunde, artikel.get(getSelectedRow()));
-//    }
 }

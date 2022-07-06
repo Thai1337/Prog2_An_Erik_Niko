@@ -12,7 +12,7 @@ public class ProtokollTableModel extends AbstractTableModel {
     private List<Protokoll> protokollList;
 
     private boolean istMitarbeiterAngemeldet;
-    private String[] spaltenNamen = { "Datum", "NutzerTyp", "NutzerNummer", "NutzerName" ,"EreignisTyp" }; //col
+    private String[] spaltenNamen = { "ProtokollNummer","Datum", "NutzerTyp", "NutzerNummer", "NutzerName" ,"EreignisTyp" }; //col
 
     public ProtokollTableModel(List<Protokoll> aktuelleProtokollListe) {
         protokollList = new Vector<>(aktuelleProtokollListe);
@@ -41,28 +41,30 @@ public class ProtokollTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        //DecimalFormat df = new DecimalFormat("0.00");
+
         Protokoll gewaehltesProtokoll = protokollList.get(rowIndex);
         switch (columnIndex) {
             case 0:
+                return rowIndex;
+            case 1:
                 DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
                 return myFormatObj.format(gewaehltesProtokoll.getDatum());
-            case 1:
+            case 2:
                 if(gewaehltesProtokoll instanceof MitarbeiterProtokoll)
                     return "Mitarbeiter";
                 else
                     return "Kunde";
-            case 2:
+            case 3:
                 if(gewaehltesProtokoll instanceof MitarbeiterProtokoll)
                     return ((MitarbeiterProtokoll) gewaehltesProtokoll).getMitarbeiter().getNummer();
                 else
                     return ((KundenProtokoll) gewaehltesProtokoll).getKunde().getNummer();
-            case 3:
+            case 4:
                 if(gewaehltesProtokoll instanceof MitarbeiterProtokoll)
                     return ((MitarbeiterProtokoll) gewaehltesProtokoll).getMitarbeiter().getName();
                 else
                     return ((KundenProtokoll) gewaehltesProtokoll).getKunde().getName();
-            case 4:
+            case 5:
                 return gewaehltesProtokoll.EreignisTyp();
             default:
                 return null;
