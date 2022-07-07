@@ -12,6 +12,7 @@ import eshop.valueobjects.*;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -166,6 +167,7 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
     public void mouseClicked(MouseEvent e) {
         int artikelNummer = (Integer) getValueAt(getSelectedRow(), 0);
         artikelnummerTextField.setText(String.valueOf(artikelNummer));
+        artikelnummerTextField.setForeground(Color.BLACK);
     }
 
     @Override

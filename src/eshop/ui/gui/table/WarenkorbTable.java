@@ -7,17 +7,22 @@ import eshop.ui.gui.panel.WarenkorbPanel;
 import eshop.valueobjects.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
-public class WarenkorbTable extends JTable implements WarenkorbPanel.ArtikelZuWarenkorbListener {
+public class WarenkorbTable extends JTable implements WarenkorbPanel.ArtikelZuWarenkorbListener, MouseListener {
     private Eshop shop;
     private Kunde kunde;
     private WarenkorbTableModel warenkorbModel;
+    private JTextField artikelnummerTextField;
     public WarenkorbTable(Eshop shop) {
         super();
         this.shop = shop;
 
         setVisible(false);
+        addMouseListener(this);
     }
 
     public void updateWarenkorb(Warenkorb warenkorb){
@@ -34,8 +39,39 @@ public class WarenkorbTable extends JTable implements WarenkorbPanel.ArtikelZuWa
         setVisible(true);
     }
 
+    public void setArtikelnummerTextField(JTextField artikelnummerTextField) {
+        this.artikelnummerTextField = artikelnummerTextField;
+    }
+
     @Override
     public void onArtikelZuWarenkorb() {
         updateWarenkorb(shop.getWarenkorb(kunde));
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int artikelNummer = (Integer) getValueAt(getSelectedRow(), 0);
+        artikelnummerTextField.setText(String.valueOf(artikelNummer));
+        artikelnummerTextField.setForeground(Color.BLACK);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

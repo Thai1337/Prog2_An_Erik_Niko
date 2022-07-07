@@ -86,7 +86,9 @@ public class EshopClientGUI extends JFrame
         protokollTable = new ProtokollTable(shop);
         artikelTable = new ArtikelTable(shop, protokollTable);
         warenkorbPanel = new WarenkorbPanel(shop, warenkorbTable, artikelTable);
+
         artikelTable.setArtikelnummerTextField(warenkorbPanel.getArtikelnummerTextField());
+        warenkorbTable.setArtikelnummerTextField(warenkorbPanel.getArtikelnummerTextField());
 
         add(warenkorbPanel, BorderLayout.SOUTH);
 
