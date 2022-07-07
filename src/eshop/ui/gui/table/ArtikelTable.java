@@ -18,16 +18,20 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
-public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschliessenListener {
+public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschliessenListener, MouseListener {
     private Eshop shop;
     private List<Artikel> artikel;
     private Mitarbeiter mitarbeiter;
     //private Kunde kunde;
     private  ArtikelTableModel tableModel;
+
+
+
     public interface ArtikelBearbeitenListener {
         public void onArtikelBearbeiten();
     }
     private ArtikelBearbeitenListener artikelBearbeitenListener;
+    private JTextField artikelnummerTextField;
     public ArtikelTable(Eshop shop, ArtikelBearbeitenListener artikelBearbeitenListener) {
         super();
         this.shop = shop;
@@ -37,7 +41,8 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
         setModel(tableModel);
 
         updateArtikel(shop.gibAlleArtikel());
-        //addMouseListener(this);
+        addMouseListener(this);
+
     }
 
     public void updateArtikel(List<Artikel> artikel){
@@ -157,6 +162,31 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
     public void onEinkaufAbschliessen() {
         updateArtikel(shop.gibAlleArtikel());
     }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int artikelNummer = (Integer) getValueAt(getSelectedRow(), 0);
+        artikelnummerTextField.setText(String.valueOf(artikelNummer));
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 
 //    @Override
 //    public void mouseClicked(MouseEvent e) {
@@ -164,4 +194,8 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
 //        mouseClickListener.onMouseClick(kunde, artikel.get(getSelectedRow()));
 //    }
 
+
+    public void setArtikelnummerTextField(JTextField artikelnummerTextField) {
+        this.artikelnummerTextField = artikelnummerTextField;
+    }
 }

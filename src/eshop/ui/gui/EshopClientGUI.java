@@ -82,8 +82,13 @@ public class EshopClientGUI extends JFrame
         add(loginFrame);
 
         // Tabellen
+        warenkorbTable = new WarenkorbTable(shop);
         protokollTable = new ProtokollTable(shop);
         artikelTable = new ArtikelTable(shop, protokollTable);
+        warenkorbPanel = new WarenkorbPanel(shop, warenkorbTable, artikelTable);
+        artikelTable.setArtikelnummerTextField(warenkorbPanel.getArtikelnummerTextField());
+
+        add(warenkorbPanel, BorderLayout.SOUTH);
 
         tabs = new JTabbedPane();
         tabs.addTab("Artikel", new JScrollPane(artikelTable));
@@ -95,10 +100,8 @@ public class EshopClientGUI extends JFrame
 
         //JLayeredPane layeredPane = new JLayeredPane();
 
-        warenkorbTable = new WarenkorbTable(shop);
         //layeredPane.add(new JScrollPane(warenkorbTable), JLayeredPane.DEFAULT_LAYER);
-        warenkorbPanel = new WarenkorbPanel(shop, warenkorbTable, artikelTable);
-        add(warenkorbPanel, BorderLayout.SOUTH);
+
         //layeredPane.add(warenkorbPanel, JLayeredPane.DEFAULT_LAYER);
 
         //layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.Y_AXIS));
