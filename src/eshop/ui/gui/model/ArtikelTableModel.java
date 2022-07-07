@@ -75,7 +75,7 @@ public class ArtikelTableModel extends AbstractTableModel {
             if(artikel.get(rowIndex) instanceof Massengutartikel) {
                 return columnIndex == 1 || columnIndex == 2 || columnIndex == 3 || columnIndex == 4;
             }
-            return columnIndex == 1 || columnIndex == 2 || columnIndex == 3;
+            return columnIndex == 1 || columnIndex == 2 || columnIndex == 4;
 
     }
 

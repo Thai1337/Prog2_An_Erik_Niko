@@ -118,12 +118,13 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
             bestand = StringConverter.toInteger(String.valueOf(aValue));
         }
         else if(3 == columnIndex) {
-            preis = StringConverter.toDouble(String.valueOf(aValue));
-        }
-        else if(4 == columnIndex) {
             if(row instanceof Massengutartikel) {
                 packgroesse = StringConverter.toInteger(String.valueOf(aValue));
             }
+        }
+        else if(4 == columnIndex) {
+            String preisS = aValue.toString().replace(",", ".");
+            preis = StringConverter.toDouble(preisS.replace("€", ""));
         }
 
         try {
