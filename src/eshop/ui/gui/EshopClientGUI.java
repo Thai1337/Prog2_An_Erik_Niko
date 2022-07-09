@@ -10,12 +10,12 @@ import eshop.ui.gui.iframe.RegistrierenIFrame;
 import eshop.ui.gui.table.ArtikelTable;
 import eshop.ui.gui.table.ProtokollTable;
 import eshop.ui.gui.table.WarenkorbTable;
-import eshop.valueobjects.Artikel;
-import eshop.valueobjects.Kunde;
-import eshop.valueobjects.Mitarbeiter;
-import eshop.valueobjects.Nutzer;
+import eshop.valueobjects.*;
+import org.w3c.dom.events.EventListener;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class EshopClientGUI extends JFrame
         implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener,
         KontoMenu.LoginMenuItemClickListener, KontoMenu.RegistrierenMenuItemClickListener, KontoMenu.LogoutMenuItemClickListener,
         ArtikelMenu.ArtikelEinfuegenItemClickListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener, ArtikelLoeschenPanel.ArtikelLoeschenListener, ArtikelMenu.ArtikelLoeschenItemClickListener,
-        MitarbeiterMenu.MitarbeiterHinzufuegenItemClickListener {
+        MitarbeiterMenu.MitarbeiterHinzufuegenItemClickListener, SearchProtokollPanel.SearchProtokollListener {
     private Eshop shop;
 
     private ArtikelTable artikelTable;
@@ -39,7 +39,8 @@ public class EshopClientGUI extends JFrame
     private MitarbeiterMenu mitarbeiterMenu;
 
     private ArtikelEinfuegenPanel artikelEinfuegenPanel;
-
+    private SearchArtikelPanel artikelSearchPanel;
+    private SearchProtokollPanel protokollSearchPanel;
     private ArtikelLoeschenPanel artikelLoeschenPanel;
     private MitarbeiterHinzufuegenPanel mitarbeiterHinzufuegenPanel;
     //private JDialog jdialog;
@@ -97,27 +98,20 @@ public class EshopClientGUI extends JFrame
 
         add(tabs, BorderLayout.CENTER);
 
-        // warenkorbPanel und WarenkorbTable
-        //jdialog = new JDialog(this);
-
-        //JLayeredPane layeredPane = new JLayeredPane();
-
-        //layeredPane.add(new JScrollPane(warenkorbTable), JLayeredPane.DEFAULT_LAYER);
-
-        //layeredPane.add(warenkorbPanel, JLayeredPane.DEFAULT_LAYER);
-
-        //layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.Y_AXIS));
-        //layeredPane.setSize(300, 480);
-        //layeredPane.setVisible(true);
-
-        /*jdialog.add(layeredPane);
-        jdialog.setVisible(false);
-        jdialog.setSize(new Dimension(800, 580));
-        jdialog.setLocationRelativeTo(this);
-        jdialog.setTitle("Warenkorb");*/
-
         // Suche
-        add(new SearchArtikelPanel(this.shop, this), BorderLayout.NORTH);
+        JLayeredPane suchePane = new JLayeredPane();
+        suchePane.setLayout(new BoxLayout(suchePane, BoxLayout.Y_AXIS));
+
+        artikelSearchPanel = new SearchArtikelPanel(this.shop, this);
+        suchePane.add(artikelSearchPanel);
+        //add(artikelSearchPanel, BorderLayout.NORTH);
+        protokollSearchPanel = new SearchProtokollPanel(this.shop, this);
+        suchePane.add(protokollSearchPanel);
+        add(suchePane, BorderLayout.NORTH);
+
+        suchePane.setVisible(true);
+
+
 
         //Einfuegen Panel
         artikelEinfuegenPanel = new ArtikelEinfuegenPanel(shop, this, protokollTable);
@@ -139,10 +133,31 @@ public class EshopClientGUI extends JFrame
         layeredPane2.setSize(300, 480);
         layeredPane2.setVisible(true);
 
+        // Ob das SearchArtikelPanel oder das SearchProtokollPanel angezeigt wird
+        setupTabEvents();
+
         //JFrame optionen
         setSize(1040, 580);
         setVisible(true);
 
+    }
+
+    private void setupTabEvents(){
+        tabs.addChangeListener(new ChangeListener(){
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(nutzer != null && nutzer instanceof Mitarbeiter){
+                    if(tabs.getSelectedIndex() == 0) {
+                        artikelSearchPanel.setVisible(true);
+                        protokollSearchPanel.setVisible(false);
+                    }else{
+                        artikelSearchPanel.setVisible(false);
+                        protokollSearchPanel.setVisible(true);
+                    }
+                }
+
+            }
+        });
     }
 
     public static void main(String[] args){
@@ -160,16 +175,17 @@ public class EshopClientGUI extends JFrame
     }
 
     @Override
+    public void onSearchProtokoll(List<Protokoll> protokollList) {
+        protokollTable.updateProtokoll(protokollList);
+    }
+
+    @Override
     public void onLogin(Nutzer nutzer) {
         this.nutzer = nutzer;
         // TODO ab hier kann man mit der nutzernummer weiterarbeiten oder vllt zwei interfaces für Mitarbeiter und kundentrennung implementieren
         // TODO JMenuBar als nächstes
-        if(nutzer != null) {
-            System.out.println("Kunde oder Mitarbeiter eingeloggt");
-        }
 
         if(nutzer instanceof Mitarbeiter){
-            System.out.println("Mitarbeiter ist eingeloggt");
             artikelEinfuegenPanel.setMitarbeiter(nutzer);
             artikelLoeschenPanel.setMitarbeiter(nutzer);
             artikelTable.setMitarbeiter(nutzer);
@@ -178,51 +194,40 @@ public class EshopClientGUI extends JFrame
         }
 
         if(nutzer instanceof Kunde){
-            System.out.println("Kunde ist eingeloggt");
-            //artikelTable.setKunde(nutzer);
             warenkorbPanel.setKunde(nutzer);
             warenkorbTable.setKunde(nutzer);
-
             tabs.addTab("Warenkorb", new JScrollPane(warenkorbTable));
-
-            //jdialog.setVisible(true);
         }
     }
 
     @Override
     public void onLoginMenuItemClick() {
-        System.out.println("LoginFrame erscheint");
         loginFrame.setVisible(true);
     }
 
     @Override
     public void onRegistrierenMenuItemClick() {
-        System.out.println("RegFrame erscheint");
         registrierenFrame.setVisible(true);
     }
 
     @Override
     public void onLogoutMenuItemClick() {
-        System.out.println("Kunden und Mitarbeiter Panels und Co. verschwinden");
         artikelEinfuegenPanel.setVisible(false);
         artikelLoeschenPanel.setVisible(false);
         artikelMenu.setVisible(false);
         artikelTable.setIstMitarbeiterAngemeldet(false);
         mitarbeiterMenu.setVisible(false);
         mitarbeiterHinzufuegenPanel.setVisible(false);
-        //jdialog.setVisible(false);
         warenkorbPanel.setVisible(false);
         tabs.remove(1);
     }
 
     @Override
     public void onArtikelEinfuegenMenuItemClick(boolean sichtbar) {
-        System.out.println("Einfuegen Panel erscheint");
         artikelEinfuegenPanel.setVisible(sichtbar);
     }
 
    public void onArtikelLoeschenMenuItemClick(boolean sichtbar) {
-        System.out.println("Löschen Panel erscheint");
         artikelLoeschenPanel.setVisible(sichtbar);
    }
 
@@ -238,7 +243,8 @@ public class EshopClientGUI extends JFrame
 
     @Override
     public void onMitarbeiterHinzufuegenMenuItemClick(boolean sichtbar) {
-        System.out.println("Mitarbeiter Einstellen Panel erscheint");
         mitarbeiterHinzufuegenPanel.setVisible(sichtbar);
     }
+
+
 }
