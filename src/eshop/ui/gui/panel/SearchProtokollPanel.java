@@ -3,6 +3,7 @@ package eshop.ui.gui.panel;
 import eshop.domain.Eshop;
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.ui.gui.StringConverter;
+import eshop.ui.gui.chart.BestandshistorieChart;
 import eshop.valueobjects.Protokoll;
 
 import javax.swing.*;
@@ -83,6 +84,7 @@ public class SearchProtokollPanel extends JPanel {
                     } else {
                         try {
                             suchErgebnis = shop.getProtokollNachArtikel(suchbegriff);
+                            BestandshistorieChart chart = new BestandshistorieChart("Bestandshistorie", "Bestand über 30 Tage", suchErgebnis, shop, suchbegriff);
                         } catch (ArtikelNichtVorhandenException e) {
                             throw new RuntimeException(e);
                         }
