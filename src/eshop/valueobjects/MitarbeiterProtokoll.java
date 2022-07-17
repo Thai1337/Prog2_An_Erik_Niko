@@ -25,15 +25,7 @@ public class MitarbeiterProtokoll extends Protokoll {
                 protokoll += " | Artikelnummer: " + artikel.getNummer() + " | Bezeichnung: " + artikel.getBezeichnung() + " | Bestand: " + artikel.getBestand();
                 break;
             case AENDERUNG:
-                if (!artikel.getBezeichnung().isEmpty()) { //Bezeichnung
-                    protokoll += " | Artikelnummer: " + artikel.getNummer() + " | Bezeichnungseanderung zu: " + artikel.getBezeichnung();
-                }
-                if (artikel.getPreis() != -1.01) { //Preis
-                    protokoll += " | Artikelnummer: " + artikel.getNummer() + " | Preisaenderung zu: " + artikel.getPreis();
-                }
-                if (artikel.getBestand() != -1) { //Bestand
-                    protokoll += " | Artikelnummer: " + artikel.getNummer() + " | Bestandsaenderung zu: " + artikel.getBestand();
-                }
+                protokoll += " | Artikelnummer: " + artikel.getNummer() + " | Bestandsaenderung zu: " + artikel.getBestand();
                 break;
         }
         return protokoll;
