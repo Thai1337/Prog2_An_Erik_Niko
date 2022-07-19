@@ -54,7 +54,9 @@ public class MitarbeiterMenue {
             try {
                 input = eingabeAusgabe.einlesenInteger();
                 verarbeiteMitarbeiterEingabe(input);
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException | ArtikelExistiertBereitsException |
+                     EingabeNichtLeerException | MassengutartikelBestandsException | ArtikelbestandUnterNullException |
+                     ArtikelNichtVorhandenException e) {
                 System.out.println("\n" + e.getMessage());
                 //e.printStackTrace();
             }
@@ -67,7 +69,7 @@ public class MitarbeiterMenue {
      * Interne (private) Methode zur Verarbeitung von Eingaben
      * und Ausgabe von Ergebnissen.
      */
-    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ClassNotFoundException {
+    private void verarbeiteMitarbeiterEingabe(int line) throws IOException, ClassNotFoundException, ArtikelExistiertBereitsException, EingabeNichtLeerException, MassengutartikelBestandsException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException {
         String nummer, bezeichnung, bestand, name, passwort;
         int nr, neueNr, bst, packungsgroesse = -1;
         double preis;
@@ -110,17 +112,9 @@ public class MitarbeiterMenue {
                 System.out.print("Packungsgroesse (bei keiner Eingabe ist es ein Einzelartikel) --> ");
                 packungsgroesse = eingabeAusgabe.einlesenInteger();
 
-                try {
-                    System.out.print("\nDie Artikelnummer von ihrem erstellten Artikel lautet --> " + shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter, packungsgroesse).getNummer() + "\n");
-                } catch (ArtikelExistiertBereitsException e) {
-                    throw new RuntimeException(e);
-                } catch (EingabeNichtLeerException e) {
-                    throw new RuntimeException(e);
-                } catch (ArtikelbestandUnterNullException e) {
-                    throw new RuntimeException(e);
-                } catch (MassengutartikelBestandsException e) {
-                    throw new RuntimeException(e);
-                }
+
+                System.out.print("\nDie Artikelnummer von ihrem erstellten Artikel lautet --> " + shop.fuegeArtikelEin(bezeichnung, bst, preis, mitarbeiter, packungsgroesse).getNummer() + "\n");
+
                 break;
             case 4://todo einzelartikel zu massenartikel umwandeln und umgekehrt
                 System.out.print("\nArtikelnummer --> ");
@@ -131,26 +125,16 @@ public class MitarbeiterMenue {
                 bst = eingabeAusgabe.einlesenInteger();
                 System.out.print("Neuer Artikelpreis (bei keiner Eingabe bleibt der Artikelpreis gleich) --> ");
                 preis = eingabeAusgabe.einlesenDouble();
-                try {
-                    if(shop.gibArtikelNachNummer(nr) instanceof Massengutartikel){
-                        System.out.print("Neue Packungsgroesse (bei keiner Eingabe bleibt die Packungsgröße gleich) --> ");
-                        packungsgroesse = eingabeAusgabe.einlesenInteger();
-                    }
-                } catch (ArtikelNichtVorhandenException e) {
-                    throw new RuntimeException(e);
+
+                if(shop.gibArtikelNachNummer(nr) instanceof Massengutartikel){
+                    System.out.print("Neue Packungsgroesse (bei keiner Eingabe bleibt die Packungsgröße gleich) --> ");
+                    packungsgroesse = eingabeAusgabe.einlesenInteger();
                 }
 
-                try {
-                    shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter, packungsgroesse);
-                } catch (EingabeNichtLeerException e) {
-                    throw new RuntimeException(e);
-                } catch (ArtikelbestandUnterNullException e) {
-                    throw new RuntimeException(e);
-                } catch (ArtikelNichtVorhandenException e) {
-                    throw new RuntimeException(e);
-                } catch (MassengutartikelBestandsException e) {
-                    throw new RuntimeException(e);
-                }
+
+
+                shop.aendereArtikel(bezeichnung, nr, bst, preis, mitarbeiter, packungsgroesse);
+
                 System.out.println("Bearbeitung erfolgreich!");
                 break;
             case 5:
@@ -159,11 +143,9 @@ public class MitarbeiterMenue {
                 //System.out.print("Artikelbezeichnung  --> ");
                 //bezeichnung = eingabeAusgabe.einlesenString();
 
-                try {
-                    shop.loescheArtikel(nr, mitarbeiter);
-                } catch (ArtikelNichtVorhandenException e) {
-                    throw new RuntimeException(e);
-                }
+
+                shop.loescheArtikel(nr, mitarbeiter);
+
                 System.out.println("Loeschen erfolgreich!");
 
                 break;
@@ -174,11 +156,9 @@ public class MitarbeiterMenue {
                 System.out.print("Geben sie das temporaere Passwort des Mitarbeiters an --> ");
                 passwort = eingabeAusgabe.einlesenString();
 
-                try {
-                    System.out.print("\nDie Mitarbeiternummer von ihrem erstellten Mitarbeiter lautet --> " + shop.erstelleMitarbeiter(name, passwort) + "\n");
-                } catch (EingabeNichtLeerException e) {
-                    throw new RuntimeException(e);
-                }
+
+                System.out.print("\nDie Mitarbeiternummer von ihrem erstellten Mitarbeiter lautet --> " + shop.erstelleMitarbeiter(name, passwort) + "\n");
+
                 break;
             case 7:
                 List<Protokoll> logListe = shop.getProtokollListe();
@@ -188,11 +168,9 @@ public class MitarbeiterMenue {
                 System.out.print("Geben Sie die Nummer des gesuchten Artikels ein --> ");
                 nr = eingabeAusgabe.einlesenInteger();
                 List<Protokoll> artikelProtokollListe = null;
-                try {
-                    artikelProtokollListe = shop.getProtokollNachArtikel(nr);
-                } catch (ArtikelNichtVorhandenException e) {
-                    throw new RuntimeException(e);
-                }
+
+                artikelProtokollListe = shop.getProtokollNachArtikel(nr);
+
                 eingabeAusgabe.gibListeAus(artikelProtokollListe);
                 break;
         }
