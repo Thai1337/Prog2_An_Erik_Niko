@@ -1,5 +1,6 @@
 package eshop.ui.gui;
 
+import eshop.net.events.ArtikelListeChangedEventListener;
 import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.menu.ArtikelMenu;
 import eshop.ui.gui.menu.KontoMenu;
@@ -16,20 +17,22 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.io.Serializable;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class EshopClientGUI extends JFrame
+public class EshopClientGUI extends UnicastRemoteObject
         implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener,
         KontoMenu.LoginMenuItemClickListener, KontoMenu.RegistrierenMenuItemClickListener, KontoMenu.LogoutMenuItemClickListener,
         ArtikelMenu.ArtikelEinfuegenItemClickListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener, ArtikelLoeschenPanel.ArtikelLoeschenListener, ArtikelMenu.ArtikelLoeschenItemClickListener,
-        MitarbeiterMenu.MitarbeiterHinzufuegenItemClickListener, SearchProtokollPanel.SearchProtokollListener {
+        MitarbeiterMenu.MitarbeiterHinzufuegenItemClickListener, SearchProtokollPanel.SearchProtokollListener, ArtikelListeChangedEventListener, Serializable {
     private EshopSerializable shop;
-
+    private static final long serialVersionUID = 109622345876664424L;
     private ArtikelTable artikelTable;
     private WarenkorbTable warenkorbTable;
     private ProtokollTable protokollTable;
@@ -50,11 +53,13 @@ public class EshopClientGUI extends JFrame
     //private JDialog jdialog;
     private JTabbedPane tabs;
 
-
-
     private Nutzer nutzer;
-    public EshopClientGUI(String title) {
-            super(title);
+
+    private JFrame mainFrame;
+
+    public EshopClientGUI(String title) throws RemoteException {
+        super();
+        mainFrame = new JFrame(title);
 
             String serviceName = "eShopService";
             String host = "localhost";
@@ -67,6 +72,8 @@ public class EshopClientGUI extends JFrame
                 // Adressbuch aBuch = (Adressbuch) Naming.lookup("rmi://localhost:1099/"+serviceName);
                 // Aber: dann muss MalformedURLException gefangen werden!
 
+
+                this.shop.addEventListener(this);
             }
 
             catch (NotBoundException e) {
@@ -90,11 +97,11 @@ public class EshopClientGUI extends JFrame
     private void initGUI() throws RemoteException {
 
        //Layout des JFrames
-        setLayout(new BorderLayout());
+        mainFrame.setLayout(new BorderLayout());
 
         // registrierenIFrame
         registrierenFrame = new RegistrierenIFrame(shop);
-        add(registrierenFrame);
+        mainFrame.add(registrierenFrame);
 
         // MenuBar
         JMenuBar menuBar = new JMenuBar();
@@ -104,11 +111,11 @@ public class EshopClientGUI extends JFrame
         menuBar.add(kontoMenu);
         menuBar.add(artikelMenu);
         menuBar.add(mitarbeiterMenu);
-        setJMenuBar(menuBar);
+        mainFrame.setJMenuBar(menuBar);
 
         // loginIFrame
         loginFrame = new LoginIFrame(shop, this, kontoMenu, artikelMenu, mitarbeiterMenu); // konto menu ist auch ein loginListener
-        add(loginFrame);
+        mainFrame.add(loginFrame);
 
         // Tabellen
         warenkorbTable = new WarenkorbTable(shop);
@@ -119,12 +126,12 @@ public class EshopClientGUI extends JFrame
         artikelTable.setArtikelnummerTextField(warenkorbPanel.getArtikelnummerTextField());
         warenkorbTable.setArtikelnummerTextField(warenkorbPanel.getArtikelnummerTextField());
 
-        add(warenkorbPanel, BorderLayout.SOUTH);
+        mainFrame.add(warenkorbPanel, BorderLayout.SOUTH);
 
         tabs = new JTabbedPane();
         tabs.addTab("Artikel", new JScrollPane(artikelTable));
 
-        add(tabs, BorderLayout.CENTER);
+        mainFrame.add(tabs, BorderLayout.CENTER);
 
         // Suche
         JLayeredPane suchePane = new JLayeredPane();
@@ -135,7 +142,7 @@ public class EshopClientGUI extends JFrame
         //add(artikelSearchPanel, BorderLayout.NORTH);
         protokollSearchPanel = new SearchProtokollPanel(this.shop, this);
         suchePane.add(protokollSearchPanel);
-        add(suchePane, BorderLayout.NORTH);
+        mainFrame.add(suchePane, BorderLayout.NORTH);
 
         suchePane.setVisible(true);
 
@@ -149,7 +156,7 @@ public class EshopClientGUI extends JFrame
 
         //Mitarbeiter Hinzufuegen Panel
         mitarbeiterHinzufuegenPanel = new MitarbeiterHinzufuegenPanel(shop);
-        add(mitarbeiterHinzufuegenPanel, BorderLayout.EAST);
+        mainFrame.add(mitarbeiterHinzufuegenPanel, BorderLayout.EAST);
 
 
         //Loeschen und Einfuegen Panel
@@ -157,7 +164,7 @@ public class EshopClientGUI extends JFrame
         layeredPane2.setLayout(new BoxLayout(layeredPane2, BoxLayout.Y_AXIS));
         layeredPane2.add(artikelEinfuegenPanel, JLayeredPane.POPUP_LAYER);
         layeredPane2.add(artikelLoeschenPanel, JLayeredPane.POPUP_LAYER);
-        add(layeredPane2, BorderLayout.WEST);
+        mainFrame.add(layeredPane2, BorderLayout.WEST);
         layeredPane2.setSize(300, 480);
         layeredPane2.setVisible(true);
 
@@ -165,9 +172,8 @@ public class EshopClientGUI extends JFrame
         setupTabEvents();
 
         //JFrame optionen
-        setSize(1040, 580);
-        setVisible(true);
-
+        mainFrame.setSize(1040, 580);
+        mainFrame.setVisible(true);
     }
 
     private void setupTabEvents(){
@@ -192,7 +198,11 @@ public class EshopClientGUI extends JFrame
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                EshopClientGUI gui = new EshopClientGUI("Eshop");
+                try {
+                    EshopClientGUI gui = new EshopClientGUI("Eshop");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -275,4 +285,8 @@ public class EshopClientGUI extends JFrame
     }
 
 
+    @Override
+    public void onArtikelListeChangedEvent(List<Artikel> artikelList) {
+        artikelTable.updateArtikel(artikelList);
+    }
 }

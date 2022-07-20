@@ -1,12 +1,15 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.*;
+import eshop.net.events.ArtikelListeChangedEventListener;
 import eshop.net.rmi.common.EshopSerializable;
 import eshop.valueobjects.*;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Klasse zur Verwaltung eines E-Shops.
@@ -19,7 +22,7 @@ import java.util.List;
 public class Eshop extends UnicastRemoteObject implements EshopSerializable {
 
     private static final long serialVersionUID = 1096295124934664424L;
-
+    private List<ArtikelListeChangedEventListener> listeners;
     private Artikelverwaltung artikelVW;
     private Mitarbeiterverwaltung mitarbeiterVW;
     private Kundenverwaltung kundenVW;
@@ -52,6 +55,8 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
         System.out.println("Hallo 4");
         //protokollVW.protokollLoeschungNachZeiten();
         System.out.println("Hallo 5");
+
+        listeners = new Vector<>();
     }
 
     /**
@@ -93,7 +98,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
             neuerArtikel = new Massengutartikel(nummerVomLetztenArtikel + 1,bezeichnung, bestand, preis, packungsgroesse);
         }
         artikelVW.einfuegen(neuerArtikel);
-
+        notifyListener();
 
         protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, neuerArtikel, Protokoll.EreignisTyp.EINFUEGEN));
         return neuerArtikel;
@@ -119,6 +124,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
         }
 
         artikelVW.aendereArtikel(artikel);
+        notifyListener();
 
         if(bestand != artikelOld.getBestand() && bestand > -1) { // TODO abfrage irgendwie in die protokollVW verschieben
             protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, artikel, Protokoll.EreignisTyp.AENDERUNG));
@@ -138,6 +144,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
 
         zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
         artikelVW.loeschen(zuEntfernenderArtikel);
+        notifyListener();
 
         protokollVW.logZuProtokollListe(new MitarbeiterProtokoll(mitarbeiter, zuEntfernenderArtikel, Protokoll.EreignisTyp.LOESCHUNG));
     }
@@ -285,6 +292,8 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
 
         protokollVW.logZuProtokollListe(new KundenProtokoll(rechnung.getKunde(), Protokoll.EreignisTyp.EINKAUFEN)); // es muss die kunde Kopie[rechnung.getKunde()] aus der Rechnung sein, weil der warenkorb in einkaufAbschliessen geleert wird
 
+        notifyListener();
+
         return rechnung;
 
     }
@@ -310,6 +319,27 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
 
     public List<Protokoll> getProtokollNachArtikel(int artikelnummer) throws ArtikelNichtVorhandenException {
         return protokollVW.getProtokollNachArtikel(artikelVW.gibArtikelNachNummer(artikelnummer));
+    }
+
+    @Override
+    public void addEventListener(ArtikelListeChangedEventListener listener) throws RemoteException {
+        listeners.add(listener);
+    }
+
+    private void notifyListener() throws RemoteException{
+        for (ArtikelListeChangedEventListener listener : listeners) {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        listener.onArtikelListeChangedEvent(gibAlleArtikel());
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            t.start();
+        }
     }
 
 //    public void datenSichern() throws IOException {

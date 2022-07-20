@@ -1,6 +1,7 @@
 package eshop.net.rmi.common;
 
 import eshop.domain.exceptions.*;
+import eshop.net.events.ArtikelListeChangedEventListener;
 import eshop.valueobjects.*;
 //import eShop.net.rmi.common.exceptions.AdresseNotFoundException;
 
@@ -175,4 +176,8 @@ public interface EshopSerializable extends Remote{
     public Artikel gibArtikelNachNummer(int nummer) throws RemoteException, ArtikelNichtVorhandenException;
 
     public List<Protokoll> getProtokollNachArtikel(int artikelnummer) throws RemoteException, ArtikelNichtVorhandenException;
+
+    public void addEventListener(ArtikelListeChangedEventListener listener) throws RemoteException;
+
+
 }

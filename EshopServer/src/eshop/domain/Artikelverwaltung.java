@@ -1,6 +1,7 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.*;
+import eshop.net.events.ArtikelListeChangedEventListener;
 import eshop.persistence.ListenPersistence;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Massengutartikel;
@@ -19,6 +20,8 @@ public class Artikelverwaltung {
     private List<Artikel> artikelBestand = new Vector<>();
 
     private ListenPersistence<Artikel> persistence;
+
+    private ArtikelListeChangedEventListener artikelListeChangedEventListener;
 
     /**
      * Konstruktor welcher Artikel erstellt und der Vector des Bestandes hinzufügt
