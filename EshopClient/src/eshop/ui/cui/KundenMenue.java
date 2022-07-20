@@ -8,6 +8,7 @@ import eshop.net.rmi.common.EshopSerializable;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Rechnung;
+import eshop.valueobjects.Warenkorb;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -131,7 +132,9 @@ public class KundenMenue {
                 System.out.print("Geben Sie die gewuenschte Bestellmenge an --> ");
                 anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
-                shop.artikelZuWarenkorb(artikelnummer, anzahlArtikel, kunde);
+
+                Warenkorb warenkorb = shop.artikelZuWarenkorb(artikelnummer, anzahlArtikel, kunde);
+                kunde.setMeinWarenkorb(warenkorb);
                 System.out.println("\nEinfuegen war erfolgreich!");
                 break;
             case 5:
@@ -141,7 +144,8 @@ public class KundenMenue {
                 anzahlArtikel = eingabeAusgabe.einlesenInteger();
 
 
-                shop.artikelAusWarenkorbEntfernen(artikelnummer, anzahlArtikel, kunde);
+                Warenkorb warenkorbLoeschen = shop.artikelAusWarenkorbEntfernen(artikelnummer, anzahlArtikel, kunde);
+                kunde.setMeinWarenkorb(warenkorbLoeschen);
                 System.out.println("\nEntfernen war erfolgreich!");
 
                 break;
@@ -155,7 +159,7 @@ public class KundenMenue {
                 System.out.print("Moechten Sie den Kauf abschliessen?\nGeben Sie J oder j ein --> ");
                 if (eingabeAusgabe.einlesenString().equalsIgnoreCase("j")) {
                     Rechnung rechnung = shop.einkaufAbschliessen(kunde);
-
+                    kunde.getWarkorb().warenkorbLeeren();
                     System.out.println(rechnung);
 
                 } else {
