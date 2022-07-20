@@ -21,7 +21,7 @@ public class WarenkorbTableModel extends AbstractTableModel {
 
     public void setWarenkorb(Warenkorb aktuellerWarenkorb) {
         //warenkorb.warenkorbLeeren();
-        //warenkorb.getWarenkorbListe().clear();
+        warenkorb.getWarenkorbListe().clear();
         warenkorb.getWarenkorbListe().putAll(aktuellerWarenkorb.getWarenkorbListe());
         fireTableDataChanged();
     }
