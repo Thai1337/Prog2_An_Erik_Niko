@@ -117,6 +117,7 @@ public class Warenkorbverwaltung {
             throw new WarenkorbLeerException();
 
         for (Map.Entry<Artikel, Integer> entry : warenkorb.getWarenkorbListe().entrySet()) {
+            // TODO kucken ob die if bedinung noch funkt
             if ((entry.getKey().getBestand() - entry.getValue()) < 0) { //überprüft ob der Artikelbestand beim abschliessen des Kaufes immer noch über den Lagerbestand liegt(vllt war ein anderer Kunde schneller)
                 warenkorb.removeArtikelVonWarenkorbListe(entry.getKey());
                 throw new ArtikelbestandUnterNullException(entry.getKey(), " DU WARST ZU LANGSAM BEIM EINKAUF. NICE TRY! ¯\\_(ツ)_/¯");
@@ -125,7 +126,13 @@ public class Warenkorbverwaltung {
                 warenkorb.removeArtikelVonWarenkorbListe(entry.getKey());
                 throw new ArtikelNichtVorhandenException(entry.getKey(), " Überprüfen Sie ihren Warenkorb, da ein Artikel aus ihrem Warenkorb nicht mehr in unserem Shop vorhanden ist ");
             }
-            entry.getKey().setBestand(entry.getKey().getBestand() - entry.getValue()); // wenn einkauf erfolgreich: entferne Bestellung aus Bestand
+
+            for (Artikel artikel: artikelBestand) {
+                if(artikel.equals(entry.getKey())) {
+                    artikel.setBestand(artikel.getBestand() - entry.getValue()); // wenn einkauf erfolgreich: entferne Bestellung aus Bestand hier 4 real
+                }
+            }
+            entry.getKey().setBestand(entry.getKey().getBestand() - entry.getValue()); // wenn einkauf erfolgreich: entferne Bestellung aus Bestand also für die rechnung lul
         }
         persistence.speichernListe(artikelBestand);
         Rechnung rechnung = new Rechnung(kunde); // es wird eine kopie des Kunden erstellt, deswegen über dem warenkorbLeeren()

@@ -212,6 +212,7 @@ public class WarenkorbPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Rechnung rechnung = shop.einkaufAbschliessen(kunde);
+                    kunde.getWarkorb().warenkorbLeeren();
                     artikelZuWarenkorbListener.onArtikelZuWarenkorb();
                     einkaufAbschliessenListener.onEinkaufAbschliessen();
                     JOptionPane.showMessageDialog(WarenkorbPanel.this, rechnung);
