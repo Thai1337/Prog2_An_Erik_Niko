@@ -4,7 +4,7 @@ import eshop.domain.exceptions.ArtikelExistiertBereitsException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.domain.exceptions.MassengutartikelBestandsException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.StringConverter;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Mitarbeiter;
@@ -24,7 +24,7 @@ public class ArtikelEinfuegenPanel extends JPanel {
     private JTextField packungsgroesseTextField;
     private JButton addButton;
 
-    private eShopSerializable shop;
+    private EshopSerializable shop;
 
     private Mitarbeiter mitarbeiter;
 
@@ -35,7 +35,7 @@ public class ArtikelEinfuegenPanel extends JPanel {
         public void onArtikelEinfuegen(List<Artikel> artikelList);
     }
 
-    public ArtikelEinfuegenPanel(eShopSerializable shop, ArtikelEinfuegenListener artikelEinfuegenListener, ArtikelEinfuegenListener protokollArtikelEinfuegenListener) {
+    public ArtikelEinfuegenPanel(EshopSerializable shop, ArtikelEinfuegenListener artikelEinfuegenListener, ArtikelEinfuegenListener protokollArtikelEinfuegenListener) {
         this.shop = shop;
         this.artikelEinfuegenListener = artikelEinfuegenListener;
         this.protokollArtikelEinfuegenListener = protokollArtikelEinfuegenListener;

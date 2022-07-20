@@ -1,6 +1,6 @@
 package eshop.ui.gui;
 
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.menu.ArtikelMenu;
 import eshop.ui.gui.menu.KontoMenu;
 import eshop.ui.gui.menu.MitarbeiterMenu;
@@ -11,7 +11,6 @@ import eshop.ui.gui.table.ArtikelTable;
 import eshop.ui.gui.table.ProtokollTable;
 import eshop.ui.gui.table.WarenkorbTable;
 import eshop.valueobjects.*;
-import org.w3c.dom.events.EventListener;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -29,7 +28,7 @@ public class EshopClientGUI extends JFrame
         KontoMenu.LoginMenuItemClickListener, KontoMenu.RegistrierenMenuItemClickListener, KontoMenu.LogoutMenuItemClickListener,
         ArtikelMenu.ArtikelEinfuegenItemClickListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener, ArtikelLoeschenPanel.ArtikelLoeschenListener, ArtikelMenu.ArtikelLoeschenItemClickListener,
         MitarbeiterMenu.MitarbeiterHinzufuegenItemClickListener, SearchProtokollPanel.SearchProtokollListener {
-    private eShopSerializable shop;
+    private EshopSerializable shop;
 
     private ArtikelTable artikelTable;
     private WarenkorbTable warenkorbTable;
@@ -62,7 +61,7 @@ public class EshopClientGUI extends JFrame
             int port = DEFAULT_PORT;
             try {
                 Registry registry = LocateRegistry.getRegistry(host, port);
-                this.shop = (eShopSerializable) registry.lookup(serviceName); // Variante mit Serializable-Adressobjekten
+                this.shop = (EshopSerializable) registry.lookup(serviceName); // Variante mit Serializable-Adressobjekten
     //			AdressbuchRemote aBuch = (AdressbuchRemote) registry.lookup(serviceName);             // Variante mit Remote-Adressobjekten
                 // Alternative zu den beiden vorangegangenen Zeilen:
                 // Adressbuch aBuch = (Adressbuch) Naming.lookup("rmi://localhost:1099/"+serviceName);

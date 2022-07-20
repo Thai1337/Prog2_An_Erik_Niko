@@ -1,7 +1,6 @@
 package eshop.ui.gui.table;
 
-import eshop.net.rmi.common.eShopSerializable;
-import eshop.ui.gui.model.ArtikelTableModel;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.model.WarenkorbTableModel;
 import eshop.ui.gui.panel.WarenkorbPanel;
 import eshop.valueobjects.*;
@@ -11,14 +10,13 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
-import java.util.List;
 
 public class WarenkorbTable extends JTable implements WarenkorbPanel.ArtikelZuWarenkorbListener, MouseListener {
-    private eShopSerializable shop;
+    private EshopSerializable shop;
     private Kunde kunde;
     private WarenkorbTableModel warenkorbModel;
     private JTextField artikelnummerTextField;
-    public WarenkorbTable(eShopSerializable shop) {
+    public WarenkorbTable(EshopSerializable shop) {
         super();
         this.shop = shop;
 

@@ -1,7 +1,7 @@
 package eshop.ui.gui.chart;
 
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.KundenProtokoll;
 import eshop.valueobjects.MitarbeiterProtokoll;
@@ -22,17 +22,16 @@ import org.jfree.data.xy.XYSeriesCollection;
 import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
 public class BestandshistorieChart extends JFrame {
 
-    private eShopSerializable shop;
+    private EshopSerializable shop;
     private int artikelnummer;
 
-    public BestandshistorieChart( String applicationTitle, String chartTitle, List<Protokoll> bestand, eShopSerializable shop, int artikelnummer) {
+    public BestandshistorieChart(String applicationTitle, String chartTitle, List<Protokoll> bestand, EshopSerializable shop, int artikelnummer) {
         super(applicationTitle);
         this.shop = shop;
         this.artikelnummer = artikelnummer;

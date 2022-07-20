@@ -1,7 +1,7 @@
 package eshop.ui.gui.iframe;
 
 import eshop.domain.exceptions.EingabeNichtLeerException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.StringConverter;
 
 import javax.swing.*;
@@ -21,9 +21,9 @@ public class RegistrierenIFrame extends JInternalFrame {
 
     private JButton registrierenButton;
 
-    private eShopSerializable shop;
+    private EshopSerializable shop;
 
-    public RegistrierenIFrame(eShopSerializable shop) {
+    public RegistrierenIFrame(EshopSerializable shop) {
         super("Registrieren", false, true, false, false);
         this.shop = shop;
         initUI();

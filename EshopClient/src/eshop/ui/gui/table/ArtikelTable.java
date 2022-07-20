@@ -4,7 +4,7 @@ import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
 import eshop.domain.exceptions.MassengutartikelBestandsException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.StringConverter;
 import eshop.ui.gui.model.ArtikelTableModel;
 import eshop.ui.gui.panel.WarenkorbPanel;
@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschliessenListener, MouseListener {
-    private eShopSerializable shop;
+    private EshopSerializable shop;
     private List<Artikel> artikel;
     private Mitarbeiter mitarbeiter;
     //private Kunde kunde;
@@ -34,7 +34,7 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
     }
     private ArtikelBearbeitenListener artikelBearbeitenListener;
     private JTextField artikelnummerTextField;
-    public ArtikelTable(eShopSerializable shop, ArtikelBearbeitenListener artikelBearbeitenListener) throws RemoteException {
+    public ArtikelTable(EshopSerializable shop, ArtikelBearbeitenListener artikelBearbeitenListener) throws RemoteException {
         super();
         this.shop = shop;
         this.tableModel = new ArtikelTableModel(shop.gibAlleArtikel());

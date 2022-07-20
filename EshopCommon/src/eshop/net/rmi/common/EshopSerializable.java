@@ -9,7 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface eShopSerializable extends Remote{
+public interface EshopSerializable extends Remote{
 
     public List<Artikel> gibAlleArtikel()  throws RemoteException;
 

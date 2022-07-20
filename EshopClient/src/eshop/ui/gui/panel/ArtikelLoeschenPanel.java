@@ -1,7 +1,7 @@
 package eshop.ui.gui.panel;
 
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.StringConverter;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Mitarbeiter;
@@ -19,7 +19,7 @@ public class ArtikelLoeschenPanel extends JPanel {
     private JButton deleteButton;
 
     private Mitarbeiter mitarbeiter;
-    private eShopSerializable shop;
+    private EshopSerializable shop;
     private ArtikelLoeschenListener artikelLoeschenListener;
     private ArtikelLoeschenListener protokollArtikelLoeschenListener;
 
@@ -27,7 +27,7 @@ public class ArtikelLoeschenPanel extends JPanel {
         public void onArtikelLoeschen(List<Artikel> artikelList);
     }
 
-    public ArtikelLoeschenPanel(eShopSerializable shop, ArtikelLoeschenListener artikelLoeschenListener, ArtikelLoeschenListener protokollArtikelLoeschenListener) {
+    public ArtikelLoeschenPanel(EshopSerializable shop, ArtikelLoeschenListener artikelLoeschenListener, ArtikelLoeschenListener protokollArtikelLoeschenListener) {
         this.shop = shop;
         this.artikelLoeschenListener = artikelLoeschenListener;
         this.protokollArtikelLoeschenListener = protokollArtikelLoeschenListener;

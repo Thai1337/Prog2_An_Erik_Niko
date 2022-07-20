@@ -1,7 +1,7 @@
 package eshop.ui.gui.panel;
 
 import eshop.domain.exceptions.EingabeNichtLeerException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,8 +14,8 @@ public class MitarbeiterHinzufuegenPanel extends JPanel {
     private JTextField mitarbeiterPasswortTextField;
     private JButton addButton;
 
-    private eShopSerializable shop;
-    public MitarbeiterHinzufuegenPanel(eShopSerializable shop) {
+    private EshopSerializable shop;
+    public MitarbeiterHinzufuegenPanel(EshopSerializable shop) {
         this.shop = shop;
 
         initUI();

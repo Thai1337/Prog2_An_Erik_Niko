@@ -1,11 +1,9 @@
 package eshop.ui.gui.iframe;
 
 import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.StringConverter;
-import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Nutzer;
-import eshop.valueobjects.Warenkorb;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +17,7 @@ public class LoginIFrame extends JInternalFrame {
         public void onLogin(Nutzer nutzer);
     }
 
-    private eShopSerializable shop;
+    private EshopSerializable shop;
 
     private LoginListener loginListener;
 
@@ -34,7 +32,7 @@ public class LoginIFrame extends JInternalFrame {
 
     private Nutzer nutzer;
 
-    public LoginIFrame(eShopSerializable shop, LoginListener loginListener, LoginListener loginMenuBarListener, LoginListener loginArtikelMenuBarListener, LoginListener loginMitarbeiterMenuBarListener) {
+    public LoginIFrame(EshopSerializable shop, LoginListener loginListener, LoginListener loginMenuBarListener, LoginListener loginArtikelMenuBarListener, LoginListener loginMitarbeiterMenuBarListener) {
         super("Anmelden", false, true, false, false);
         this.shop = shop;
         this.loginListener = loginListener;

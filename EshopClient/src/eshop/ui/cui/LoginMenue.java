@@ -2,7 +2,7 @@ package eshop.ui.cui;
 
 import eshop.domain.exceptions.AnmeldungFehlgeschlagenException;
 import eshop.domain.exceptions.EingabeNichtLeerException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Mitarbeiter;
 
@@ -20,7 +20,7 @@ public class LoginMenue {
     private KundenMenue kundenMenue;
     private MitarbeiterMenue mitarbeiterMenue;
 
-    private eShopSerializable shop;
+    private EshopSerializable shop;
 
     public LoginMenue() throws IOException, ClassNotFoundException {
         String serviceName = "eShopService";
@@ -28,7 +28,7 @@ public class LoginMenue {
         int port = DEFAULT_PORT;
         try {
             Registry registry = LocateRegistry.getRegistry(host, port);
-            this.shop = (eShopSerializable) registry.lookup(serviceName); // Variante mit Serializable-Adressobjekten
+            this.shop = (EshopSerializable) registry.lookup(serviceName); // Variante mit Serializable-Adressobjekten
 //			AdressbuchRemote aBuch = (AdressbuchRemote) registry.lookup(serviceName);             // Variante mit Remote-Adressobjekten
             // Alternative zu den beiden vorangegangenen Zeilen:
             // Adressbuch aBuch = (Adressbuch) Naming.lookup("rmi://localhost:1099/"+serviceName);

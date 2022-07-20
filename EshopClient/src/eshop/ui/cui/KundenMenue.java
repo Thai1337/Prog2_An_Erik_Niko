@@ -4,14 +4,12 @@ import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.domain.exceptions.WarenkorbLeerException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.valueobjects.Artikel;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Rechnung;
 
 import java.io.IOException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +22,12 @@ public class KundenMenue {
     private static int DEFAULT_PORT = 1099;
 
     private EA eingabeAusgabe;
-    private eShopSerializable shop;
+    private EshopSerializable shop;
 
 
     private Kunde kunde;
 
-    public KundenMenue(eShopSerializable shop) {
+    public KundenMenue(EshopSerializable shop) {
         eingabeAusgabe = new EA();
 
         this.shop = shop;

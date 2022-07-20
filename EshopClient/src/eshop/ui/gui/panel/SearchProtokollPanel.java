@@ -1,7 +1,7 @@
 package eshop.ui.gui.panel;
 
 import eshop.domain.exceptions.ArtikelNichtVorhandenException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.StringConverter;
 import eshop.ui.gui.chart.BestandshistorieChart;
 import eshop.valueobjects.Protokoll;
@@ -18,14 +18,14 @@ public class SearchProtokollPanel extends JPanel {
     public interface SearchProtokollListener {
         public void onSearchProtokoll(List<Protokoll> artikelList);
     }
-    private eShopSerializable shop;
+    private EshopSerializable shop;
     private SearchProtokollListener searchProtokollListener;
 
     private JTextField artikelNummerTextField;
 
     private JButton searchButton;
 
-    public SearchProtokollPanel(eShopSerializable shop, SearchProtokollListener searchProtokollListener) {
+    public SearchProtokollPanel(EshopSerializable shop, SearchProtokollListener searchProtokollListener) {
         this.shop = shop;
         this.searchProtokollListener = searchProtokollListener;
         setVisible(false);

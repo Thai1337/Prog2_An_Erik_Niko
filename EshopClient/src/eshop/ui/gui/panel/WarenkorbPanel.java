@@ -4,7 +4,7 @@ import eshop.domain.exceptions.ArtikelNichtVorhandenException;
 import eshop.domain.exceptions.ArtikelbestandUnterNullException;
 import eshop.domain.exceptions.MassengutartikelBestandsException;
 import eshop.domain.exceptions.WarenkorbLeerException;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.StringConverter;
 import eshop.valueobjects.Kunde;
 import eshop.valueobjects.Nutzer;
@@ -29,7 +29,7 @@ public class WarenkorbPanel extends JPanel {
     private JTextField artikelnummerTextField;
 
     //private Artikel artikel;
-    private eShopSerializable shop;
+    private EshopSerializable shop;
     private Kunde kunde;
     private String actionCommand;
     private JLabel gesamtpreisLabel;
@@ -42,7 +42,7 @@ public class WarenkorbPanel extends JPanel {
     }
     private EinkaufAbschliessenListener einkaufAbschliessenListener;
     private ArtikelZuWarenkorbListener artikelZuWarenkorbListener;
-    public WarenkorbPanel(eShopSerializable shop, ArtikelZuWarenkorbListener artikelZuWarenkorbListener, EinkaufAbschliessenListener einkaufAbschliessenListener) {
+    public WarenkorbPanel(EshopSerializable shop, ArtikelZuWarenkorbListener artikelZuWarenkorbListener, EinkaufAbschliessenListener einkaufAbschliessenListener) {
         this.shop = shop;
         this.artikelZuWarenkorbListener = artikelZuWarenkorbListener;
         this.einkaufAbschliessenListener = einkaufAbschliessenListener;

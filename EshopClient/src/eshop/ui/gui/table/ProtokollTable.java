@@ -1,12 +1,6 @@
 package eshop.ui.gui.table;
 
-import eshop.domain.exceptions.ArtikelNichtVorhandenException;
-import eshop.domain.exceptions.ArtikelbestandUnterNullException;
-import eshop.domain.exceptions.EingabeNichtLeerException;
-import eshop.domain.exceptions.MassengutartikelBestandsException;
-import eshop.net.rmi.common.eShopSerializable;
-import eshop.ui.gui.StringConverter;
-import eshop.ui.gui.model.ArtikelTableModel;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.ui.gui.model.ProtokollTableModel;
 import eshop.ui.gui.panel.ArtikelEinfuegenPanel;
 import eshop.ui.gui.panel.ArtikelLoeschenPanel;
@@ -19,21 +13,18 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class ProtokollTable extends JTable implements MouseListener, ArtikelEinfuegenPanel.ArtikelEinfuegenListener, ArtikelTable.ArtikelBearbeitenListener, ArtikelLoeschenPanel.ArtikelLoeschenListener {
 
-    private eShopSerializable shop;
+    private EshopSerializable shop;
     private List<Protokoll> protokollList;
     private Mitarbeiter mitarbeiter;
     //private Kunde kunde;
     private ProtokollTableModel tableModel;
-    public ProtokollTable(eShopSerializable shop) {
+    public ProtokollTable(EshopSerializable shop) {
         super();
         this.shop = shop;
         try {

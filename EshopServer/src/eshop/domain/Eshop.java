@@ -1,7 +1,7 @@
 package eshop.domain;
 
 import eshop.domain.exceptions.*;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.valueobjects.*;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.List;
  * @author nguyen
  * @author heuschmann
  */
-public class Eshop extends UnicastRemoteObject implements eShopSerializable {
+public class Eshop extends UnicastRemoteObject implements EshopSerializable {
 
     private static final long serialVersionUID = 1096295124934664424L;
 

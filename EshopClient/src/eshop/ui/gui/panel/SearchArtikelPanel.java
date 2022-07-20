@@ -1,6 +1,6 @@
 package eshop.ui.gui.panel;
 
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.valueobjects.Artikel;
 
 import javax.swing.*;
@@ -16,13 +16,13 @@ public class SearchArtikelPanel extends JPanel {
         public void onSearchResult(List<Artikel> artikelList);
     }
 
-    private eShopSerializable shop;
+    private EshopSerializable shop;
     private SearchResultListener searchListener;
 
     private JTextField searchTextField;
     private JButton searchButton;
 
-    public SearchArtikelPanel(eShopSerializable shop, SearchResultListener searchListener) {
+    public SearchArtikelPanel(EshopSerializable shop, SearchResultListener searchListener) {
         this.shop = shop;
         this.searchListener = searchListener;
 

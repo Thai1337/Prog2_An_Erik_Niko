@@ -1,7 +1,7 @@
 package eshop.ui.cui;
 
 import eshop.domain.exceptions.*;
-import eshop.net.rmi.common.eShopSerializable;
+import eshop.net.rmi.common.EshopSerializable;
 import eshop.valueobjects.Massengutartikel;
 import eshop.valueobjects.Mitarbeiter;
 import eshop.valueobjects.Protokoll;
@@ -16,9 +16,9 @@ public class MitarbeiterMenue {
 
     private Mitarbeiter mitarbeiter;
     private EA eingabeAusgabe;
-    private eShopSerializable shop;
+    private EshopSerializable shop;
 
-    public MitarbeiterMenue(eShopSerializable shop) {
+    public MitarbeiterMenue(EshopSerializable shop) {
         eingabeAusgabe = new EA();
         this.shop = shop;
     }
