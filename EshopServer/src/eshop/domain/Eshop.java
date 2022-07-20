@@ -231,9 +231,9 @@ public class Eshop extends UnicastRemoteObject implements eShopSerializable {
      * @throws ArtikelbestandUnterNullException wenn der Artikelbestand, den man einfügen will, unter null fällt oder fallen würde
      * @throws ArtikelNichtVorhandenException   wenn der Artikel nicht im Warenkorb ist
      */
-    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+    public Warenkorb artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
         Artikel artikel = artikelVW.gibArtikelNachNummer(artikelnummer);
-        warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
+        return warenkoerbeVW.artikelZuWarenkorbHinzufuegen(artikel, anzahlArtikel, kunde);
     }
 
     /**
@@ -250,9 +250,10 @@ public class Eshop extends UnicastRemoteObject implements eShopSerializable {
      * Löscht alle Artikel, die sich im Warenkorb befinden mithilfe der clear methode
      *
      * @param kunde das Kundenobjekt
+     * @return
      */
-    public void warenkorbLoeschen(Kunde kunde) {
-        warenkoerbeVW.warenkorbLoeschen(kunde);
+    public Warenkorb warenkorbLoeschen(Kunde kunde) {
+        return warenkoerbeVW.warenkorbLoeschen(kunde);
     }
 
     /**
@@ -264,9 +265,9 @@ public class Eshop extends UnicastRemoteObject implements eShopSerializable {
      * @throws ArtikelbestandUnterNullException wenn der bestand im Warenkorb, der zu entfernen ist, unter null ist
      * @throws ArtikelNichtVorhandenException   wenn der Artikel nicht im Warenkorb ist
      */
-    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+    public Warenkorb artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
         Artikel zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
-        warenkoerbeVW.artikelAusWarenkorbEntfernen(zuEntfernenderArtikel, anzahlZuEntfernenderArtikel, kunde);
+        return warenkoerbeVW.artikelAusWarenkorbEntfernen(zuEntfernenderArtikel, anzahlZuEntfernenderArtikel, kunde);
     }
 
     /**

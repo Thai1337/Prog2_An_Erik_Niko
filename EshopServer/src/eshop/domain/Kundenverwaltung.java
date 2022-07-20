@@ -20,7 +20,7 @@ public class Kundenverwaltung {
 
     public Kundenverwaltung() {
 
-        Adresse a1 = new Adresse("Ballermann", 14, 28816, "Berne");
+        /*Adresse a1 = new Adresse("Ballermann", 14, 28816, "Berne");
         Adresse a2 = new Adresse("An den Ruschen", 21, 28817, "Bremen");
         Adresse a3 = new Adresse("Moselstraße", 28, 28818, "Bremen");
 
@@ -30,7 +30,7 @@ public class Kundenverwaltung {
 
         kundenListe.add(k1);
         kundenListe.add(k2);
-        kundenListe.add(k3);
+        kundenListe.add(k3);*/
         persistence = new ListenPersistence<Kunde>("kunde");
     }
 
@@ -40,8 +40,8 @@ public class Kundenverwaltung {
      */
     public void liesKunden() throws IOException {
         kundenListe = persistence.ladenListe();
-        for (Kunde k : kundenListe)
-            k.setMeinWarenkorb(new Warenkorb()); // wird benötigt, da die speicherung der Kunden keine Warenkörbe enthält
+        //for (Kunde k : kundenListe)
+            //k.setMeinWarenkorb(new Warenkorb()); // wird benötigt, da die speicherung der Kunden keine Warenkörbe enthält
     }
 
     /**

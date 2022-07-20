@@ -31,7 +31,7 @@ public class Warenkorbverwaltung {
      * @param kunde                  Kunde, dem der Warenkorb zugewiesen wurde
      * @throws ArtikelbestandUnterNullException wenn der hinzugefügte Artikelbestand kleiner 0 sein sollte
      */
-    public void artikelZuWarenkorbHinzufuegen(Artikel artikel, int warenkorbArtikelAnzahl, Kunde kunde) throws ArtikelbestandUnterNullException, MassengutartikelBestandsException {
+    public Warenkorb artikelZuWarenkorbHinzufuegen(Artikel artikel, int warenkorbArtikelAnzahl, Kunde kunde) throws ArtikelbestandUnterNullException, MassengutartikelBestandsException {
         warenkorb = kunde.getWarkorb();
 
         if (warenkorbArtikelAnzahl <= 0) // eingabe darf nicht kleiner gleich 0 sein
@@ -47,7 +47,7 @@ public class Warenkorbverwaltung {
             warenkorb.addArtikelZuWarenkorbListe(artikel, warenkorbArtikelAnzahl);
         else
             throw new ArtikelbestandUnterNullException(artikel, " Die Menge dieses Artikels in Ihrem Warenkorb ist höher als der Bestand im Shop!");
-
+        return warenkorb;
     }
 
     /**
@@ -60,7 +60,7 @@ public class Warenkorbverwaltung {
      * @param kunde                       Kunde, dem der Warenkorb zugewiesen wurde
      * @throws ArtikelbestandUnterNullException wenn der zu entfernende Artikelbestand kleiner 0 sein sollte
      */
-    public void artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
+    public Warenkorb artikelAusWarenkorbEntfernen(Artikel artikel, int anzahlZuEntfernenderArtikel, Kunde kunde) throws ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException {
         warenkorb = kunde.getWarkorb();
 
         if (anzahlZuEntfernenderArtikel < 0) // eingabe darf nicht kleiner als 0 sein | mit 0 wird der ganze artikel gelöscht
@@ -77,6 +77,7 @@ public class Warenkorbverwaltung {
 
         warenkorb.removeArtikelVonWarenkorbListe(artikel, anzahlZuEntfernenderArtikel);
 
+        return warenkorb;
     }
 
     /**
@@ -95,9 +96,10 @@ public class Warenkorbverwaltung {
      *
      * @param kunde Kunde, dem der Warenkorb zugewiesen wurde
      */
-    public void warenkorbLoeschen(Kunde kunde) {
+    public Warenkorb warenkorbLoeschen(Kunde kunde) {
         warenkorb = kunde.getWarkorb();
         warenkorb.warenkorbLeeren();
+        return warenkorb;
     }
 
     /**

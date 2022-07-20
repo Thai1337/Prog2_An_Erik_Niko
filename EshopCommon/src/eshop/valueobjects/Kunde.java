@@ -14,7 +14,7 @@ public class Kunde extends Nutzer {
     private static final long serialVersionUID = 7635563;
     private Adresse adresse;
 
-    private transient Warenkorb meinWarenkorb;
+    private Warenkorb meinWarenkorb;
 
     public Kunde(String name, Adresse adresse, String passwort) {
         super(name, passwort);

@@ -19,13 +19,13 @@ public class Mitarbeiterverwaltung {
      */
     public Mitarbeiterverwaltung() {
         // TODO wenn persistenz da löschen
-        Mitarbeiter m1 = new Mitarbeiter("Niko", "passwortN");
+        /*Mitarbeiter m1 = new Mitarbeiter("Niko", "passwortN");
         Mitarbeiter m2 = new Mitarbeiter("An", "passwortA");
         Mitarbeiter m3 = new Mitarbeiter("Erik", "passwortE");
 
         mitarbeiterListe.add(m1);
         mitarbeiterListe.add(m2);
-        mitarbeiterListe.add(m3);
+        mitarbeiterListe.add(m3);*/
         persistence = new ListenPersistence<Mitarbeiter>("mitarbeiter");
     }
 

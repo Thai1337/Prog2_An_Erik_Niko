@@ -2,6 +2,7 @@ package eshop.valueobjects;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  * @author nguyen
  * @author heuschmann
  */
-public class Warenkorb implements Serializable{
+public class Warenkorb implements Serializable {
     //private double gesamtpreis;
     @Serial
     private static final long serialVersionUID = 1231246;

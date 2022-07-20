@@ -118,7 +118,7 @@ public interface eShopSerializable extends Remote{
      * @throws RemoteException, ArtikelbestandUnterNullException wenn der Artikelbestand, den man einfügen will, unter null fällt oder fallen würde
      * @throws RemoteException, ArtikelNichtVorhandenException   wenn der Artikel nicht im Warenkorb ist
      */
-    public void artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws RemoteException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException;
+    public Warenkorb artikelZuWarenkorb(int artikelnummer, int anzahlArtikel, Kunde kunde) throws RemoteException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException;
 
     /**
      * Methode, die den Warenkorb mit den Artikeln und Gesamtpreis vom Kunden zurückgibt
@@ -132,8 +132,9 @@ public interface eShopSerializable extends Remote{
      * Löscht alle Artikel, die sich im Warenkorb befinden mithilfe der clear methode
      *
      * @param kunde das Kundenobjekt
+     * @return
      */
-    public void warenkorbLoeschen(Kunde kunde) throws RemoteException;
+    public Warenkorb warenkorbLoeschen(Kunde kunde) throws RemoteException;
 
     /**
      * Entfernt einen bestimmten Artikel aus dem Warenkorb
@@ -144,7 +145,7 @@ public interface eShopSerializable extends Remote{
      * @throws RemoteException, ArtikelbestandUnterNullException wenn der bestand im Warenkorb, der zu entfernen ist, unter null ist
      * @throws RemoteException, ArtikelNichtVorhandenException   wenn der Artikel nicht im Warenkorb ist
      */
-    public void artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlZuEntfernenderArtikel, Kunde kunde) throws RemoteException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException;
+    public Warenkorb artikelAusWarenkorbEntfernen(int artikelnummer, int anzahlZuEntfernenderArtikel, Kunde kunde) throws RemoteException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException;
 
     /**
      * Methode, welche die Rechnung mit den Artikeln erstellt. Außerdem wird ein Log für den EinKauf in der Protokollverwaltung angefertigt.

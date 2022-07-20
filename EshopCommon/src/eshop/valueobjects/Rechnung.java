@@ -1,11 +1,12 @@
 package eshop.valueobjects;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-public class Rechnung {
+public class Rechnung implements Serializable {
     private Kunde kunde;
     private Warenkorb warenkorb;
 
