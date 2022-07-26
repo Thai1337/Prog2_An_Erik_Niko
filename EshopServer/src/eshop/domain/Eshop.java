@@ -43,18 +43,17 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
         protokollVW = new Protokollverwaltung();
 
         artikelVW.liesArtikel();
-        System.out.println("Hallo 1");
+
         mitarbeiterVW.liesMitarbeiter();
         //mitarbeiterVW.schreibMitarbeiter();
-        System.out.println("Hallo 2");
+
         kundenVW.liesKunden();
         //kundenVW.schreibKunden();
-        System.out.println("Hallo 3");
+
         protokollVW.liesProtokoll();
         //protokollVW.schreibProtokoll();
-        System.out.println("Hallo 4");
-        //protokollVW.protokollLoeschungNachZeiten();
-        System.out.println("Hallo 5");
+
+        protokollVW.protokollLoeschungNachZeiten();
 
         listeners = new Vector<>();
     }

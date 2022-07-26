@@ -16,7 +16,7 @@ public class EShopServer {
         try {
             // Dienst-Objekt erzeugen
             eShop = new Eshop();	// Variante mit Serializable-Adressobjekten
-            System.out.println(eShop);
+            //System.out.println(eShop);
 
             // Läuft schon eine Registry?
             // (Die könnte z.B. über die Kommandozeile gestartet worden sein.)
@@ -44,7 +44,7 @@ public class EShopServer {
                 registry = LocateRegistry.createRegistry(1099);
                 System.out.println("Registry erzeugt.");
 
-                System.out.println(eShop);
+                //System.out.println(eShop);
                 registry.rebind(serviceName, eShop);
                 System.out.println("E-Shop-Server läuft...");
 

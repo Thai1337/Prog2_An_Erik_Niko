@@ -24,7 +24,6 @@ public class ListenPersistence<T>{
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream("EshopServer/src/eshop/persistence/daten/" + dateiname + ".txt"));
         //EshopServer\src\eshop\persistence
 
-        System.out.println(ois);
         List<T> list = new Vector<>();
         boolean cont = true;
         while (cont) {
@@ -35,7 +34,6 @@ public class ListenPersistence<T>{
             }
         }
         ois.close();
-        System.out.println(list);
         return list;
     }
 
