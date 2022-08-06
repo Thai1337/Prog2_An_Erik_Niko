@@ -93,7 +93,7 @@ public class BestandshistorieChart extends JFrame {
 
         for (int i = 0; i < bestandsWerte.size(); i++) {
             int j = i + 1;
-            if(j < bestandsWerte.size() && bestandsWerte.get(i).getDatum().getDayOfMonth() != bestandsWerte.get(j).getDatum().getDayOfMonth()) { //vergleicht die Tage des Protokolls(i) mit dem nächsten Protokoll(j = i + 1) in der Liste, sobald der Tag nicht gleich ist, wird der Befehl ausgeführt mit dem letzten Protokoll des Tages
+            if(j < bestandsWerte.size() && bestandsWerte.get(i).getDatum().getDayOfYear() != bestandsWerte.get(j).getDatum().getDayOfYear()) { //vergleicht die Tage des Protokolls(i) mit dem nächsten Protokoll(j = i + 1) in der Liste, sobald der Tag nicht gleich ist, wird der Befehl ausgeführt mit dem letzten Protokoll des Tages
                 letzterBestandVomTagProtokoll.add(bestandsWerte.get(i));// fügt das letzte Protokoll des Tages zur Liste von Protokollen hinzu
             }
         }
@@ -116,10 +116,10 @@ public class BestandshistorieChart extends JFrame {
         for (int i = 0; i < letzterBestandVomTagProtokoll.size(); i++) {
             int j = i + 1;
             if(j < letzterBestandVomTagProtokoll.size()) { // Abfrage, um den index nicht zu überschreiten
-                differenzTage = letzterBestandVomTagProtokoll.get(j).getDatum().getDayOfMonth() - letzterBestandVomTagProtokoll.get(i).getDatum().getDayOfMonth(); // differenz der letzten Protokolle von verschiedenen Tagen
+                differenzTage = letzterBestandVomTagProtokoll.get(j).getDatum().getDayOfYear() - letzterBestandVomTagProtokoll.get(i).getDatum().getDayOfYear(); // differenz der letzten Protokolle von verschiedenen Tagen
             }
             if(j == letzterBestandVomTagProtokoll.size()){//damit der letzte Wert angezeigt wird
-                differenzTage = heute.getDayOfMonth() - letzterBestandVomTagProtokoll.get(i).getDatum().getDayOfMonth(); // Berechnet die Differenz vom letzten Protokoll in der Liste mit dem aktuellen Tag im selben Monat
+                differenzTage = heute.getDayOfYear() - letzterBestandVomTagProtokoll.get(i).getDatum().getDayOfYear(); // Berechnet die Differenz vom letzten Protokoll in der Liste mit dem aktuellen Tag im selben Monat
                 if(differenzTage == 0) {
                     differenzTage = 1; // muss auf eins sein, weil die darauffolgende for-schleife mindestens einmal durchlaufen werden muss, um einen Wert hinzuzufügen
                 }
