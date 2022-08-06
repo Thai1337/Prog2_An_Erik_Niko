@@ -26,6 +26,11 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
+/**
+ * Klasse für grafische Benutzungsschnittstelle des
+ * E-Shops. Die Benutzungsschnittstelle basiert auf Swing, daher der Name GUI
+ * (Graphical User Interface).
+ */
 public class EshopClientGUI extends UnicastRemoteObject
         implements SearchArtikelPanel.SearchResultListener, LoginIFrame.LoginListener,
         KontoMenu.LoginMenuItemClickListener, KontoMenu.RegistrierenMenuItemClickListener, KontoMenu.LogoutMenuItemClickListener,
@@ -57,6 +62,12 @@ public class EshopClientGUI extends UnicastRemoteObject
 
     private JFrame mainFrame;
 
+    /**
+     * Konstruktor welcher den Clientcode für RMI enthält.
+     *
+     * @param title
+     * @throws RemoteException
+     */
     public EshopClientGUI(String title) throws RemoteException {
         super();
         mainFrame = new JFrame(title);
@@ -66,12 +77,8 @@ public class EshopClientGUI extends UnicastRemoteObject
             int port = DEFAULT_PORT;
             try {
                 Registry registry = LocateRegistry.getRegistry(host, port);
-                this.shop = (EshopSerializable) registry.lookup(serviceName); // Variante mit Serializable-Adressobjekten
-    //			AdressbuchRemote aBuch = (AdressbuchRemote) registry.lookup(serviceName);             // Variante mit Remote-Adressobjekten
+                this.shop = (EshopSerializable) registry.lookup(serviceName); // Variante mit Serializable
                 // Alternative zu den beiden vorangegangenen Zeilen:
-                // Adressbuch aBuch = (Adressbuch) Naming.lookup("rmi://localhost:1099/"+serviceName);
-                // Aber: dann muss MalformedURLException gefangen werden!
-
 
                 this.shop.addEventListener(this);
             }
@@ -86,7 +93,6 @@ public class EshopClientGUI extends UnicastRemoteObject
             }
 
             try {
-                //shop = new Eshop();
                 initGUI();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -94,6 +100,11 @@ public class EshopClientGUI extends UnicastRemoteObject
 
     }
 
+    /**
+     *  Methode zum Initialisieren der GUI
+     *
+     * @throws RemoteException
+     */
     private void initGUI() throws RemoteException {
 
        //Layout des JFrames
@@ -128,6 +139,7 @@ public class EshopClientGUI extends UnicastRemoteObject
 
         mainFrame.add(warenkorbPanel, BorderLayout.SOUTH);
 
+        // Tabs
         tabs = new JTabbedPane();
         tabs.addTab("Artikel", new JScrollPane(artikelTable));
 
@@ -176,15 +188,18 @@ public class EshopClientGUI extends UnicastRemoteObject
         mainFrame.setVisible(true);
     }
 
+    /**
+     *  Events für die JTabbedPanes um entweder die Artikelsuchleiste oder die Protokollsuchleiste anzuzeigen.
+     */
     private void setupTabEvents(){
         tabs.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(nutzer != null && nutzer instanceof Mitarbeiter){
-                    if(tabs.getSelectedIndex() == 0) {
+                if(nutzer != null && nutzer instanceof Mitarbeiter){ //null abfrage, weil man unangemeldet ist, kann man immer noch auf den ersten Tab drücken.
+                    if(tabs.getSelectedIndex() == 0) { //Artikeltab -> Artikelsuchleiste wird angezeigt
                         artikelSearchPanel.setVisible(true);
                         protokollSearchPanel.setVisible(false);
-                    }else{
+                    }else{// !=0 Protokolltab -> Protokollsuchleiste wird angezeigt
                         artikelSearchPanel.setVisible(false);
                         protokollSearchPanel.setVisible(true);
                     }
@@ -194,6 +209,10 @@ public class EshopClientGUI extends UnicastRemoteObject
         });
     }
 
+    /**
+     * Start des Programms
+     * @param args
+     */
     public static void main(String[] args){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -207,16 +226,29 @@ public class EshopClientGUI extends UnicastRemoteObject
         });
     }
 
+    /**
+     * Update der Artikellist beim Betätigen des Suchen Button
+     * @param artikelList übergibt die Artikelliste
+     */
     @Override
     public void onSearchResult(List<Artikel> artikelList) {
         artikelTable.updateArtikel(artikelList);
     }
 
+    /**
+     * Update der ProtokollList beim Betätigen des Verlauf anzeigen Button
+     * @param protokollList übergibt die Protokollliste
+     */
     @Override
     public void onSearchProtokoll(List<Protokoll> protokollList) {
         protokollTable.updateProtokoll(protokollList);
     }
 
+    /**
+     * Funktion zum Unterscheiden vom User beim Login. Des Weiteren
+     * wird bestimmt, welche Gui Elemente für den Nutzer angezeigt werden sollen.
+     * @param nutzer gibt den Nutzer weiter
+     */
     @Override
     public void onLogin(Nutzer nutzer) {
         this.nutzer = nutzer;
@@ -238,16 +270,25 @@ public class EshopClientGUI extends UnicastRemoteObject
         }
     }
 
+    /**
+     * Methode zum Anzeigen des Login Pop-ups bei dem click auf den Button
+     */
     @Override
     public void onLoginMenuItemClick() {
         loginFrame.setVisible(true);
     }
 
+    /**
+     *Methode zum Anzeigen des Registrieren Pop-ups bei dem click auf den Button
+     */
     @Override
     public void onRegistrierenMenuItemClick() {
         registrierenFrame.setVisible(true);
     }
 
+    /**
+     *Methode zum Ausblenden der Gui Elemente auf den der unangemeldete User keinen Zugriff hat, bei dem click auf den Button
+     */
     @Override
     public void onLogoutMenuItemClick() {
         artikelEinfuegenPanel.setVisible(false);
@@ -260,31 +301,55 @@ public class EshopClientGUI extends UnicastRemoteObject
         tabs.remove(1);
     }
 
+    /**
+     *Methode zum Anzeigen des Einfügen-Panels bei dem click auf den Button in der Menu Bar
+     * @param sichtbar boolischer Wert welcher bei jedem click zwischen True und false wechselt
+     */
     @Override
     public void onArtikelEinfuegenMenuItemClick(boolean sichtbar) {
         artikelEinfuegenPanel.setVisible(sichtbar);
     }
 
+    /**
+     *Methode zum Anzeigen des Löschen-Panels bei dem click auf den Button in der Menu Bar
+     * @param sichtbar boolischer Wert welcher bei jedem click zwischen True und false wechselt
+     */
    public void onArtikelLoeschenMenuItemClick(boolean sichtbar) {
         artikelLoeschenPanel.setVisible(sichtbar);
    }
 
+    /**
+     *Methode, welche die Artikeltabelle aktualisiert, sobald ein neuer Artikel hinzugefügt wurde.
+     * @param artikelList Liste der Artikel
+     */
     @Override
     public void onArtikelEinfuegen(List<Artikel> artikelList) {
         artikelTable.updateArtikel(artikelList);
     }
 
+    /**
+     *Methode, welche die Artikeltabelle aktualisiert, sobald ein Artikel gelöscht wurde.
+     * @param artikelList Liste der Artikel
+     */
     @Override
     public void onArtikelLoeschen(List<Artikel> artikelList) {
         artikelTable.updateArtikel(artikelList);
     }
 
+    /**
+     *Methode zum Anzeigen des Mitarbeiter-Panels bei dem click auf den Button in der Menu Bar
+     * @param sichtbar Boolischer Wert, welcher bei jedem Klick zwischen true und false wechselt
+     */
     @Override
     public void onMitarbeiterHinzufuegenMenuItemClick(boolean sichtbar) {
         mitarbeiterHinzufuegenPanel.setVisible(sichtbar);
     }
 
-
+    /**
+     * Methode, dass wenn ein anderer Client eine Änderung in der Artikelliste vornimmt.
+     * Wird bei den anderen Client die ArtikelTable automatisch aktualisiert.
+     * @param artikelList die aktualisierte Artikelliste wird übergeben
+     */
     @Override
     public void onArtikelListeChangedEvent(List<Artikel> artikelList) {
         artikelTable.updateArtikel(artikelList);

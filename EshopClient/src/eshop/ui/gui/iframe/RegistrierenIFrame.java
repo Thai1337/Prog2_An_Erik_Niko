@@ -23,6 +23,10 @@ public class RegistrierenIFrame extends JInternalFrame {
 
     private EshopSerializable shop;
 
+    /**
+     *
+     * @param shop
+     */
     public RegistrierenIFrame(EshopSerializable shop) {
         super("Registrieren", false, true, false, false);
         this.shop = shop;
@@ -31,6 +35,9 @@ public class RegistrierenIFrame extends JInternalFrame {
         setupEvents();
     }
 
+    /*
+
+     */
     private void initUI() {
 
         GridBagLayout gridBagLayout = new GridBagLayout();
@@ -112,6 +119,9 @@ public class RegistrierenIFrame extends JInternalFrame {
         setSize(300, 210);
     }
 
+    /*
+     *
+     */
     private void setupEvents() {
         registrierenButton.addActionListener(new ActionListener() {
 
@@ -140,6 +150,9 @@ public class RegistrierenIFrame extends JInternalFrame {
         });
     }
 
+    /*
+     *
+     */
     private void setRegistrierenFieldsToEmpty() {
         nameField.setText("");
         passwortField.setText("");

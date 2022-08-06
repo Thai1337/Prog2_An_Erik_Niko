@@ -57,7 +57,7 @@ public class SearchProtokollPanel extends JPanel {
         gridBagLayout.setConstraints(artikelNummerTextField, c);
         add(artikelNummerTextField);
 
-        searchButton = new JButton("Suchen");
+        searchButton = new JButton("Verlauf anzeigen");
 
         c.gridx = 2;	// Spalte 2
         c.weightx = 0.1;	// 20% der gesamten Breite

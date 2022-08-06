@@ -1,7 +1,9 @@
 package eshop.ui.gui;
 
-public class StringConverter<T extends Number> {
-
+public class StringConverter {
+    /*
+        Equivalent zur EA in der CUI für Exceptions
+     */
     public static int toInteger(String str) {
 
         try {

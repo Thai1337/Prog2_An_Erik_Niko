@@ -47,6 +47,9 @@ public class WarenkorbTable extends JTable implements WarenkorbPanel.ArtikelZuWa
         updateWarenkorb(shop.getWarenkorb(kunde));
     }
 
+    /*
+        MouseClicked Listener wird nur als Trigger verwendet um die Tabellenmethoden wie getValueAt() aufzurufen.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         int artikelNummer = (Integer) getValueAt(getSelectedRow(), 0);

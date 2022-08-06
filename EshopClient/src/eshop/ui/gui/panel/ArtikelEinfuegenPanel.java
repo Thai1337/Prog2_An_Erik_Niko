@@ -110,7 +110,9 @@ public class ArtikelEinfuegenPanel extends JPanel {
             }
         });
     }
-
+    /*
+      Löscht die Werte in den Textboxen nach einem einfügen Button click
+    */
     private void setArtikelEinfuegenFieldsToEmpty() {
         bezeichnungTextField.setText("");
         bestandTextField.setText("");

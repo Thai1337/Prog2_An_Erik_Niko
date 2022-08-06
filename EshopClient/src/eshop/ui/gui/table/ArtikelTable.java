@@ -165,6 +165,9 @@ public class ArtikelTable extends JTable implements WarenkorbPanel.EinkaufAbschl
     public void onEinkaufAbschliessen() throws RemoteException {
         updateArtikel(shop.gibAlleArtikel());
     }
+    /*
+        MouseClicked Listener wird nur als Trigger verwendet um die Tabellenmethoden wie getValueAt() aufzurufen.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         int artikelNummer = (Integer) getValueAt(getSelectedRow(), 0);

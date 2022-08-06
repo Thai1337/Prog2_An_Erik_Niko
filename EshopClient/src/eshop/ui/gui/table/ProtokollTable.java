@@ -85,7 +85,9 @@ public class ProtokollTable extends JTable implements MouseListener, ArtikelEinf
     public void setIstMitarbeiterAngemeldet(boolean angemeldet){
         tableModel.setIstMitarbeiterAngemeldet(angemeldet);
     }
-
+    /*
+        MouseClicked Listener wird nur als Trigger verwendet um die Tabellenmethoden wie getValueAt() aufzurufen.
+    */
     @Override
     public void mouseClicked(MouseEvent e) {
 

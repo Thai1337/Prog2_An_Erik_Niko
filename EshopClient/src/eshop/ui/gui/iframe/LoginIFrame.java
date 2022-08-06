@@ -32,6 +32,14 @@ public class LoginIFrame extends JInternalFrame {
 
     private Nutzer nutzer;
 
+    /**
+     *
+     * @param shop
+     * @param loginListener
+     * @param loginMenuBarListener
+     * @param loginArtikelMenuBarListener
+     * @param loginMitarbeiterMenuBarListener
+     */
     public LoginIFrame(EshopSerializable shop, LoginListener loginListener, LoginListener loginMenuBarListener, LoginListener loginArtikelMenuBarListener, LoginListener loginMitarbeiterMenuBarListener) {
         super("Anmelden", false, true, false, false);
         this.shop = shop;
@@ -44,6 +52,9 @@ public class LoginIFrame extends JInternalFrame {
         setupEvents();
     }
 
+    /*
+
+     */
     private void initUI() {
 
         GridBagLayout gridBagLayout = new GridBagLayout();
@@ -94,6 +105,9 @@ public class LoginIFrame extends JInternalFrame {
 
     }
 
+    /*
+        Methode, welche die Events startet, wenn man sich anmelden will
+     */
     private void setupEvents() {
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -105,7 +119,7 @@ public class LoginIFrame extends JInternalFrame {
 
                     try{
                         nutzer = shop.mitarbeiterAnmelden(id, pw);
-                        if (nutzer == null) {
+                        if (nutzer == null) { // auch möglich mit try-catch (wenn Mitarbeiter Anmelden eine Exception wirft im Catch block Kunden Anmelden ausführen)
                             nutzer = shop.kundenAnmelden(id, pw);
                             //((Kunde)nutzer).setMeinWarenkorb(new Warenkorb());
                         }
@@ -130,6 +144,9 @@ public class LoginIFrame extends JInternalFrame {
         });
     }
 
+    /*
+        Löscht die Werte in den Textboxen nach einem Login Button click
+     */
     private void setLoginFieldsToEmpty() {
         nutzerIDField.setText("");
         passwortField.setText("");
