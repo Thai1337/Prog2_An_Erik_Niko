@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/EshopClient/EshopClient.iml" filepath="$PROJECT_DIR$/EshopClient/EshopClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EshopCommon/EshopCommon.iml" filepath="$PROJECT_DIR$/EshopCommon/EshopCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EshopServer/EshopServer.iml" filepath="$PROJECT_DIR$/EshopServer/EshopServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/Prog2Projekt.iml" filepath="$PROJECT_DIR$/Prog2Projekt.iml" />
     </modules>
   </component>
