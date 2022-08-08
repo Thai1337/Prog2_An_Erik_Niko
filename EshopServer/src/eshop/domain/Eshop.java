@@ -88,7 +88,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
      * @throws EingabeNichtLeerException        Wenn die Eingabe leer oder falsch ist
      * @throws ArtikelbestandUnterNullException wenn der angegebene bestand beim Einfügen unter null ist
      */
-    public Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException, ClassNotFoundException {
+    public synchronized Artikel fuegeArtikelEin(String bezeichnung, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws ArtikelExistiertBereitsException, EingabeNichtLeerException, ArtikelbestandUnterNullException, MassengutartikelBestandsException, IOException, ClassNotFoundException {
         Artikel neuerArtikel;
         int nummerVomLetztenArtikel = artikelVW.getNummerVomLetztenArtikel();
         if (packungsgroesse == -1 || packungsgroesse == 1) {
@@ -114,7 +114,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
      * @throws ArtikelNichtVorhandenException   Wenn der Artikel nicht in unserem Lager ist
      */
     // Todo Ändern in Bearbeite Artikel
-    public void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
+    public synchronized void aendereArtikel(String bezeichnung, int nr, int bestand, double preis, Mitarbeiter mitarbeiter, int packungsgroesse) throws EingabeNichtLeerException, ArtikelbestandUnterNullException, ArtikelNichtVorhandenException, MassengutartikelBestandsException, IOException {
         Artikel artikel = gibArtikelNachNummer(nr), artikelOld = new Artikel(gibArtikelNachNummer(nr));
         if (artikel instanceof Massengutartikel) {
             artikel = new Massengutartikel(nr, bezeichnung, bestand, preis, packungsgroesse);
@@ -138,7 +138,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
      * @param artikelnummer Nummer des Artikels
      * @throws ArtikelNichtVorhandenException wenn die eingegebenden Daten zu keinem Artikel übereinstimmen
      */
-    public void loescheArtikel(int artikelnummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException, IOException {
+    public synchronized void loescheArtikel(int artikelnummer, Mitarbeiter mitarbeiter) throws ArtikelNichtVorhandenException, IOException {
         Artikel zuEntfernenderArtikel; // new Artikel(artikelnummer, "", 0, 0);
 
         zuEntfernenderArtikel = artikelVW.gibArtikelNachNummer(artikelnummer);
@@ -168,7 +168,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
      * @return Gibt die Mitarbeiternummer des neuen Mitarbeiters zurück
      * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
-    public int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException, IOException {
+    public synchronized int erstelleMitarbeiter(String name, String passwort) throws EingabeNichtLeerException, IOException {
         int nummerVomLetztenMitarbeiter = mitarbeiterVW.getNummerVomLetztenMitarbeiter();
         int nummerVomLetztenKunden = kundenVW.getNummerVomLetztenKunden();
         if(nummerVomLetztenMitarbeiter <= nummerVomLetztenKunden){
@@ -215,7 +215,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
      * @return Gibt die Kundennummer des neuen Kunden zurück
      * @throws EingabeNichtLeerException wenn die Eingabe leer oder falsch ist
      */
-    public int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException, IOException {
+    public synchronized int registriereKunden(String name, String passwort, String strasse, int hausnummer, int plz, String ort) throws EingabeNichtLeerException, IOException {
         Adresse adresse = new Adresse(strasse, hausnummer, plz, ort);
 
         int nummerVomLetztenKunden = kundenVW.getNummerVomLetztenKunden();
@@ -286,7 +286,7 @@ public class Eshop extends UnicastRemoteObject implements EshopSerializable {
      * @throws ArtikelbestandUnterNullException wird geworfen, wenn der Bestand im Lager kleiner ist als der Bestand im Warenkorb den man kaufen will
      * @throws WarenkorbLeerException           wenn keine Artikel im Warenkorb sind
      */
-    public Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException, IOException {
+    public synchronized Rechnung einkaufAbschliessen(Kunde kunde) throws ArtikelbestandUnterNullException, WarenkorbLeerException, ArtikelNichtVorhandenException, IOException {
         Rechnung rechnung = warenkoerbeVW.einkaufAbschliessen(kunde, artikelVW.getArtikelBestand());
 
         protokollVW.logZuProtokollListe(new KundenProtokoll(rechnung.getKunde(), Protokoll.EreignisTyp.EINKAUFEN)); // es muss die kunde Kopie[rechnung.getKunde()] aus der Rechnung sein, weil der warenkorb in einkaufAbschliessen geleert wird

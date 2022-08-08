@@ -72,31 +72,30 @@ public class EshopClientGUI extends UnicastRemoteObject
         super();
         mainFrame = new JFrame(title);
 
-            String serviceName = "eShopService";
-            String host = "localhost";
-            int port = DEFAULT_PORT;
-            try {
-                Registry registry = LocateRegistry.getRegistry(host, port);
-                this.shop = (EshopSerializable) registry.lookup(serviceName); // Variante mit Serializable
-                // Alternative zu den beiden vorangegangenen Zeilen:
+        String serviceName = "eShopService";
+        String host = "localhost";
+        int port = DEFAULT_PORT;
+        try {
+            Registry registry = LocateRegistry.getRegistry(host, port);
+            this.shop = (EshopSerializable) registry.lookup(serviceName); // Variante mit Serializable
 
-                this.shop.addEventListener(this);
-            }
+            this.shop.addEventListener(this);
+        }
 
-            catch (NotBoundException e) {
-                // unter der URL ist kein RMI-Objekt registriert
-                e.printStackTrace();
-            } catch (AccessException e) {
-                throw new RuntimeException(e);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+        catch (NotBoundException e) {
+            // unter der URL ist kein RMI-Objekt registriert
+            e.printStackTrace();
+        } catch (AccessException e) {
+            throw new RuntimeException(e);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
-            try {
-                initGUI();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            initGUI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

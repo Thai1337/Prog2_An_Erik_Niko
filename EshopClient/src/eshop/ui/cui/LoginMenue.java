@@ -28,12 +28,7 @@ public class LoginMenue {
         int port = DEFAULT_PORT;
         try {
             Registry registry = LocateRegistry.getRegistry(host, port);
-            this.shop = (EshopSerializable) registry.lookup(serviceName); // Variante mit Serializable-Adressobjekten
-//			AdressbuchRemote aBuch = (AdressbuchRemote) registry.lookup(serviceName);             // Variante mit Remote-Adressobjekten
-            // Alternative zu den beiden vorangegangenen Zeilen:
-            // Adressbuch aBuch = (Adressbuch) Naming.lookup("rmi://localhost:1099/"+serviceName);
-            // Aber: dann muss MalformedURLException gefangen werden!
-
+            this.shop = (EshopSerializable) registry.lookup(serviceName); // Variante mit Serializable
         }
 
         catch (NotBoundException e) {
