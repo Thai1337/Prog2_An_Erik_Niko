@@ -25,7 +25,7 @@ public class EShopServer {
             // .. und _versuchen_, unseren Adressbuch-Service zu registrieren:
             registry.rebind(serviceName, eShop);
             // Alternative zu vorangegangener Zeile:
-            // Naming.rebind("rmi://localhost:1099/"+serviceName, aBuch);
+            // Naming.rebind("rmi://localhost:1099/"+serviceName, eShop);
             // Aber: dann muss MalformedURLException gefangen werden!
             System.out.println("Lokales Registry-Objekt gefunden.");
             System.out.println("E-Shop-Server läuft...");

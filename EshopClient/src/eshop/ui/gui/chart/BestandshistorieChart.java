@@ -26,8 +26,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
-/**
- *
+/*
+ * Externe Bibliothek JFreeCharts wurde hier genutzt
+ * Quelle: https://www.jfree.org/jfreechart/https://www.jfree.org/jfreechart/
  */
 public class BestandshistorieChart extends JFrame {
 
